@@ -4,7 +4,7 @@
     {
         public string Usuario { get; set; } = string.Empty;
        
-        public string Contraseña { get; set; } = String.Empty;
+        public string Password { get; set; } = String.Empty;
 
         public string Nombre { get; set; } = string.Empty ;
 

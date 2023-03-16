@@ -35,7 +35,7 @@ namespace JuncalApi.Servicios
 
         public JuncalUsuario RegistroUsuario(UsuarioRequerido userReq)
         {
-            CreatePasswordhHash(userReq.Contraseña, out byte[] passwordHash, out byte[] passwordSalt);
+            CreatePasswordhHash(userReq.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Usuario=userReq.Usuario;
             user.Dni = userReq.Dni;
             user.Nombre=userReq.Nombre;
