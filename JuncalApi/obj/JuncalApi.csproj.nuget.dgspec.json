@@ -80,6 +80,10 @@
               "target": "Package",
               "version": "[6.2.3, )"
             },
+            "Swashbuckle.AspNetCore.Filters": {
+              "target": "Package",
+              "version": "[7.0.6, )"
+            },
             "System.Runtime": {
               "target": "Package",
               "version": "[4.3.1, )"

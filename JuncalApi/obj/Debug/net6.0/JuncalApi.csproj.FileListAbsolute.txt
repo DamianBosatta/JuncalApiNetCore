@@ -234,3 +234,6 @@ C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\r
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\JuncalApi.pdb
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\JuncalApi.genruntimeconfig.cache
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\ref\JuncalApi.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Scrutor.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

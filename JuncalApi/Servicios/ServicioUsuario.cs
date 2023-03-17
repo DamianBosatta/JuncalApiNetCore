@@ -50,27 +50,35 @@ namespace JuncalApi.Servicios
         }
 
 
-        public string InicioSesion(LoginRequerido userReq)
+        public LoginRespuesta InicioSesion(LoginRequerido userReq)
         {
             var usuario = _uow.RepositorioJuncalUsuario.GetByCondition(u => u.Usuario == userReq.Usuario && u.Isdeleted==false);
+            var loginRespuesta = new LoginRespuesta();
+            if (usuario != null)
+            {                        
+                if (!VerificarPassworHash(userReq.Password, usuario.PasswordHash, usuario.PasswordSalt))
+                {
+                    loginRespuesta.Token="NoPass";
+                    return loginRespuesta;
+                }
 
-            if (usuario.Usuario != userReq.Usuario)
-            {
-                return " El Usuario No Existe";
+                string token = CreateToken(usuario);
+
+                loginRespuesta.Usuario = usuario.Usuario;
+                loginRespuesta.Dni = usuario.Dni;
+                loginRespuesta.Nombre = usuario.Nombre;
+                loginRespuesta.Email = usuario.Email;
+                loginRespuesta.Id = usuario.Id;
+                loginRespuesta.Apellido = usuario.Apellido;
+                loginRespuesta.IdRol=usuario.IdRol;
+                loginRespuesta.Token = token;
+
+                return loginRespuesta;
             }
 
-            if (!VerificarPassworHash(userReq.Password, usuario.PasswordHash, usuario.PasswordSalt))
-            {
-                return "Password Incorrecto";
-
-            }
-
-            string token = CreateToken(usuario);
-
-            return token;
-
-
-
+            loginRespuesta.Token = "NullUsuario";
+           
+            return loginRespuesta;
         }
 
         private string CreateToken(JuncalUsuario user)
@@ -78,6 +86,7 @@ namespace JuncalApi.Servicios
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name,user.Usuario),
+                new Claim(ClaimTypes.Role,ConvertirRolString((int)user.IdRol)),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
@@ -125,6 +134,16 @@ namespace JuncalApi.Servicios
             }
 
 
+
+        }
+
+        private string ConvertirRolString(int idRol)
+        {
+            var rol = string.Empty;
+
+         rol= idRol is 1 ? rol = "Administrador" : rol = "Usuario";
+
+            return rol;
 
         }
 

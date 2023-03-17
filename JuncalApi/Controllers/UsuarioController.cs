@@ -4,6 +4,7 @@ using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Servicios;
 using JuncalApi.UnidadDeTrabajo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -26,7 +27,7 @@ namespace JuncalApi.Controllers
             _servicio = servicio;
         }
 
-        [HttpGet]
+        [HttpGet,Authorize]
         public async Task<ActionResult<IEnumerable<RolesRespuesta>>> GetUsuarios()
         {
 
@@ -66,20 +67,30 @@ namespace JuncalApi.Controllers
         public ActionResult Login([FromBody] LoginRequerido userReq)
         {
             var sesion = _servicio.InicioSesion(userReq);
-                               
-            if (sesion != null)
+           
+            var respuesta = string.Empty;
+
+            if (sesion.Token == "NullUsuario")
             {
-                return Ok(new { success = true, message = " Sesion Correcta", result = sesion });
-
+                respuesta = "Usuario No Encontrado";
+                return Ok(new { success = false, message = "No Se Encontro El Usuario", result = respuesta });
             }
+            else if(sesion.Token == "NoPass")
+            {
+               respuesta = "Password Incorrecto";
+                return Ok(new { success = false, message = "Password Incorrecto", result = respuesta });
+            }
+         
+       
 
 
-            return Ok(new { success = false, message = " Datos Ingresados son invalidos ", result = new JuncalUsuario() == null });
+            return Ok(new { success = true, message = "Login Correcto", result = sesion });
+
 
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}"),Authorize]
         public async Task<IActionResult> EditUsuario(int id, UsuarioRequerido usuarioEdit)
         {
             var usuario = _uow.RepositorioJuncalUsuario.GetById(id);
@@ -97,7 +108,7 @@ namespace JuncalApi.Controllers
 
         }
 
-        [Route("Borrar/{id?}")]
+        [Route("Borrar/{id?}"),Authorize]
         [HttpPut]
         public IActionResult IsDeletedUsuario(int id)
         {

@@ -8,7 +8,7 @@ namespace JuncalApi.Servicios
     public interface IServicioUsuario
     {
 
-        public string InicioSesion(LoginRequerido userReq);
+        public LoginRespuesta InicioSesion(LoginRequerido userReq);
         public JuncalUsuario RegistroUsuario(UsuarioRequerido userReq);
 
     }
