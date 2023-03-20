@@ -21,5 +21,7 @@
         public int? IdAcoplado { get; set; }
 
         public string Observaciones { get; set; } = null!;
+
+        public int? IdDireccionProveedor { get; set; }
     }
 }
