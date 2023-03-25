@@ -17,13 +17,19 @@ public partial class JuncalUsuario
 
     public string Email { get; set; } = null!;
 
-    public byte[] PasswordHash { get; set; }
+    public byte[] PasswordHash { get; set; } = null!;
 
     public int? IdRol { get; set; }
 
     public bool Isdeleted { get; set; }
 
     public byte[] PasswordSalt { get; set; } = null!;
+
+    public string? RefreshToken { get; set; }
+
+    public DateTime? TokenCreated { get; set; }
+
+    public DateTime? TokenExpires { get; set; }
 
     public virtual JuncalRole? IdRolNavigation { get; set; }
 }

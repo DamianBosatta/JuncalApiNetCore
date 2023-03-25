@@ -82,42 +82,32 @@ namespace JuncalApi.Controllers
 
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditOrdenMaterial(int idOrden,List<OrdenMaterialRequerido> listOrdenMaterialEdits)
+        [HttpPut]
+        public async Task<IActionResult> EditOrdenMaterial(List<OrdenMaterialRequerido> listOrdenMaterialEdits)
         {
             if (listOrdenMaterialEdits.Count > 0)
             {
-
-                var listaEditada = new List<JuncalOrdenMarterial>();
-
-                var materialNuevo = new JuncalOrdenMarterial();
-
                 foreach (var material in listOrdenMaterialEdits)
                 {
-                    if (material.Id == 0 && material.IdOrden == idOrden)
+                    if (material.Id == 0)
                     {
+                        var materialNuevo = new JuncalOrdenMarterial();
                         _mapper.Map(material, materialNuevo);
                         _uow.RepositorioJuncalOrdenMarterial.Insert(materialNuevo);
-                        listaEditada.Add(materialNuevo);
 
                     }
-                    else if (material.IdOrden == idOrden)
+                    else
                     {
-                        _mapper.Map(material, materialNuevo);
-                        listaEditada.Add(materialNuevo);
+                        var materialEdit = new JuncalOrdenMarterial();
+                        _mapper.Map(material, materialEdit);
+                        _uow.RepositorioJuncalOrdenMarterial.Update(materialEdit);
 
                     }
 
 
                 }
 
-                foreach (var material in listaEditada)
-                {
-                    _uow.RepositorioJuncalOrdenMarterial.Update(material);
-
-                }
-
-                return Ok(new { success = true, message = "La Orden Material Fue Actualizada", result = listaEditada });
+                return Ok(new { success = true, message = "La Orden Material Fue Actualizada" });
 
 
             }

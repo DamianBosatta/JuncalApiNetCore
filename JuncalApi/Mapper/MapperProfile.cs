@@ -112,6 +112,10 @@ namespace JuncalApi.Mapper
             CreateMap<JuncalRemitoHistorial, RemitoHistorialRespuesta>();
             #endregion
 
+            #region TIPO ACOPLADO
+            CreateMap<TipoAcopladoRequerido, JuncalTipoAcoplado>();
+            CreateMap<JuncalTipoAcoplado, TipoAcopladoRespuesta>();
+            #endregion
 
         }
 

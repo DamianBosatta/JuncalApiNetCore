@@ -13,7 +13,7 @@ public partial class JuncalMaterialProveedor
 
     public decimal? Precio { get; set; }
 
-    public DateTime Fecha { get; set; }
+    public DateTime? Fecha { get; set; }
 
     public bool? Activo { get; set; }
 

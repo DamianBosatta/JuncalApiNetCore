@@ -29,5 +29,5 @@ public partial class JuncalRemitoHistorial
 
     public string DireccionProveedor { get; set; } = null!;
 
-    public DateTime FechaGenerado { get; set; }
+    public DateOnly FechaGenerado { get; set; }
 }

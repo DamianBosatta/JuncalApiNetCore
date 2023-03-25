@@ -11,5 +11,13 @@ public partial class JuncalAcoplado
 
     public bool Isdeleted { get; set; }
 
+    public string? Marca { get; set; }
+
+    public string? Año { get; set; }
+
+    public int IdTipo { get; set; }
+
+    public virtual JuncalTipoAcoplado IdTipoNavigation { get; set; } = null!;
+
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

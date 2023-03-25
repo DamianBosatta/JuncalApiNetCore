@@ -50,6 +50,8 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalSucursal> JuncalSucursals { get; set; }
 
+    public virtual DbSet<JuncalTipoAcoplado> JuncalTipoAcoplados { get; set; }
+
     public virtual DbSet<JuncalTipoCamion> JuncalTipoCamions { get; set; }
 
     public virtual DbSet<JuncalTransportistum> JuncalTransportista { get; set; }
@@ -58,7 +60,7 @@ public partial class JuncalContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=sd-1812852-l.dattaweb.com;database=nicoales_nuevo;uid=nicoales_felix;pwd=Idra2023", ServerVersion.Parse("5.7.30-mysql"));
+        => optionsBuilder.UseMySql("server=sd-1812852-l.dattaweb.com;database=nicoales_nuevo;uid=nicoales_felix;pwd=Idra2023", Microsoft.EntityFrameworkCore.ServerVersion.Parse("5.7.30-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -142,13 +144,29 @@ public partial class JuncalContext : DbContext
 
             entity.ToTable("juncal.acoplado");
 
+            entity.HasIndex(e => e.IdTipo, "id_Tipo");
+
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
+            entity.Property(e => e.Año)
+                .HasMaxLength(4)
+                .HasColumnName("año");
+            entity.Property(e => e.IdTipo)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Tipo");
             entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Marca)
+                .HasMaxLength(255)
+                .HasColumnName("marca");
             entity.Property(e => e.Patente)
                 .HasMaxLength(255)
                 .HasColumnName("patente");
+
+            entity.HasOne(d => d.IdTipoNavigation).WithMany(p => p.JuncalAcoplados)
+                .HasForeignKey(d => d.IdTipo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("juncal.acoplado_ibfk_1");
         });
 
         modelBuilder.Entity<JuncalCamion>(entity =>
@@ -623,6 +641,20 @@ public partial class JuncalContext : DbContext
                 .HasColumnName("numero");
         });
 
+        modelBuilder.Entity<JuncalTipoAcoplado>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.tipo_acoplado");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(255)
+                .HasColumnName("nombre");
+        });
+
         modelBuilder.Entity<JuncalTipoCamion>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -693,6 +725,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.PasswordSalt)
                 .HasColumnType("blob")
                 .HasColumnName("passwordSALT");
+            entity.Property(e => e.RefreshToken).HasMaxLength(255);
+            entity.Property(e => e.TokenCreated).HasColumnType("datetime");
+            entity.Property(e => e.TokenExpires).HasColumnType("datetime");
             entity.Property(e => e.Usuario)
                 .HasMaxLength(255)
                 .HasColumnName("usuario");

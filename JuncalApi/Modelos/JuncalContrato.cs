@@ -11,9 +11,9 @@ public partial class JuncalContrato
 
     public string? Numero { get; set; }
 
-    public DateTime FechaVigencia { get; set; }
+    public DateTime? FechaVigencia { get; set; }
 
-    public DateTime FechaVencimiento { get; set; }
+    public DateTime? FechaVencimiento { get; set; }
 
     public int? IdAceria { get; set; }
 
