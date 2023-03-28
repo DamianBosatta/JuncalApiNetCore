@@ -56,7 +56,7 @@ namespace JuncalApi.Controllers
 
             _mapper.Map(material,materialRes);
 
-            return Ok(new { success = true, message = "Aceria Encontrada", result = materialRes });
+            return Ok(new { success = true, message = "Material Encontrado", result = materialRes });
 
         }
 
@@ -70,10 +70,15 @@ namespace JuncalApi.Controllers
             {
                 JuncalMaterial materialNuevo = _mapper.Map<JuncalMaterial>(materialReq);
                 _uow.RepositorioJuncalMaterial.Insert(materialNuevo);
-                return Ok(new { success = true, message = "El Material fue Creado Con Exito", result = materialNuevo });
+                MaterialRespuesta materialRes = new MaterialRespuesta();
+                _mapper.Map(materialNuevo, materialRes);
+                return Ok(new { success = true, message = "El Material fue Creado Con Exito", result = materialRes });
             }
-           
-            return Ok(new { success = false, message = " El Material Ya Esta Cargado ", result = material });
+            MaterialRespuesta materialExiste = new MaterialRespuesta();
+
+            _mapper.Map(material, materialExiste);
+
+            return Ok(new { success = false, message = " El Material Ya Esta Cargado ", result = materialExiste });
 
         }
 
@@ -88,11 +93,13 @@ namespace JuncalApi.Controllers
             {
                 material.Isdeleted = true;
                 _uow.RepositorioJuncalMaterial.Update(material);
+                MaterialRespuesta materialRes = new MaterialRespuesta();
+                _mapper.Map(material, materialRes);
 
-                return Ok(new { success = true, message = "El Material Fue Eliminado ", result = material.Isdeleted });
+                return Ok(new { success = true, message = "El Material Fue Eliminado ", result = materialRes });
 
             }
-            return Ok(new { success = false, message = "El Material No Fue encontrado", result = new JuncalMaterial() == null });
+            return Ok(new { success = false, message = "El Material No Fue encontrado", result = new MaterialRespuesta() == null });
 
         }
 
@@ -105,10 +112,12 @@ namespace JuncalApi.Controllers
             {
                 material = _mapper.Map(materialEdit,material);
                 _uow.RepositorioJuncalMaterial.Update(material);
-                return Ok(new { success = true, message = "El Material fue actualizado", result = material });
+                MaterialRespuesta materialRes = new MaterialRespuesta();
+                _mapper.Map(material, materialRes);
+                return Ok(new { success = true, message = "El Material fue actualizado", result = materialRes });
             }
 
-            return Ok(new { success = false, message = "El Material no fue encontrado ", result = new JuncalMaterial() == null });
+            return Ok(new { success = false, message = "El Material no fue encontrado ", result = new MaterialRespuesta() == null });
 
 
         }

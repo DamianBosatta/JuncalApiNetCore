@@ -50,12 +50,16 @@ namespace JuncalApi.Controllers
             if (sucursal is null)
             {
                 JuncalSucursal sucursalNueva = _mapper.Map<JuncalSucursal>(sucursalReq);
+               _uow.RepositorioJuncalSucursal.Insert(sucursalNueva);
 
-                _uow.RepositorioJuncalSucursal.Insert(sucursalNueva);
-                return Ok(new { success = true, message = "La Sucursal Fue  Creada Con Exito", result = sucursalNueva });
+                SucursalRespuesta sucursalRes = new ();
+                _mapper.Map(sucursalNueva, sucursalRes);
+                return Ok(new { success = true, message = "La Sucursal Fue  Creada Con Exito", result = sucursalRes });
             }
-
-            else return Ok(new { success = false, message = " La Sucursal Ya Existe ", result = sucursal });
+           
+            SucursalRespuesta sucursalExiste = new();
+            _mapper.Map(sucursal, sucursalExiste);
+            return Ok(new { success = false, message = " La Sucursal Ya Existe ", result = sucursalExiste });
 
         }
 
@@ -69,12 +73,14 @@ namespace JuncalApi.Controllers
             {
                 sucursal.Isdeleted = true;
                 _uow.RepositorioJuncalEstado.Update(sucursal);
+                SucursalRespuesta sucursalRes = new();
+                _mapper.Map(sucursal, sucursalRes);
 
-                return Ok(new { success = true, message = "La Sucursal Fue Eliminada ", result = sucursal.Isdeleted });
+                return Ok(new { success = true, message = "La Sucursal Fue Eliminada ", result = sucursalRes});
 
             }
 
-            return Ok(new { success = false, message = "La Sucursal No Se Encontro ", result = new JuncalSucursal() == null });
+            return Ok(new { success = false, message = "La Sucursal No Se Encontro ", result = new SucursalRespuesta() == null });
 
         }
 
@@ -88,10 +94,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(sucursalEdit, sucursal);
                 _uow.RepositorioJuncalSucursal.Update(sucursal);
-                return Ok(new { success = true, message = "La Sucursal Fue Actualizada ", result = sucursal });
+                SucursalRespuesta sucursalRes = new();
+                _mapper.Map(sucursal, sucursalRes);
+                return Ok(new { success = true, message = "La Sucursal Fue Actualizada ", result = sucursalRes });
             }
 
-            return Ok(new { success = false, message = "La Sucursal No Fue Encontrada ", result = new JuncalSucursal() == null });
+            return Ok(new { success = false, message = "La Sucursal No Fue Encontrada ", result = new SucursalRespuesta() == null });
 
 
         }

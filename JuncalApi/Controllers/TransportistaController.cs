@@ -51,10 +51,13 @@ namespace JuncalApi.Controllers
             {
                 JuncalTransportistum TransportistaNuevo = _mapper.Map<JuncalTransportistum>(transportistaReq);
                 _uow.RepositorioJuncalTransportistum.Insert(TransportistaNuevo);
-                return Ok(new { success = true, message = " El Transportista Fue Creado Con Exito ", result = TransportistaNuevo });
+                TransportistaRespuesta transportistaRes = new();
+                _mapper.Map(TransportistaNuevo, transportistaRes);
+                return Ok(new { success = true, message = " El Transportista Fue Creado Con Exito ", result = transportistaRes });
             }
-         
-          return Ok(new { success = false, message = " El Transportista Ya Existe ", result = transportista });
+            TransportistaRespuesta transportistaExiste = new();
+            _mapper.Map(transportista, transportistaExiste);
+            return Ok(new { success = false, message = " El Transportista Ya Existe ", result = transportistaExiste });
 
         }
 
@@ -68,10 +71,12 @@ namespace JuncalApi.Controllers
             {
                 transportista.Isdeleted = true;
                 _uow.RepositorioJuncalTransportistum.Update(transportista);
-                return Ok(new { success = true, message = " El Transportista Fue Eliminado Con Exito ", result = transportista.Isdeleted});
+                TransportistaRespuesta transportistaRes = new();
+                _mapper.Map(transportista, transportistaRes);
+                return Ok(new { success = true, message = " El Transportista Fue Eliminado Con Exito ", result = transportistaRes});
             }
 
-            return Ok(new { success = false, message = " El Transportista No Se Encontro ", result = new JuncalTransportistum()== null });
+            return Ok(new { success = false, message = " El Transportista No Se Encontro ", result = new TransportistaRespuesta()== null });
 
 
         }
@@ -85,10 +90,12 @@ namespace JuncalApi.Controllers
             {
                 transportista = _mapper.Map(transportistaEdit,transportista);
                 _uow.RepositorioJuncalTransportistum.Update(transportista);
-                return Ok(new { success = true, message = " El Transportista Fue Actualizado Con Exito ", result = transportista });
+                TransportistaRespuesta transportistaRes = new();
+                _mapper.Map(transportista, transportistaRes);
+                return Ok(new { success = true, message = " El Transportista Fue Actualizado Con Exito ", result = transportistaRes });
             }
 
-            return Ok(new { success = false, message = " El Transportista No Se Encontro ", result = new JuncalTransportistum() == null });
+            return Ok(new { success = false, message = " El Transportista No Se Encontro ", result = new TransportistaRespuesta() == null });
 
 
         }

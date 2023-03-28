@@ -70,10 +70,18 @@ namespace JuncalApi.Controllers
                 JuncalAceriaMaterial aceriaMatNuevo = _mapper.Map<JuncalAceriaMaterial>(aceriaMatRequerido);
 
                 _uow.RepositorioJuncalAceriaMaterial.Insert(aceriaMatNuevo);
-                return Ok(new { success = true, message = "La Aceria Material fue Creada Con Exito", result = aceriaMatNuevo });
+
+                AceriaMaterialRespuesta aceriaMatRes = new AceriaMaterialRespuesta();
+
+                _mapper.Map(aceriaMat, aceriaMatRes);
+                return Ok(new { success = true, message = "La Aceria Material fue Creada Con Exito", result = aceriaMatRes });
             }
-         
-         return Ok(new { success = false, message = " La Aceria Ya Esta Cargada ", result = aceriaMat });
+
+            AceriaMaterialRespuesta  respuestaExiste = new();
+
+            _mapper.Map(aceriaMat, respuestaExiste);
+            
+            return Ok(new { success = false, message = " La Aceria Ya Esta Cargada ", result = respuestaExiste });
 
         }
 
@@ -88,14 +96,16 @@ namespace JuncalApi.Controllers
             {
                 aceriaMat.Isdeleted = true;
                 _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
+                AceriaMaterialRespuesta aceriaMatRes = new();
+                _mapper.Map(aceriaMat, aceriaMatRes);
 
-                return Ok(new { success = true, message = "La Aceria Material Fue Eliminada ", result = aceriaMat.Isdeleted });
+                return Ok(new { success = true, message = "La Aceria Material Fue Eliminada ", result = aceriaMatRes });
 
 
             }
 
 
-            return Ok(new { success = false, message = "La Aceria Material no fue encontrada", result = new JuncalAceriaMaterial() == null });
+            return Ok(new { success = false, message = "La Aceria Material no fue encontrada", result = new AceriaMaterialRespuesta() == null });
 
         }
 
@@ -108,10 +118,13 @@ namespace JuncalApi.Controllers
             {
                 aceriaMat = _mapper.Map(aceriaMatEdit,aceriaMat);
                 _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
-                return Ok(new { success = true, message = "La Aceria Material fue actualizada", result = aceriaMat });
+                AceriaMaterialRespuesta aceriaMatRes = new AceriaMaterialRespuesta();
+                _mapper.Map(aceriaMat, aceriaMatRes);
+
+                return Ok(new { success = true, message = "La Aceria Material fue actualizada", result = aceriaMatRes });
             }
 
-            return Ok(new { success = false, message = "La Aceria Material no fue encontrada ", result = new JuncalAceriaMaterial() == null });
+            return Ok(new { success = false, message = "La Aceria Material no fue encontrada ", result = new AceriaMaterialRespuesta() == null });
 
 
         }

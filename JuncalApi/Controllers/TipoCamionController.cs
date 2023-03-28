@@ -70,10 +70,16 @@ namespace JuncalApi.Controllers
             {
                 JuncalTipoCamion tipoCamionNuevo = _mapper.Map<JuncalTipoCamion>(tipoCamionReq);
                 _uow.RepositorioJuncalTipoCamion.Insert(tipoCamionNuevo);
-                return Ok(new { success = true, message = "El Tipo De Camion Fue Creado Con Exito", result = tipoCamionNuevo });
-            }
+                TipoCamionRespuesta TipoCamionRes = new TipoCamionRespuesta();
 
-            return Ok(new { success = false, message = " El Tipo Camion Ya Esta Cargado ", result = tipoCamion });
+                _mapper.Map(tipoCamion, TipoCamionRes);
+                return Ok(new { success = true, message = "El Tipo De Camion Fue Creado Con Exito", result = TipoCamionRes });
+            }
+            TipoCamionRespuesta TipoCamionExiste = new TipoCamionRespuesta();
+
+            _mapper.Map(tipoCamion, TipoCamionExiste);
+            
+            return Ok(new { success = false, message = " El Tipo Camion Ya Esta Cargado ", result = TipoCamionExiste });
 
         }
 
@@ -89,10 +95,13 @@ namespace JuncalApi.Controllers
             {
                 tipoCamion = _mapper.Map(tipoCamionEdit, tipoCamion);
                 _uow.RepositorioJuncalTipoCamion.Update(tipoCamion);
-                return Ok(new { success = true, message = "El Tipo De Camion fue Actualizado", result = tipoCamion });
+                TipoCamionRespuesta TipoCamionRes = new TipoCamionRespuesta();
+
+                _mapper.Map(tipoCamion, TipoCamionRes);
+                return Ok(new { success = true, message = "El Tipo De Camion fue Actualizado", result = TipoCamionRes });
             }
 
-            return Ok(new { success = false, message = "El Tipo De Camion No Fue Encontrado ", result = new JuncalTipoCamion() == null });
+            return Ok(new { success = false, message = "El Tipo De Camion No Fue Encontrado ", result = new TipoCamionRespuesta() == null });
 
 
         }

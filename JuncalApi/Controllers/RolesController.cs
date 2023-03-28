@@ -50,10 +50,14 @@ namespace JuncalApi.Controllers
                 JuncalRole rolNuevo = _mapper.Map<JuncalRole>(RolesReq);
 
                 _uow.RepositorioJuncalRole.Insert(rolNuevo);
-                return Ok(new { success = true, message = "El Rol fue Creado Con Exito", result = rolNuevo });
+                RolesRespuesta rolRes = new RolesRespuesta();
+                _mapper.Map(rolNuevo, rolRes);
+                return Ok(new { success = true, message = "El Rol fue Creado Con Exito", result = rolRes });
             }
-
-            else return Ok(new { success = false, message = " El Rol Ya Existe ", result = roles });
+            RolesRespuesta rolExiste = new RolesRespuesta();
+            _mapper.Map(roles, rolExiste);
+            
+            return Ok(new { success = false, message = " El Rol Ya Existe ", result = rolExiste });
 
         }
 
@@ -67,10 +71,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(rolEdit,rol);
                 _uow.RepositorioJuncalRole.Update(rol);
-                return Ok(new { success = true, message = "El Rol fue actualizado", result = rol });
+                RolesRespuesta rolRes = new RolesRespuesta();
+                _mapper.Map(rol, rolRes);
+                return Ok(new { success = true, message = "El Rol fue actualizado", result = rolRes });
             }
 
-            return Ok(new { success = false, message = "El Rol no fue encontrado ", result = new JuncalRole() == null });
+            return Ok(new { success = false, message = "El Rol no fue encontrado ", result = new RolesRespuesta() == null });
 
 
         }

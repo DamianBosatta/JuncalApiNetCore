@@ -210,6 +210,9 @@ C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\M
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\MySqlConnector.dll
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Scrutor.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -234,6 +237,3 @@ C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\r
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\JuncalApi.pdb
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\JuncalApi.genruntimeconfig.cache
 C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\obj\Debug\net6.0\ref\JuncalApi.dll
-C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Scrutor.dll
-C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
-C:\Users\Felix\OneDrive\Escritorio\JuncalApiNetCore\JuncalApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll

@@ -72,10 +72,14 @@ namespace JuncalApi.Controllers
             {
                 JuncalMaterialProveedor materialProveedorNuevo = _mapper.Map<JuncalMaterialProveedor>(materialProvReq);
                 _uow.RepositorioJuncalMaterialProveedor.Insert(materialProveedorNuevo);
-                return Ok(new { success = true, message = "El Material Proveedor fue Creado Con Exito", result = materialProveedorNuevo });
-            }
+                MaterialProveedorRespuesta materialProveedorRes = new();
+                _mapper.Map(materialProveedorNuevo, materialProveedorRes);
 
-            return Ok(new { success = false, message = " El Material Proveedor Ya Esta Cargado ", result = materialProveedor });
+                return Ok(new { success = true, message = "El Material Proveedor fue Creado Con Exito", result = materialProveedorRes });
+            }
+            MaterialProveedorRespuesta materialProvExiste = new();
+            _mapper.Map(materialProveedor, materialProvExiste);
+            return Ok(new { success = false, message = " El Material Proveedor Ya Esta Cargado ", result = materialProvExiste });
 
         }
 
@@ -90,11 +94,14 @@ namespace JuncalApi.Controllers
             {
                 materialProveedor.Isdeleted = true;
                 _uow.RepositorioJuncalMaterialProveedor.Update(materialProveedor);
+                MaterialProveedorRespuesta materialProveedorRes = new();
+                _mapper.Map(materialProveedor, materialProveedorRes);
 
-                return Ok(new { success = true, message = "El Material Proveedor Fue Eliminado ", result = materialProveedor.Isdeleted });
+                return Ok(new { success = true, message = "El Material Proveedor Fue Eliminado ", result = materialProveedorRes});
 
             }
-            return Ok(new { success = false, message = "El Material Proveedor No Fue Encontrado", result = new JuncalMaterialProveedor() == null });
+          
+            return Ok(new { success = false, message = "El Material Proveedor No Fue Encontrado", result = new MaterialProveedorRespuesta() == null });
 
         }
 
@@ -107,10 +114,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(materialProvEdit, materialProveedor);
                 _uow.RepositorioJuncalMaterialProveedor.Update(materialProveedor);
-                return Ok(new { success = true, message = "El Material Proveedor Fue Actualizado", result = materialProveedor });
+                MaterialProveedorRespuesta materialProveedorRes = new();
+                _mapper.Map(materialProveedor, materialProveedorRes);
+                return Ok(new { success = true, message = "El Material Proveedor Fue Actualizado", result = materialProveedorRes });
             }
 
-            return Ok(new { success = false, message = "El Material Proveedor No Fue Encontrado ", result = new JuncalMaterialProveedor() == null });
+            return Ok(new { success = false, message = "El Material Proveedor No Fue Encontrado ", result = new MaterialProveedorRespuesta() == null });
 
 
         }

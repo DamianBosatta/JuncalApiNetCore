@@ -71,10 +71,14 @@ namespace JuncalApi.Controllers
                 JuncalProveedor proveedorNuevo = _mapper.Map<JuncalProveedor>(proveedorReq);
 
                 _uow.RepositorioJuncalProveedor.Insert(proveedorNuevo);
-                return Ok(new { success = true, message = "El Proveedor Fue Creado Con Exito", result = proveedorNuevo });
+                ProveedorRespuesta proveedorRes = new ProveedorRespuesta();
+                _mapper.Map(proveedorNuevo, proveedorRes);
+                return Ok(new { success = true, message = "El Proveedor Fue Creado Con Exito", result = proveedorRes });
             }
-
-            return Ok(new { success = false, message = " El Proveedor Ya Existe ", result = proveedor });
+           
+            ProveedorRespuesta proveedorExiste = new ProveedorRespuesta();
+            _mapper.Map(proveedor, proveedorExiste);
+            return Ok(new { success = false, message = " El Proveedor Ya Existe ", result = proveedorExiste });
 
         }
 
@@ -89,14 +93,16 @@ namespace JuncalApi.Controllers
             {
                 proveedor.Isdeleted = true;
                 _uow.RepositorioJuncalProveedor.Update(proveedor);
+                ProveedorRespuesta proveedorRes = new ProveedorRespuesta();
+                _mapper.Map(proveedor, proveedorRes);
 
-                return Ok(new { success = true, message = "El Proveedor Fue Eliminado ", result = proveedor.Isdeleted });
+                return Ok(new { success = true, message = "El Proveedor Fue Eliminado ", result = proveedorRes });
 
 
             }
 
 
-            return Ok(new { success = false, message = " El Proveedor No Fue Encontrado ", result = new JuncalProveedor() == null });
+            return Ok(new { success = false, message = " El Proveedor No Fue Encontrado ", result = new ProveedorRespuesta() == null });
 
         }
 
@@ -109,10 +115,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(proveedorEdit, proveedor);
                 _uow.RepositorioJuncalProveedor.Update(proveedor);
-                return Ok(new { success = true, message = "El Proveedor Fue Actualizado", result = proveedor });
+                ProveedorRespuesta proveedorRes = new ProveedorRespuesta();
+                _mapper.Map(proveedor, proveedorRes);
+                return Ok(new { success = true, message = "El Proveedor Fue Actualizado", result = proveedorRes });
             }
 
-            return Ok(new { success = false, message = "El Proveedor No Fue Encontrado ", result = new JuncalProveedor() == null });
+            return Ok(new { success = false, message = "El Proveedor No Fue Encontrado ", result = new ProveedorRespuesta() == null });
 
 
         }

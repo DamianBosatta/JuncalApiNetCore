@@ -5,6 +5,8 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace JuncalApi.Controllers
 {
@@ -26,22 +28,7 @@ namespace JuncalApi.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContratoItemRespuesta>>> GetAContratosItem()
-        {
-
-            var ListaContratosItem = _uow.RepositorioJuncalContratoItem.GetAllByCondition(c => c.Isdeleted == false);
-
-            if (ListaContratosItem.Count() > 0)
-            {
-                List<ContratoItemRespuesta> listaContratoItemRespuesta = _mapper.Map<List<ContratoItemRespuesta>>(ListaContratosItem);
-                return Ok(new { success = true, message = "La Lista Puede Ser Utilizada", result = listaContratoItemRespuesta });
-
-            }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<ContratoItemRespuesta>() == null });
-
-
-        }
+ 
 
         [HttpGet("{idContrato}")]
         public async Task<ActionResult<IEnumerable<ContratoItemRespuesta>>> GetAContratosItemForContrato(int idContrato)
@@ -64,19 +51,25 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarContratoItem([FromBody] List<ContratoItemRequerido> listaContratoItemRequerido)
         {
-            JuncalContratoItem contratoItemNuevo = new JuncalContratoItem();
-          
+            
+            List<ContratoItemRespuesta> contratoItemRespuesta = new List<ContratoItemRespuesta>(); 
+
+
             if (listaContratoItemRequerido.Count() > 0)
             {
 
 
                 foreach(var item in listaContratoItemRequerido)
                 {
-                    contratoItemNuevo= _mapper.Map<JuncalContratoItem>(item);
+                    JuncalContratoItem contratoItemNuevo = new JuncalContratoItem();
+                    contratoItemNuevo = _mapper.Map<JuncalContratoItem>(item);
                     _uow.RepositorioJuncalContratoItem.Insert(contratoItemNuevo);
+                    ContratoItemRespuesta contratoItemRes = new();
+                    _mapper.Map(contratoItemNuevo, contratoItemRes);
+                    contratoItemRespuesta.Add(contratoItemRes);
                 }
 
-                return Ok(new { success = true, message = "La Lista Contrato Item Fue Cargada Con Exito ", result = contratoItemNuevo });
+                return Ok(new { success = true, message = "La Lista Contrato Item Fue Cargada Con Exito ", result = contratoItemRespuesta });
 
             }
 
@@ -96,12 +89,14 @@ namespace JuncalApi.Controllers
             {
                 contratoItem.Isdeleted = true;
                 _uow.RepositorioJuncalContratoItem.Update(contratoItem);
+                ContratoItemRespuesta contratoItemRes = new();
+                _mapper.Map(contratoItem, contratoItemRes);
 
-                return Ok(new { success = true, message = "El Contrato Item Fue Eliminado ", result = contratoItem.Isdeleted });
+                return Ok(new { success = true, message = "El Contrato Item Fue Eliminado ", result = contratoItemRes });
 
             }
 
-            return Ok(new { success = false, message = "La Contrato Item  No Se Encontro ", result = new JuncalContratoItem() == null });
+            return Ok(new { success = false, message = "La Contrato Item  No Se Encontro ", result = new ContratoItemRespuesta() == null });
 
         }
 
@@ -114,10 +109,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(contratoItemEdit, contratoItem);
                 _uow.RepositorioJuncalContratoItem.Update(contratoItem);
-                return Ok(new { success = true, message = "La Contrato Item fue Actualizado ", result = contratoItem });
+                ContratoItemRespuesta contratoItemRes = new();
+                _mapper.Map(contratoItem, contratoItemRes);
+                return Ok(new { success = true, message = "La Contrato Item fue Actualizado ", result = contratoItemRes });
             }
 
-            return Ok(new { success = false, message = "El Contrato Item No Fue Encontrado ", result = new JuncalContratoItem() == null });
+            return Ok(new { success = false, message = "El Contrato Item No Fue Encontrado ", result = new ContratoItemRespuesta() == null });
 
 
         }

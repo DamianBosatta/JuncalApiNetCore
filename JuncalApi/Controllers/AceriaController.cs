@@ -53,7 +53,7 @@ namespace JuncalApi.Controllers
 
             _mapper.Map(aceria, aceriaRes);
 
-            return Ok(new { success = true, message = "Aceria Encontrada", result = aceria });
+            return Ok(new { success = true, message = "Aceria Encontrada", result = aceriaRes });
 
 
 
@@ -72,8 +72,10 @@ namespace JuncalApi.Controllers
                 _uow.RepositorioJuncalAcerium.Insert(aceriaNuevo);
                 return Ok(new { success = true, message = "La Aceria fue Creada Con Exito", result = aceriaNuevo });
             }
-          
-           return Ok(new { success = false, message = " La Aceria Ya Existe ", result = aceria });
+            AceriaRespuesta aceriaRes = new AceriaRespuesta();
+
+            _mapper.Map(aceria, aceriaRes);
+            return Ok(new { success = false, message = " La Aceria Ya Existe ", result = aceriaRes });
 
         }
 
@@ -89,13 +91,17 @@ namespace JuncalApi.Controllers
                 aceria.Isdeleted = true;
                 _uow.RepositorioJuncalAcerium.Update(aceria);
 
-                return Ok(new { success = true, message = "La Aceria Fue Eliminada ", result = aceria.Isdeleted });
+                AceriaRespuesta aceriaRes = new AceriaRespuesta();
+
+                _mapper.Map(aceria, aceriaRes);
+
+                return Ok(new { success = true, message = "La Aceria Fue Eliminada ", result = aceriaRes });
 
 
             }
 
 
-            return Ok(new { success = false, message = "La Aceria no fue encontrada", result = new JuncalAcerium() == null });
+            return Ok(new { success = false, message = "La Aceria no fue encontrada", result = new AceriaRespuesta() == null });
 
         }
 
@@ -108,10 +114,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(aceriaEdit,aceria);
                 _uow.RepositorioJuncalAcerium.Update(aceria);
-                return Ok(new { success = true, message = "La Aceria fue actualizada", result = aceria});
+                AceriaRespuesta aceriaRes = new AceriaRespuesta();
+                _mapper.Map(aceria, aceriaRes);
+                return Ok(new { success = true, message = "La Aceria fue actualizada", result = aceriaRes });
             }
 
-            return Ok(new { success = false, message = "La Aceria  no fue encontrada ", result = new JuncalAcerium() == null });
+            return Ok(new { success = false, message = "La Aceria  no fue encontrada ", result = new AceriaRespuesta() == null });
 
 
         }

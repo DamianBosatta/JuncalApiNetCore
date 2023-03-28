@@ -52,11 +52,14 @@ namespace JuncalApi.Controllers
             {
                 var acopladoNuevo = _mapper.Map<JuncalAcoplado>(acopladoRequerido);
                 _uow.RepositorioJuncalAcoplado.Insert(acopladoNuevo);
-                return Ok(new { success = true, message = "El Acoplado Fue Creado Con Exito ", result = acopladoNuevo });
+                AcopladoRespuesta acopladoRes = new();
+                _mapper.Map(acopladoNuevo, acopladoRes);
+                return Ok(new { success = true, message = "El Acoplado Fue Creado Con Exito ", result = acopladoRes });
 
             }
-               
-            return Ok(new { success = false, message = " Ya Tenemos Un Acoplado Con Esa Patente ", result = acoplado });
+            AcopladoRespuesta acopladoExiste = new();
+            _mapper.Map(acoplado, acopladoExiste);
+            return Ok(new { success = false, message = " Ya Tenemos Un Acoplado Con Esa Patente ", result = acopladoExiste });
 
         }
 
@@ -71,12 +74,14 @@ namespace JuncalApi.Controllers
             {
                 acoplado.Isdeleted = true;
                 _uow.RepositorioJuncalAcoplado.Update(acoplado);
+                AcopladoRespuesta acopladoRes = new();
+                _mapper.Map(acoplado, acopladoRes);
 
-                return Ok(new { success = true, message = "El Acoplado Fue Eliminado ", result = acoplado.Isdeleted });
+                return Ok(new { success = true, message = "El Acoplado Fue Eliminado ", result = acopladoRes });
 
             }
 
-            return Ok(new { success = false, message = " No Se Encontro El Acoplado ", result = new JuncalAcoplado() == null });
+            return Ok(new { success = false, message = " No Se Encontro El Acoplado ", result = new AcopladoRespuesta() == null });
 
         }
 
@@ -89,10 +94,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(acopladoEdit, acoplado);
                 _uow.RepositorioJuncalAcoplado.Update(acoplado);
-                return Ok(new { success = true, message = "El Acoplado  fue Actualizado ", result = acoplado });
+                AcopladoRespuesta acopladoRes = new();
+                _mapper.Map(acoplado, acopladoRes);
+                return Ok(new { success = true, message = "El Acoplado  fue Actualizado ", result = acopladoRes });
             }
 
-            return Ok(new { success = false, message = "El Acoplado No Fue Encontrado ", result = new JuncalAcoplado() == null });
+            return Ok(new { success = false, message = "El Acoplado No Fue Encontrado ", result = new AcopladoRespuesta() == null });
 
 
         }

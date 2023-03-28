@@ -5,6 +5,7 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace JuncalApi.Controllers
 {
@@ -53,11 +54,14 @@ namespace JuncalApi.Controllers
                 JuncalChofer choferNuevo = _mapper.Map<JuncalChofer>(choferReq);
 
                 _uow.RepositorioJuncalChofer.Insert(choferNuevo);
-                return Ok(new { success = true, message = " Chofer Creado Con Exito ", result = choferNuevo });
+                ChoferRespuesta choferRes = new();
+                _mapper.Map(choferNuevo, choferRes);
+                return Ok(new { success = true, message = " El Fue Chofer Creado Con Exito ", result = choferRes });
 
             }
-         
-         return Ok(new { success = false, message = "El Chofer Ya Esta Registrado ", result = chofer });
+            ChoferRespuesta choferExiste = new();
+            _mapper.Map(chofer, choferExiste);
+            return Ok(new { success = false, message = "El Chofer Ya Esta Registrado ", result = choferExiste });
 
         }
 
@@ -71,7 +75,9 @@ namespace JuncalApi.Controllers
             {
                 chofer.Isdeleted = true;
                 _uow.RepositorioJuncalChofer.Update(chofer);
-                return Ok(new { success = true, message = " Chofer Eliminado ", result = chofer.Isdeleted});
+                ChoferRespuesta choferRes = new();
+                _mapper.Map(chofer, choferRes);
+                return Ok(new { success = true, message = " Chofer Eliminado ", result = choferRes});
             }
 
             return Ok(new { success = false, message = "No Se Encontro El Chofer ", result = new ChoferRespuesta() == null });
@@ -88,7 +94,9 @@ namespace JuncalApi.Controllers
             {
                 chofer = _mapper.Map(choferEdit,chofer);
                 _uow.RepositorioJuncalChofer.Update(chofer);
-                return Ok(new { success = true, message = " El Chofer Ha Sido Actualizado ", result = chofer });
+                ChoferRespuesta choferRes = new();
+                _mapper.Map(chofer, choferRes);
+                return Ok(new { success = true, message = " El Chofer Ha Sido Actualizado ", result = choferRes });
             }
            
             return Ok(new { success = false, message = "No Se Encontro El Chofer ", result = new ChoferRespuesta() == null });

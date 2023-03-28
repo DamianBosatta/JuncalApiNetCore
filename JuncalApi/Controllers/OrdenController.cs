@@ -54,10 +54,13 @@ namespace JuncalApi.Controllers
             {
                 JuncalOrden ordenNuevo = _mapper.Map<JuncalOrden>(ordenReq);
                 _uow.RepositorioJuncalOrden.Insert(ordenNuevo);
-                return Ok(new { success = true, message = "La Orden Fue Creada Con Exito", result = ordenNuevo });
+                OrdenRespuesta ordenRes = new();
+                _mapper.Map(ordenNuevo, ordenRes);
+                return Ok(new { success = true, message = "La Orden Fue Creada Con Exito", result = ordenRes });
             }
-
-            return Ok(new { success = false, message = " La Orden Ya Esta Cargada ", result = orden });
+            OrdenRespuesta ordenExiste = new();
+            _mapper.Map(orden, ordenExiste);
+            return Ok(new { success = false, message = " La Orden Ya Esta Cargada ", result = ordenExiste });
 
         }
 
@@ -72,11 +75,13 @@ namespace JuncalApi.Controllers
             {
                 orden.Isdeleted = true;
                 _uow.RepositorioJuncalOrden.Update(orden);
+                OrdenRespuesta ordenRes = new();
+                _mapper.Map(orden, ordenRes);
 
-                return Ok(new { success = true, message = "La Orden Fue Eliminada ", result = orden.Isdeleted });
+                return Ok(new { success = true, message = "La Orden Fue Eliminada ", result = ordenRes });
 
             }
-            return Ok(new { success = false, message = "La Orden No Fue Encontrado", result = new JuncalOrden() == null });
+            return Ok(new { success = false, message = "La Orden No Fue Encontrado", result = new OrdenRespuesta() == null });
 
         }
 
@@ -89,10 +94,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(ordenEdit, orden);
                 _uow.RepositorioJuncalOrden.Update(orden);
-                return Ok(new { success = true, message = "La Orden Fue Actualizada", result = orden });
+                OrdenRespuesta ordenRes = new();
+                _mapper.Map(orden, ordenRes);
+                return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
             }
 
-            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new JuncalOrden() == null });
+            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenRespuesta() == null });
 
 
         }

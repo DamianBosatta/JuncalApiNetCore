@@ -50,6 +50,7 @@ namespace JuncalApi.Controllers
             {
                ordenMaterialNuevo= _mapper.Map<JuncalOrdenMarterial>(item);
                 _uow.RepositorioJuncalOrdenMarterial.Insert(ordenMaterialNuevo);
+
             }            
             
             if(listOrdenMaterialReq.Count() > 0)
@@ -74,11 +75,13 @@ namespace JuncalApi.Controllers
             {
                 ordenMaterial.Isdeleted = true;
                 _uow.RepositorioJuncalOrdenMarterial.Update(ordenMaterial);
+                OrdenMaterialRespuesta ordenMaterialRes = new();
+                _mapper.Map(ordenMaterial, ordenMaterialRes);
 
-                return Ok(new { success = true, message = "La Orden Material Fue Eliminada ", result = ordenMaterial.Isdeleted });
+                return Ok(new { success = true, message = "La Orden Material Fue Eliminada ", result = ordenMaterialRes });
 
             }
-            return Ok(new { success = false, message = "La Orden Material  No Fue Encontrada", result = new JuncalOrdenMarterial() == null });
+            return Ok(new { success = false, message = "La Orden Material  No Fue Encontrada", result = new OrdenMaterialRespuesta() == null });
 
         }
 
@@ -113,7 +116,7 @@ namespace JuncalApi.Controllers
             }
 
 
-            return Ok(new { success = false, message = "La Lista a Actualizar No Contiene Datos ", result = new JuncalOrdenMarterial() == null });
+            return Ok(new { success = false, message = "La Lista a Actualizar No Contiene Datos ", result = new OrdenMaterialRespuesta() == null });
 
 
 

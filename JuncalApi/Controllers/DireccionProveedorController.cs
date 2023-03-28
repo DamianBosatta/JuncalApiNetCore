@@ -5,6 +5,7 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
 
 namespace JuncalApi.Controllers
 {
@@ -24,7 +25,7 @@ namespace JuncalApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DireccionProveedorRespuesta>>> GetAcerias(int idProveedor)
+        public async Task<ActionResult<IEnumerable<DireccionProveedorRespuesta>>> GetDireccionProveedor(int idProveedor)
         {
 
             var ListaDirecciones = _uow.RepositorioJuncalDireccionProveedor.GetAllByCondition(c => c.Isdelete == false&& c.IdProveedor==idProveedor).ToList();
@@ -51,10 +52,14 @@ namespace JuncalApi.Controllers
                 JuncalDireccionProveedor direccionNueva = _mapper.Map<JuncalDireccionProveedor>(direccionReq);
 
                 _uow.RepositorioJuncalDireccionProveedor.Insert(direccionNueva);
-                return Ok(new { success = true, message = "La Direccion Fue Creada Con Exito", result = direccionNueva });
+                DireccionProveedorRespuesta direccionProveedorRes = new();
+                _mapper.Map(direccionNueva, direccionProveedorRes);
+                return Ok(new { success = true, message = "La Direccion Fue Creada Con Exito", result = direccionProveedorRes });
             }
-
-            return Ok(new { success = false, message = " La Direccion Ya Existe ", result = DireccionProveedor });
+           
+            DireccionProveedorRespuesta direccionProveedorExiste = new();
+            _mapper.Map(DireccionProveedor, direccionProveedorExiste);
+            return Ok(new { success = false, message = " La Direccion Ya Existe ", result = direccionProveedorExiste });
 
         }
 
@@ -70,14 +75,16 @@ namespace JuncalApi.Controllers
             {
                 direccion.Isdelete = true;
                 _uow.RepositorioJuncalDireccionProveedor.Update(direccion);
+                DireccionProveedorRespuesta direccionProveedorRes = new();
+                _mapper.Map(direccion, direccionProveedorRes);
 
-                return Ok(new { success = true, message = "La Direccion Fue Eliminada ", result = direccion.Isdelete });
+                return Ok(new { success = true, message = "La Direccion Fue Eliminada ", result = direccionProveedorRes });
 
 
             }
 
 
-            return Ok(new { success = false, message = "La Direccion no fue encontrada", result = new JuncalDireccionProveedor() == null });
+            return Ok(new { success = false, message = "La Direccion no fue encontrada", result = new DireccionProveedorRespuesta() == null });
 
         }
 
@@ -90,10 +97,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(direccionEdit, direccion);
                 _uow.RepositorioJuncalDireccionProveedor.Update(direccion);
-                return Ok(new { success = true, message = "La Direccion fue actualizada", result = direccion });
+                DireccionProveedorRespuesta direccionProveedorRes = new();
+                _mapper.Map(direccion, direccionProveedorRes);
+                return Ok(new { success = true, message = "La Direccion fue actualizada", result = direccionProveedorRes });
             }
 
-            return Ok(new { success = false, message = "La Direccion no fue encontrada ", result = new JuncalDireccionProveedor() == null });
+            return Ok(new { success = false, message = "La Direccion no fue encontrada ", result = new DireccionProveedorRespuesta() == null });
 
 
         }

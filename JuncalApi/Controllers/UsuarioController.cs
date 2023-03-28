@@ -56,10 +56,12 @@ namespace JuncalApi.Controllers
             {
                 var usuario = _servicio.RegistroUsuario(usuarioReq);
                 _uow.RepositorioJuncalUsuario.Insert(usuario);
-                return Ok(new { success = true, message = "El Usuario fue Creado Con Exito", result = usuario });
+                UsuarioRespuesta usuarioRes = new();
+                _mapper.Map(usuario, usuarioRes);
+                return Ok(new { success = true, message = "El Usuario fue Creado Con Exito", result = usuarioRes });
             }
            
-             return Ok(new { success = false, message = " El Usuario Ya Esta Registrado ", result = new JuncalUsuario()==null });
+             return Ok(new { success = false, message = " El Usuario Ya Esta Registrado ", result = new UsuarioRespuesta()==null });
 
         }
 
@@ -100,11 +102,14 @@ namespace JuncalApi.Controllers
               usuario = _servicio.RegistroUsuario(usuarioEdit);
             
                 _uow.RepositorioJuncalUsuario.Update(usuario);
-                
-            return Ok(new { success = true, message = "El Usuario Fue Actualizado", result = usuario });
+                UsuarioRespuesta usuarioRes = new();
+                _mapper.Map(usuario, usuarioRes);
+
+
+                return Ok(new { success = true, message = "El Usuario Fue Actualizado", result = usuarioRes });
             }
 
-            return Ok(new { success = false, message = "El Usuario No Existe", result = new JuncalUsuario()==null });
+            return Ok(new { success = false, message = "El Usuario No Existe", result = new UsuarioRespuesta()==null });
 
 
         }
@@ -119,14 +124,16 @@ namespace JuncalApi.Controllers
             {
                 usuario.Isdeleted = true;
                 _uow.RepositorioJuncalUsuario.Update(usuario);
+                UsuarioRespuesta usuarioRes = new();
+                _mapper.Map(usuario, usuarioRes);
 
-                return Ok(new { success = true, message = "El Usuario Fue Eliminado ", result = usuario.Isdeleted });
+                return Ok(new { success = true, message = "El Usuario Fue Eliminado ", result = usuarioRes });
 
 
             }
 
 
-            return Ok(new { success = false, message = "El Usuario No Existe ", result = new JuncalUsuario() == null });
+            return Ok(new { success = false, message = "El Usuario No Existe ", result = new UsuarioRespuesta() == null });
 
         }
 

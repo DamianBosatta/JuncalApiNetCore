@@ -54,10 +54,14 @@ namespace JuncalApi.Controllers
             {
                 JuncalCamion camionNuevo = _mapper.Map<JuncalCamion>(camionReq);
                 _uow.RepositorioJuncalCamion.Insert(camionNuevo);
-                return Ok(new { success = true, message = "El transportista fue Creado Con Exito", result = camionNuevo });
+                CamionRespuesta camionRes = new();
+                _mapper.Map(camionNuevo, camionRes);
+                return Ok(new { success = true, message = "El transportista fue Creado Con Exito", result = camionRes });
             }
-        
-            else return Ok(new { success = false, message = " El Camion Ya Esta Registrado ", result = camion });
+
+            CamionRespuesta camionExiste = new();
+            _mapper.Map(camion, camionExiste);
+            return Ok(new { success = false, message = " El Camion Ya Esta Registrado ", result = camionExiste });
 
         }
 
@@ -72,14 +76,16 @@ namespace JuncalApi.Controllers
             {
                 camion.Isdeleted = true;
                 _uow.RepositorioJuncalCamion.Update(camion);
+                CamionRespuesta camionRes = new();
+                _mapper.Map(camion, camionRes);
 
-                return Ok(new { success = true, message = "El transportista fue Eliminado", result = camion.Isdeleted });
+                return Ok(new { success = true, message = "El Camion fue Eliminado", result = camionRes });
 
 
             }
+       
 
-
-            return Ok(new { success = false, message = "El transportista no fue encontrado", result = new JuncalCamion() == null });
+            return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta() == null });
 
         }
 
@@ -92,10 +98,12 @@ namespace JuncalApi.Controllers
             {
                 camion = _mapper.Map(camionEdit,camion);
                 _uow.RepositorioJuncalCamion.Update(camion);
-                return Ok(new { success = true, message = "El transportista fue actualizado", result = camion});
+                CamionRespuesta camionRes = new();
+                _mapper.Map(camion, camionRes);
+                return Ok(new { success = true, message = "El Camion fue actualizado", result = camionRes});
             }
 
-            return Ok(new { success = false, message = "El transportista no fue encontrado", result = new JuncalCamion()==null }) ;
+            return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta()==null }) ;
 
 
         }

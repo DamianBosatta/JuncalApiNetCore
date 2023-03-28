@@ -69,10 +69,14 @@ namespace JuncalApi.Controllers
             {
                 JuncalTipoAcoplado tipoAcopladoNuevo = _mapper.Map<JuncalTipoAcoplado>(tipoAcopladoReq);
                 _uow.RepositorioJuncalTipoAcoplado.Insert(tipoAcopladoNuevo);
-                return Ok(new { success = true, message = "El Tipo De Acoplado Fue Creado Con Exito", result = tipoAcopladoNuevo });
+                TipoAcopladoRespuesta tipoAcopladoRes = new();
+                _mapper.Map(tipoAcopladoNuevo, tipoAcopladoRes);
+                return Ok(new { success = true, message = "El Tipo De Acoplado Fue Creado Con Exito", result = tipoAcopladoRes });
             }
+            TipoAcopladoRespuesta tipoAcopladoExiste = new();
+            _mapper.Map(tipoAcoplado, tipoAcopladoExiste);
 
-            return Ok(new { success = false, message = " El Tipo Acoplado Ya Esta Cargado ", result = tipoAcoplado });
+            return Ok(new { success = false, message = " El Tipo Acoplado Ya Esta Cargado ", result = tipoAcopladoExiste });
 
         }
 
@@ -88,10 +92,12 @@ namespace JuncalApi.Controllers
             {
                 tipoAcoplado = _mapper.Map(tipoAcopladoEditado, tipoAcoplado);
                 _uow.RepositorioJuncalTipoAcoplado.Update(tipoAcoplado);
-                return Ok(new { success = true, message = "El Tipo De Acoplado fue Actualizado", result = tipoAcoplado });
+                TipoAcopladoRespuesta tipoAcopladoRes = new();
+                _mapper.Map(tipoAcoplado, tipoAcopladoRes);
+                return Ok(new { success = true, message = "El Tipo De Acoplado fue Actualizado", result = tipoAcopladoRes });
             }
 
-            return Ok(new { success = false, message = "El Tipo De Acoplado No Fue Encontrado ", result = new JuncalTipoAcoplado() == null });
+            return Ok(new { success = false, message = "El Tipo De Acoplado No Fue Encontrado ", result = new TipoAcopladoRespuesta() == null });
 
 
         }

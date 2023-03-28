@@ -5,6 +5,7 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Contracts;
 
 namespace JuncalApi.Controllers
 {
@@ -51,10 +52,13 @@ namespace JuncalApi.Controllers
                 JuncalEstado estadoNuevo = _mapper.Map<JuncalEstado>(estadoRequerido);
 
                 _uow.RepositorioJuncalEstado.Insert(estadoNuevo);
-                return Ok(new { success = true, message = "El Estado Fue Creado Con Exito ", result = estadoNuevo });
+                EstadoRespuesta estadoRes = new();
+                _mapper.Map(estadoNuevo, estadoRes);
+                return Ok(new { success = true, message = "El Estado Fue Creado Con Exito ", result = estadoRes });
             }
-
-            return Ok(new { success = false, message = " El Estado Ya Esta Cargado ", result = estado });
+            EstadoRespuesta estadoExiste = new();
+            _mapper.Map(estado, estadoExiste);
+            return Ok(new { success = false, message = " El Estado Ya Esta Cargado ", result = estadoExiste });
 
         }
 
@@ -69,12 +73,14 @@ namespace JuncalApi.Controllers
             {
                 estado.Isdeleted = true;
                 _uow.RepositorioJuncalEstado.Update(estado);
+                EstadoRespuesta estadoRes = new();
+                _mapper.Map(estado, estadoRes);
 
-                return Ok(new { success = true, message = "El estado Fue Eliminado ", result = estado.Isdeleted });
+                return Ok(new { success = true, message = "El Estado Fue Eliminado ", result = estadoRes });
 
             }
 
-            return Ok(new { success = false, message = "La Estado No Se Encontro ", result = new JuncalEstado() == null });
+            return Ok(new { success = false, message = "La Estado No Se Encontro ", result = new EstadoRespuesta() == null });
 
         }
 
@@ -87,10 +93,12 @@ namespace JuncalApi.Controllers
             {
                 _mapper.Map(estadoEdit, estado);
                 _uow.RepositorioJuncalEstado.Update(estado);
-                return Ok(new { success = true, message = "La Estado fue Actualizado ", result = estado });
+                EstadoRespuesta estadoRes = new();
+                _mapper.Map(estado, estadoRes);
+                return Ok(new { success = true, message = "La Estado fue Actualizado ", result = estadoRes });
             }
 
-            return Ok(new { success = false, message = "El Estado No Fue Encontrado ", result = new JuncalEstado() == null });
+            return Ok(new { success = false, message = "El Estado No Fue Encontrado ", result = new EstadoRespuesta() == null });
 
 
         }

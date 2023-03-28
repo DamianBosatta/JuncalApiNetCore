@@ -52,10 +52,14 @@ namespace JuncalApi.Controllers
             {
                 JuncalContrato contratoNuevo = _mapper.Map<JuncalContrato>(contratoRequerido);                              
                 _uow.RepositorioJuncalContrato.Insert(contratoNuevo);
-                return Ok(new { success = true, message = "El Contrato Fue Creado Con Exito ", result = contratoNuevo });
+                ContratoRespuesta contratoRes = new();
+                _mapper.Map(contratoNuevo, contratoRes);
+                return Ok(new { success = true, message = "El Contrato Fue Creado Con Exito ", result = contratoRes });
             }
-
-            return Ok(new { success = false, message = " La Aceria Ya Tiene Un Contrato Vigente ", result = contrato });
+           
+            ContratoRespuesta contratoExiste = new();
+            _mapper.Map(contrato, contratoExiste);
+            return Ok(new { success = false, message = " La Aceria Ya Tiene Un Contrato Vigente ", result = contratoExiste });
 
         }
 
@@ -70,12 +74,14 @@ namespace JuncalApi.Controllers
             {
                 contrato.Isdeleted = true;
                 _uow.RepositorioJuncalContrato.Update(contrato);
+                ContratoRespuesta contratoRes = new();
+                _mapper.Map(contrato, contratoRes);
 
-                return Ok(new { success = true, message = "El Contrato Fue Eliminado ", result = contrato.Isdeleted });
+                return Ok(new { success = true, message = "El Contrato Fue Eliminado ", result = contratoRes});
 
             }
 
-            return Ok(new { success = false, message = "La Contrato No Se Encontro ", result = new JuncalContrato() == null });
+            return Ok(new { success = false, message = "La Contrato No Se Encontro ", result = new ContratoRespuesta() == null });
 
         }
 
@@ -88,10 +94,12 @@ namespace JuncalApi.Controllers
             {
                   _mapper.Map(contratoEdit, contrato);
                 _uow.RepositorioJuncalContrato.Update(contrato);
-                return Ok(new { success = true, message = "La Contrato fue Actualizado ", result = contrato });
+                ContratoRespuesta contratoRes = new();
+                _mapper.Map(contrato, contratoRes);
+                return Ok(new { success = true, message = "La Contrato fue Actualizado ", result = contratoRes });
             }
 
-            return Ok(new { success = false, message = "El Contrato No Fue Encontrado ", result = new JuncalContrato() == null });
+            return Ok(new { success = false, message = "El Contrato No Fue Encontrado ", result = new ContratoRespuesta() == null });
 
 
         }
