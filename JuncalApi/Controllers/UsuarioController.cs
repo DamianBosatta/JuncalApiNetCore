@@ -82,9 +82,9 @@ namespace JuncalApi.Controllers
                respuesta = "Password Incorrecto";
                 return Ok(new { success = false, message = "Password Incorrecto", result = respuesta });
             }
-         
-       
 
+
+         
 
             return Ok(new { success = true, message = "Login Correcto", result = sesion });
 
@@ -99,8 +99,8 @@ namespace JuncalApi.Controllers
 
             if (usuario != null && usuario.Isdeleted==false)
             {
-              usuario = _servicio.RegistroUsuario(usuarioEdit);
-            
+                _mapper.Map(usuarioEdit, usuario);
+
                 _uow.RepositorioJuncalUsuario.Update(usuario);
                 UsuarioRespuesta usuarioRes = new();
                 _mapper.Map(usuario, usuarioRes);
@@ -113,6 +113,39 @@ namespace JuncalApi.Controllers
 
 
         }
+        [HttpPut, Authorize]
+        public async Task<IActionResult> PasswordCambio(int id,string passwordNew)
+        {
+
+            var usuario = _uow.RepositorioJuncalUsuario.GetById(id);
+
+            if (usuario != null && usuario.Isdeleted == false)
+            {
+
+                var user = _servicio.CambiarPassword(usuario, passwordNew);
+
+
+                if (user.PasswordHash is null && user.PasswordSalt is null)
+                {
+                    return Ok(new { success = false, message = "No se puede poner el mismo password existente", result = new UsuarioRespuesta() == null });
+                }
+                else
+                {
+                    _uow.RepositorioJuncalUsuario.Update(user);
+                    UsuarioRespuesta usuarioRes = new();
+                    _mapper.Map(user, usuarioRes);
+                    return Ok(new { success = true, message = "El Password Fue Actualizado", result = usuarioRes });
+
+                }               
+              
+            }
+            
+                return Ok(new { success = false, message = "No se Encontro El Usuario", result = new UsuarioRespuesta() == null });
+                                            
+        }
+
+
+
 
         [Route("Borrar/{id?}"),Authorize]
         [HttpPut]
@@ -136,8 +169,6 @@ namespace JuncalApi.Controllers
             return Ok(new { success = false, message = "El Usuario No Existe ", result = new UsuarioRespuesta() == null });
 
         }
-
-
 
 
 

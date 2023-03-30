@@ -9,12 +9,21 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System.Collections;
+using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+
 
 namespace JuncalApi.Servicios
 {
@@ -49,6 +58,24 @@ namespace JuncalApi.Servicios
 
         }
 
+        public JuncalUsuario CambiarPassword(JuncalUsuario usuario,string password)
+        {
+            if (VerificarPassworHash(password, usuario.PasswordHash, usuario.PasswordSalt))
+            {
+
+               return new JuncalUsuario();
+
+            }
+
+            CreatePasswordhHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            usuario.PasswordHash = passwordHash;
+            usuario.PasswordSalt=passwordSalt;
+
+            return usuario;
+
+        }
+
 
         public LoginRespuesta InicioSesion(LoginRequerido userReq)
         {
@@ -63,6 +90,9 @@ namespace JuncalApi.Servicios
                 }
 
                 string token = CreateToken(usuario);
+               
+                
+
 
                 loginRespuesta.Usuario = usuario.Usuario;
                 loginRespuesta.Dni = usuario.Dni;
@@ -104,6 +134,37 @@ namespace JuncalApi.Servicios
 
             return jwt;
         }
+
+
+
+        private RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                Expires = DateTime.Now.AddDays(7),
+                Created = DateTime.Now
+            };
+
+            return refreshToken;
+        }
+
+
+        public void SetRefreshToken(JuncalUsuario user, RefreshToken newRefreshToken)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.Expires
+            };
+            //Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+
+            user.RefreshToken = newRefreshToken.Token;
+            user.TokenCreated = newRefreshToken.Created;
+            user.TokenExpires = newRefreshToken.Expires;
+        }
+
+
 
         private void CreatePasswordhHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {

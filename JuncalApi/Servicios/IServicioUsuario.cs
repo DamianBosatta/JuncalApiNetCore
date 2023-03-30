@@ -10,6 +10,7 @@ namespace JuncalApi.Servicios
 
         public LoginRespuesta InicioSesion(LoginRequerido userReq);
         public JuncalUsuario RegistroUsuario(UsuarioRequerido userReq);
+        public JuncalUsuario CambiarPassword(JuncalUsuario usuario, string password);
 
     }
 }
