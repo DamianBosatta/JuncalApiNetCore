@@ -7,6 +7,7 @@ using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Linq;
 
 namespace JuncalApi.Controllers
 {
@@ -50,7 +51,7 @@ namespace JuncalApi.Controllers
         {
            
             
-           var usuarioExiste = _uow.RepositorioJuncalUsuario.GetByCondition(c => c.Dni.Equals(usuarioReq.Dni) && c.Isdeleted==false || c.Usuario.Equals(usuarioReq.Usuario));
+           var usuarioExiste = _uow.RepositorioJuncalUsuario.GetByCondition(c => c.Usuario== usuarioReq.Usuario || c.Dni==usuarioReq.Dni && c.Isdeleted==false);
 
             if (usuarioExiste is null)
             {
@@ -64,31 +65,80 @@ namespace JuncalApi.Controllers
              return Ok(new { success = false, message = " El Usuario Ya Esta Registrado ", result = new UsuarioRespuesta()==null });
 
         }
-
+        /// <summary>
+        /// Login de usuario
+        /// </summary>
+        /// <param name="userReq">usuario que se va a conectar</param>
+        /// <param name="expiraToken">tiempo de expiracion del token , 
+        /// tipo de date time que define el front por parametro</param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Login([FromBody] LoginRequerido userReq)
+        public ActionResult Login([FromBody] LoginRequerido userReq, DateTime expiraToken) 
         {
-            var sesion = _servicio.InicioSesion(userReq);
-           
-            var respuesta = string.Empty;
-
-            if (sesion.Token == "NullUsuario")
+            var usuario = _uow.RepositorioJuncalUsuario.GetByCondition(u => u.Usuario == userReq.Usuario && u.Isdeleted == false);
+            var loginRespuesta = new LoginRespuesta();
+            if (usuario != null)
             {
-                respuesta = "Usuario No Encontrado";
-                return Ok(new { success = false, message = "No Se Encontro El Usuario", result = respuesta });
+                if (!_servicio.VerificarPassworHash(userReq.Password, usuario.PasswordHash, usuario.PasswordSalt))
+                {
+                    loginRespuesta.Token = "Password Incorrecto";
+
+                    return Ok(new { success = false, message = "Password Incorrecto", result = loginRespuesta.Token });
+                }
+
+                string token = _servicio.CreateToken(usuario,expiraToken);
+                var refreshToken = _servicio.GenerateRefreshToken(expiraToken);
+                var cookieOptions = _servicio.SetRefreshToken(usuario, refreshToken);
+                Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+
+
+          
+                loginRespuesta.Usuario = usuario.Usuario;
+                loginRespuesta.Dni = usuario.Dni;
+                loginRespuesta.Nombre = usuario.Nombre;
+                loginRespuesta.Email = usuario.Email;
+                loginRespuesta.Id = usuario.Id;
+                loginRespuesta.Apellido = usuario.Apellido;
+                loginRespuesta.IdRol = usuario.IdRol;
+                loginRespuesta.Token = token;
+                loginRespuesta.RefreshToken=usuario.RefreshToken;
+                loginRespuesta.TokenCreated = usuario.TokenCreated;
+                loginRespuesta.TokenExpires = usuario.TokenExpires;
+
+                return  Ok(new { success = true, message = "Login Correcto", result = loginRespuesta });
             }
-            else if(sesion.Token == "NoPass")
+
+            loginRespuesta.Token = "No Se Encontro El Usuario";
+
+            return Ok(new { success = false, message = "No Se Encontro El Usuario", result = loginRespuesta.Token });
+        }
+        /// <summary>
+        /// End Point que renueva el token del usuario
+        /// </summary>
+        /// <param name="user">usuario al cual se le va a renovar el token</param>
+        /// <param name="expiraToken">tiempo de expiracion del token pasarlo de tipo datetime</param>
+        /// <returns></returns>
+        [HttpPost("refresh-token") ,Authorize]
+        public async Task<ActionResult<string>> RefreshToken(JuncalUsuario user, DateTime expiraToken)
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+
+            if (!user.RefreshToken.Equals(refreshToken))
             {
-               respuesta = "Password Incorrecto";
-                return Ok(new { success = false, message = "Password Incorrecto", result = respuesta });
+                return Unauthorized("Invalid Refresh Token.");
+            }
+            else if (user.TokenExpires < DateTime.Now)
+            {
+                return Unauthorized("Token expired.");
             }
 
+            string token = _servicio.CreateToken(user,expiraToken);
+            var refreshTokenNew = _servicio.GenerateRefreshToken(expiraToken);
+            var cookieOptions = _servicio.SetRefreshToken(user, refreshTokenNew);
+            Response.Cookies.Append("refreshToken", refreshTokenNew.Token, cookieOptions);
 
-         
-
-            return Ok(new { success = true, message = "Login Correcto", result = sesion });
-
-
+            return Ok(token);
         }
 
 

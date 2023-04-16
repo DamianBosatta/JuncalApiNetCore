@@ -18,11 +18,7 @@ using System.Text;
 using JwtRegisteredClaimNames = System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
+
 
 
 namespace JuncalApi.Servicios
@@ -32,7 +28,7 @@ namespace JuncalApi.Servicios
         private readonly IUnidadDeTrabajo _uow;
         public IConfiguration _configuration;
         private readonly IMapper _mapper;
-        public static JuncalUsuario user = new JuncalUsuario();
+     
 
         public ServicioUsuario(IConfiguration configuration,IUnidadDeTrabajo uow,IMapper mapper)
         {
@@ -44,6 +40,8 @@ namespace JuncalApi.Servicios
 
         public JuncalUsuario RegistroUsuario(UsuarioRequerido userReq)
         {
+            JuncalUsuario user = new();
+
             CreatePasswordhHash(userReq.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Usuario=userReq.Usuario;
             user.Dni = userReq.Dni;
@@ -77,41 +75,9 @@ namespace JuncalApi.Servicios
         }
 
 
-        public LoginRespuesta InicioSesion(LoginRequerido userReq)
-        {
-            var usuario = _uow.RepositorioJuncalUsuario.GetByCondition(u => u.Usuario == userReq.Usuario && u.Isdeleted==false);
-            var loginRespuesta = new LoginRespuesta();
-            if (usuario != null)
-            {                        
-                if (!VerificarPassworHash(userReq.Password, usuario.PasswordHash, usuario.PasswordSalt))
-                {
-                    loginRespuesta.Token="NoPass";
-                    return loginRespuesta;
-                }
-
-                string token = CreateToken(usuario);
-               
-                
 
 
-                loginRespuesta.Usuario = usuario.Usuario;
-                loginRespuesta.Dni = usuario.Dni;
-                loginRespuesta.Nombre = usuario.Nombre;
-                loginRespuesta.Email = usuario.Email;
-                loginRespuesta.Id = usuario.Id;
-                loginRespuesta.Apellido = usuario.Apellido;
-                loginRespuesta.IdRol=usuario.IdRol;
-                loginRespuesta.Token = token;
-
-                return loginRespuesta;
-            }
-
-            loginRespuesta.Token = "NullUsuario";
-           
-            return loginRespuesta;
-        }
-
-        private string CreateToken(JuncalUsuario user)
+        public string CreateToken(JuncalUsuario user , DateTime expiraToken)
         {
             List<Claim> claims = new List<Claim>()
             {
@@ -125,8 +91,8 @@ namespace JuncalApi.Servicios
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials : creds
+                expires: expiraToken,
+                signingCredentials: creds
 
                 ) ;
             var jwt= new JwtSecurityTokenHandler().WriteToken(token);
@@ -137,12 +103,12 @@ namespace JuncalApi.Servicios
 
 
 
-        private RefreshToken GenerateRefreshToken()
+        public RefreshToken GenerateRefreshToken(DateTime expiraToken)
         {
             var refreshToken = new RefreshToken
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = DateTime.Now.AddDays(7),
+                Expires = expiraToken,
                 Created = DateTime.Now
             };
 
@@ -150,23 +116,34 @@ namespace JuncalApi.Servicios
         }
 
 
-        public void SetRefreshToken(JuncalUsuario user, RefreshToken newRefreshToken)
+        public CookieOptions SetRefreshToken(JuncalUsuario user, RefreshToken newRefreshToken)
         {
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
                 Expires = newRefreshToken.Expires
             };
-            //Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
 
             user.RefreshToken = newRefreshToken.Token;
             user.TokenCreated = newRefreshToken.Created;
             user.TokenExpires = newRefreshToken.Expires;
+            if(user.RefreshToken ==  string.Empty || user.TokenExpires is null)
+            {
+                _uow.RepositorioJuncalUsuario.Insert(user);
+            }
+            else
+            {
+                _uow.RepositorioJuncalUsuario.Update(user);
+
+            }
+            
+
+            return cookieOptions;
         }
 
 
 
-        private void CreatePasswordhHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public void CreatePasswordhHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using(var hmac = new HMACSHA512())
             {
@@ -182,7 +159,7 @@ namespace JuncalApi.Servicios
 
         }
 
-        private bool VerificarPassworHash(string password , byte[] passwordHash, byte[] passwordSalt)
+        public bool VerificarPassworHash(string password , byte[] passwordHash, byte[] passwordSalt)
         {
 
 
@@ -198,7 +175,7 @@ namespace JuncalApi.Servicios
 
         }
 
-        private string ConvertirRolString(int idRol)
+        public string ConvertirRolString(int idRol)
         {
             var rol = string.Empty;
 

@@ -3343,11 +3343,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Felix\\OneDrive\\Escritorio\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
+      "projectUniqueName": "C:\\Users\\Felix\\OneDrive\\Documentos\\Damian\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
       "projectName": "JuncalApi",
-      "projectPath": "C:\\Users\\Felix\\OneDrive\\Escritorio\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
+      "projectPath": "C:\\Users\\Felix\\OneDrive\\Documentos\\Damian\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
       "packagesPath": "C:\\Users\\Felix\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Felix\\OneDrive\\Escritorio\\JuncalApiNetCore\\JuncalApi\\obj\\",
+      "outputPath": "C:\\Users\\Felix\\OneDrive\\Documentos\\Damian\\JuncalApiNetCore\\JuncalApi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
