@@ -5,6 +5,7 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 
 namespace JuncalApi.Controllers
 {
@@ -44,10 +45,10 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarOrdenes([FromBody] OrdenRequerido ordenReq)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.IdAceria == ordenReq.IdAceria 
-            && c.IdCamion==ordenReq.IdCamion 
-            && c.IdContrato== ordenReq.IdContrato 
-            && c.IdProveedor== ordenReq.IdProveedor
+            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.IdAceria == ordenReq.IdAceria
+            && c.IdCamion == ordenReq.IdCamion
+            && c.IdContrato == ordenReq.IdContrato
+            && c.IdProveedor == ordenReq.IdProveedor
             && c.Isdeleted == false);
 
             if (orden is null)
@@ -103,5 +104,62 @@ namespace JuncalApi.Controllers
 
 
         }
+
+        [HttpPost]
+        public IActionResult ProcesarArchivoExcel(IFormFile archivoExcel)
+        {
+
+            using (var stream = new MemoryStream())
+            {
+                archivoExcel.CopyTo(stream);
+                using (var package = new ExcelPackage(stream))
+                {
+                    // Obtener la hoja de cálculo en la que se encuentran los datos
+                    var worksheet = package.Workbook.Worksheets["NombreHojaCalculo"];
+
+                    // Obtener el rango de celdas que contienen los datos
+                    var startRow = 2; // El primer registro está en la fila 2
+                    var endRow = worksheet.Dimension.End.Row;
+                    var startCol = 1;
+                    var endCol = worksheet.Dimension.End.Column;
+                    var cellRange = worksheet.Cells[startRow, startCol, endRow, endCol];
+
+                    // Mapear los datos a un modelo de datos
+                    var datos = new List<PruebaExcel>();
+
+                    
+
+                    foreach (var row in cellRange)
+                    {
+                        var dato = new PruebaExcel();
+                        {
+                            dato.nombre= row[1].ToString();
+                            dato.apellido = row[startCol + 1].Value.ToString();
+                           
+                        };
+
+                        datos.Add(dato);
+                    }
+
+                    // Hacer algo con los datos mapeados
+                    // ...
+
+                    return Ok();
+                }
+            }
+        }
+
+        public class PruebaExcel
+        {
+
+           public string nombre { get; set; } = string.Empty;
+            public string apellido { get; set; } = string.Empty;
+           public  string edad { get; set; } = string.Empty;
+
+
+
+
+        }
+
     }
 }

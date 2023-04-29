@@ -73,8 +73,10 @@ namespace JuncalApi.Controllers
         /// tipo de date time que define el front por parametro</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Login([FromBody] LoginRequerido userReq, DateTime expiraToken) 
+        public ActionResult Login([FromBody] LoginRequerido userReq) 
         {
+            DateTime expiraToken = DateTime.Now.AddHours(1);
+
             var usuario = _uow.RepositorioJuncalUsuario.GetByCondition(u => u.Usuario == userReq.Usuario && u.Isdeleted == false);
             var loginRespuesta = new LoginRespuesta();
             if (usuario != null)
@@ -120,8 +122,22 @@ namespace JuncalApi.Controllers
         /// <param name="expiraToken">tiempo de expiracion del token pasarlo de tipo datetime</param>
         /// <returns></returns>
         [HttpPost("refresh-token") ,Authorize]
-        public async Task<ActionResult<string>> RefreshToken(JuncalUsuario user, DateTime expiraToken)
+        public async Task<ActionResult<string>> RefreshToken(int idUser, bool logout)
         {
+            var user = _uow.RepositorioJuncalUsuario.GetById(idUser);
+
+
+            DateTime expiraToken = DateTime.Now;
+
+           expiraToken = logout is true ? expiraToken = DateTime.Now.AddMinutes(1) : expiraToken = DateTime.Now.AddHours(1);
+
+
+            if(user is null)
+            {
+                return Ok(new { success = false, message = "No Se Encontro El Usuario", result = new UsuarioRespuesta() });
+            }
+
+
             var refreshToken = Request.Cookies["refreshToken"];
 
             if (!user.RefreshToken.Equals(refreshToken))
