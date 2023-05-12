@@ -2,6 +2,7 @@
 using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Items;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 namespace JuncalApi.Mapper
@@ -115,6 +116,12 @@ namespace JuncalApi.Mapper
             #region TIPO ACOPLADO
             CreateMap<TipoAcopladoRequerido, JuncalTipoAcoplado>();
             CreateMap<JuncalTipoAcoplado, TipoAcopladoRespuesta>();
+            #endregion
+
+
+            #region REMITO ITEM
+            CreateMap<ItemOrden, RemitoResponse>().ReverseMap();
+            //CreateMap<JuncalTipoAcoplado, TipoAcopladoRespuesta>();
             #endregion
 
         }

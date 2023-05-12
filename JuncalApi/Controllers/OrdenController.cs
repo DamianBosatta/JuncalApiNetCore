@@ -105,61 +105,26 @@ namespace JuncalApi.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult ProcesarArchivoExcel(IFormFile archivoExcel)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetRemitoById(int id)
         {
 
-            using (var stream = new MemoryStream())
+            var item = _uow.RepositorioJuncalOrden.GetRemito(id);
+
+            if (item != null)
             {
-                archivoExcel.CopyTo(stream);
-                using (var package = new ExcelPackage(stream))
-                {
-                    // Obtener la hoja de cálculo en la que se encuentran los datos
-                    var worksheet = package.Workbook.Worksheets["NombreHojaCalculo"];
+                RemitoResponse response = new RemitoResponse();
+                _mapper.Map(item, response);
 
-                    // Obtener el rango de celdas que contienen los datos
-                    var startRow = 2; // El primer registro está en la fila 2
-                    var endRow = worksheet.Dimension.End.Row;
-                    var startCol = 1;
-                    var endCol = worksheet.Dimension.End.Column;
-                    var cellRange = worksheet.Cells[startRow, startCol, endRow, endCol];
+                return Ok(new { success = true, message = "Response Confirmado", result = response });
 
-                    // Mapear los datos a un modelo de datos
-                    var datos = new List<PruebaExcel>();
-
-                    
-
-                    foreach (var row in cellRange)
-                    {
-                        var dato = new PruebaExcel();
-                        {
-                            dato.nombre= row[1].ToString();
-                            dato.apellido = row[startCol + 1].Value.ToString();
-                           
-                        };
-
-                        datos.Add(dato);
-                    }
-
-                    // Hacer algo con los datos mapeados
-                    // ...
-
-                    return Ok();
-                }
             }
-        }
-
-        public class PruebaExcel
-        {
-
-           public string nombre { get; set; } = string.Empty;
-            public string apellido { get; set; } = string.Empty;
-           public  string edad { get; set; } = string.Empty;
 
 
-
+            return Ok(new { success = false, message = "No Se Encontro Remito", result = new RemitoResponse() });
 
         }
+
 
     }
 }

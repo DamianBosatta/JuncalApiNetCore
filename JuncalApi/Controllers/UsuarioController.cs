@@ -65,17 +65,12 @@ namespace JuncalApi.Controllers
              return Ok(new { success = false, message = " El Usuario Ya Esta Registrado ", result = new UsuarioRespuesta()==null });
 
         }
-        /// <summary>
-        /// Login de usuario
-        /// </summary>
-        /// <param name="userReq">usuario que se va a conectar</param>
-        /// <param name="expiraToken">tiempo de expiracion del token , 
-        /// tipo de date time que define el front por parametro</param>
-        /// <returns></returns>
+    
+
         [HttpPost]
         public ActionResult Login([FromBody] LoginRequerido userReq) 
         {
-            DateTime expiraToken = DateTime.Now.AddHours(1);
+            DateTime expiraToken = DateTime.Now.AddHours(8);
 
             var usuario = _uow.RepositorioJuncalUsuario.GetByCondition(u => u.Usuario == userReq.Usuario && u.Isdeleted == false);
             var loginRespuesta = new LoginRespuesta();
@@ -115,12 +110,7 @@ namespace JuncalApi.Controllers
 
             return Ok(new { success = false, message = "No Se Encontro El Usuario", result = loginRespuesta.Token });
         }
-        /// <summary>
-        /// End Point que renueva el token del usuario
-        /// </summary>
-        /// <param name="user">usuario al cual se le va a renovar el token</param>
-        /// <param name="expiraToken">tiempo de expiracion del token pasarlo de tipo datetime</param>
-        /// <returns></returns>
+
         [HttpPost("refresh-token") ,Authorize]
         public async Task<ActionResult<string>> RefreshToken(int idUser, bool logout)
         {
