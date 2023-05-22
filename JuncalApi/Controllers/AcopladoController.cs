@@ -25,10 +25,10 @@ namespace JuncalApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AcopladoRespuesta>>> GetAcoplados()
+        public async Task<ActionResult<IEnumerable<AcopladoRespuesta>>> GetAllAcoplados()
         {
 
-            var ListaAcoplados = _uow.RepositorioJuncalAcoplado.GetAllByCondition(c => c.Isdeleted == false);
+            var ListaAcoplados = _uow.RepositorioJuncalAcoplado.GetAcoplados();
 
             if (ListaAcoplados.Count() > 0)
             {

@@ -14,9 +14,11 @@
 
         public int? IdAceria { get; set; }
 
-        public bool Activo { get; set; }
+        public bool? Activo { get; set; }
 
         public decimal ValorFlete { get; set; }
+
+        public string? NombreAceria { get; set; }
 
 
     }

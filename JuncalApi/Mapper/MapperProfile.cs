@@ -2,7 +2,7 @@
 using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Items;
+using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 namespace JuncalApi.Mapper
@@ -15,11 +15,13 @@ namespace JuncalApi.Mapper
             #region CAMION
             CreateMap<CamionRequerido, JuncalCamion>();
             CreateMap<JuncalCamion,CamionRespuesta >();
+            CreateMap<ItemCamion,CamionRespuesta>();
             #endregion
 
             #region ACOPLADO
             CreateMap<AcopladoRequerido, JuncalAcoplado>();
             CreateMap<JuncalAcoplado, AcopladoRespuesta>();
+            CreateMap<ItemAcoplado, AcopladoRespuesta>();
             #endregion
 
             #region TIPO CAMION
@@ -45,6 +47,8 @@ namespace JuncalApi.Mapper
             #region ACERIA MATERIAL
             CreateMap<AceriaMaterialRequerido, JuncalAceriaMaterial>();
             CreateMap<JuncalAceriaMaterial, AceriaMaterialRespuesta>();
+            CreateMap<ItemAceriaMaterial, AceriaMaterialRespuesta>();
+
             #endregion
 
             #region MATERIAL
@@ -65,12 +69,17 @@ namespace JuncalApi.Mapper
             #region CONTRATO
             CreateMap<ContratoRequerido, JuncalContrato>();
             CreateMap<JuncalContrato, ContratoRespuesta>();
+            CreateMap<ItemContrato, ContratoRespuesta>();
+
+
             #endregion
 
             #region CONTRATO ITEM
 
             CreateMap<ContratoItemRequerido, JuncalContratoItem>();
             CreateMap<JuncalContratoItem, ContratoItemRespuesta>();
+            CreateMap<ItemContratoItem, ContratoItemRespuesta>();
+
             #endregion
 
             #region ESTADO
@@ -96,6 +105,7 @@ namespace JuncalApi.Mapper
             #region ORDEN
             CreateMap<OrdenRequerido, JuncalOrden>();
             CreateMap<JuncalOrden, OrdenRespuesta>();
+            CreateMap<ItemRemito, RemitoResponse>().ReverseMap();
             #endregion
 
             #region ORDEN MATERIAL
@@ -119,8 +129,8 @@ namespace JuncalApi.Mapper
             #endregion
 
 
-            #region REMITO ITEM
-            CreateMap<ItemOrden, RemitoResponse>().ReverseMap();
+            #region REMITO ORDEN
+            CreateMap<JuncalOrden, RemitoResponse>().ReverseMap();
             //CreateMap<JuncalTipoAcoplado, TipoAcopladoRespuesta>();
             #endregion
 

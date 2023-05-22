@@ -29,7 +29,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ContratoRespuesta>>> GetAContratos()
         {
 
-            var ListaContratos = _uow.RepositorioJuncalContrato.GetAllByCondition(c => c.Isdeleted == false);
+            var ListaContratos = _uow.RepositorioJuncalContrato.GetContratos();
 
             if (ListaContratos.Count() > 0)
             {

@@ -11,5 +11,7 @@
         public int IdMaterial { get; set; }
 
         public string Cod { get; set; } = null!;
+
+        public string? MaterialDescripcion { get; set; }
     }
 }

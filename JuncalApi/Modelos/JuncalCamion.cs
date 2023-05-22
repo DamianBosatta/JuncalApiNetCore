@@ -5,9 +5,9 @@ namespace JuncalApi.Modelos;
 
 public partial class JuncalCamion
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
-    public string Patente { get; set; } = null!;
+    public string? Patente { get; set; } = null!;
 
     public string? Marca { get; set; }
 

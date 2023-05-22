@@ -34,7 +34,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ContratoItemRespuesta>>> GetAContratosItemForContrato(int idContrato)
         {
 
-            var ListaContratosItem = _uow.RepositorioJuncalContratoItem.GetAllByCondition(c => c.IdContrato==idContrato && c.Isdeleted == false);
+            var ListaContratosItem = _uow.RepositorioJuncalContratoItem.GetContratoItemForIdContrato(idContrato);
 
             if (ListaContratosItem.Count() > 0)
             {
@@ -42,6 +42,7 @@ namespace JuncalApi.Controllers
                 return Ok(new { success = true, message = "La Lista Puede Ser Utilizada", result = listaContratoItemRespuesta });
 
             }
+           
             return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<ContratoItemRespuesta>() == null });
 
 

@@ -4,11 +4,11 @@
     {
         public int Id { get; set; }
 
-        public int IdAceria { get; set; }
+        public int IdAceria { get; set;}
 
-        public int? IdContrato { get; set; }
+        public int? IdContrato { get; set;}
 
-        public string Remito { get; set; } = null!;
+        public string? Remito { get; set; } 
 
         public int? IdCamion { get; set; }
 

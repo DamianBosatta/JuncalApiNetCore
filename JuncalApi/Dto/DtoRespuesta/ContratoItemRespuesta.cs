@@ -9,5 +9,7 @@
         public int IdMaterial { get; set; }
 
         public decimal Precio { get; set; }
+
+        public string? MaterialDescripcion { get; set; }
     }
 }

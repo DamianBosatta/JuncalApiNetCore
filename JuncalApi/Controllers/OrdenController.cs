@@ -2,6 +2,7 @@
 using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -109,12 +110,12 @@ namespace JuncalApi.Controllers
         public async Task<IActionResult> GetRemitoById(int id)
         {
 
-            var item = _uow.RepositorioJuncalOrden.GetRemito(id);
+            ItemRemito orden = _uow.RepositorioJuncalOrden.GetRemito(id);
 
-            if (item != null)
+            if (orden != null)
             {
                 RemitoResponse response = new RemitoResponse();
-                _mapper.Map(item, response);
+                _mapper.Map(orden,response);
 
                 return Ok(new { success = true, message = "Response Confirmado", result = response });
 

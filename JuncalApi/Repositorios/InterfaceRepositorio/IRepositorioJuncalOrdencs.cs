@@ -1,12 +1,11 @@
 ﻿using JuncalApi.Modelos;
-using JuncalApi.Modelos.Items;
+using JuncalApi.Modelos.Item;
 
 namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalOrdencs:IRepositorioGenerico<JuncalOrden>
     {
-        public ItemOrden GetRemito(int id);
-
+        public ItemRemito GetRemito(int id);
 
     }
 }

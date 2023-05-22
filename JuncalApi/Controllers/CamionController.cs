@@ -2,6 +2,7 @@
 using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace JuncalApi.Controllers
     [ApiController]
     public class CamionController : Controller
     {
-
+        
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
 
@@ -27,17 +28,17 @@ namespace JuncalApi.Controllers
             _mapper = mapper;
             _uow = uow;
         }
-
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CamionRespuesta>>> GetCamiones()
         {
-           
-           var ListaCamiones = _uow.RepositorioJuncalCamion.GetAllByCondition(c=>c.Isdeleted==false).ToList(); 
+
+            List<ItemCamion> ListaCamiones = _uow.RepositorioJuncalCamion.GetAllCamiones().ToList(); 
 
             if (ListaCamiones.Count() > 0)
             {
                 List<CamionRespuesta> listaCamionesRespuesta = _mapper.Map<List<CamionRespuesta>>(ListaCamiones);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaCamionesRespuesta });
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaCamionesRespuesta.ToList() });
 
             }
             return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<CamionRespuesta>()==null });

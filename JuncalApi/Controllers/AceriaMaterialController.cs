@@ -43,18 +43,18 @@ namespace JuncalApi.Controllers
 
 
         [HttpGet("{idAceria}")]
-        public async Task<ActionResult<IEnumerable<AceriaMaterialRespuesta>>> GetAceriasMaterialForAceria(int idAceria)
+        public async Task<ActionResult<IEnumerable<AceriaMaterialRespuesta>>> GetAceriaMaterialById(int idAceria)
         {
 
-            var ListaAceriasMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAllByCondition(c =>c.IdAceria==idAceria && c.Isdeleted==false).ToList();
+            var ListaaceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAceriaMaterialesForId(idAceria);
 
-            if (ListaAceriasMaterial.Count() > 0)
+            if (ListaaceriaMaterial.Count()>0)
             {
-                List<AceriaMaterialRespuesta> listaAceriasMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(ListaAceriasMaterial);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaAceriasMatRespuesta });
-
+                var ListaAceriaMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(ListaaceriaMaterial);
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result =ListaAceriaMatRespuesta });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AceriaMaterialRespuesta>() == null });
+           
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new AceriaMaterialRespuesta() == null });
 
 
         }

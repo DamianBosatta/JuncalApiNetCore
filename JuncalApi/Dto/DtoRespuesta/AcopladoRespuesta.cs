@@ -11,5 +11,7 @@
         public string? Año { get; set; }
 
         public int IdTipo { get; set; }
+
+        public string? TipoDescripcion { get; set; }
     }
 }
