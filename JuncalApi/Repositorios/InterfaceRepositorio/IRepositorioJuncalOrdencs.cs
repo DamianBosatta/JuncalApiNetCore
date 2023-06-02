@@ -6,6 +6,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
     public interface IRepositorioJuncalOrdencs:IRepositorioGenerico<JuncalOrden>
     {
         public ItemRemito GetRemito(int id);
+        public List<ItemRemito> GetAllRemitos();
 
     }
 }

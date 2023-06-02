@@ -26,18 +26,18 @@ namespace JuncalApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrdenRespuesta>>> GetOrdenes()
+        public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
         {
 
-            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetAllByCondition(c => c.Isdeleted == false).ToList();
+            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetAllRemitos();
 
             if (ListaOrdenes.Count() > 0)
             {
-                List<OrdenRespuesta> listaOrdenesRespuesta = _mapper.Map<List<OrdenRespuesta>>(ListaOrdenes);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
+                List<RemitoResponse> listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(ListaOrdenes);
+                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
 
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<OrdenRespuesta>() == null });
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoResponse>() == null });
 
 
         }
