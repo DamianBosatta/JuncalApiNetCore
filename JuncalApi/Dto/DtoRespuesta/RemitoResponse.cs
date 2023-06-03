@@ -36,6 +36,8 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public string? NombreChofer { get; set; }
 
+        public string? ApellidoChofer { get; set; }
+
         public int LicenciaChofer { get; set; }
 
         public int IdTransportista { get; set; }

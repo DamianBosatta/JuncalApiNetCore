@@ -73,6 +73,8 @@ namespace JuncalApi.Modelos.Item
 
         public string? NombreChofer { get { return Chofer is null ? string.Empty : Chofer.Nombre is null ? string.Empty : Chofer.Nombre.ToString().Trim(); } }
 
+        public string ApellidoChofer { get{ return Chofer is null ? string.Empty : Chofer.Apellido is null ? string.Empty : Chofer.Apellido; } }
+      
         public int LicenciaChofer { get { return Chofer is null ? 0 : Chofer.Dni; } }
         
         public int IdTransportista { get{ return Transportista is null ? 0 : Transportista.Id; } }
