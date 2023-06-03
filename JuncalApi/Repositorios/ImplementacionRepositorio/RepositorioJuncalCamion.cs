@@ -17,15 +17,18 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public List<ItemCamion> GetAllCamiones()
         {
             var query = from camion in _db.JuncalCamions.Where(a=>a.Isdeleted==false)
-                        join chofer in _db.JuncalChofers
-                        on camion.IdChofer equals chofer.Id
-                        join transportista in _db.JuncalTransportista
-                        on camion.IdTransportista equals transportista.Id
-                        join tipoCamion in _db.JuncalTipoCamions
-                        on camion.IdTipoCamion equals tipoCamion.Id
+                        join chofer in _db.JuncalChofers.Where(a=>a.Isdeleted==false)
+                        on camion.IdChofer equals chofer.Id into JoinChofer
+                        from chofer in JoinChofer.DefaultIfEmpty()
+                        join transportista in _db.JuncalTransportista.Where(a=>a.Isdeleted==false)
+                        on camion.IdTransportista equals transportista.Id into JoinTransportista
+                        from transportista in JoinTransportista.DefaultIfEmpty()
+                        join tipoCamion in _db.JuncalTipoCamions 
+                        on camion.IdTipoCamion equals tipoCamion.Id into JoinTipoCamion
+                        from tipoCamion in JoinTipoCamion.DefaultIfEmpty()
                         select new
                         {
-                            camion,chofer,transportista, tipoCamion
+                            camion,JoinChofer=chofer,JoinTransportista=transportista, JoinTipoCamion=tipoCamion
                         
                         };
 
@@ -35,7 +38,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             foreach (var q in query)
             {
-                listaQuery.Add(new ItemCamion(q.camion, q.chofer, q.transportista, q.tipoCamion));
+                listaQuery.Add(new ItemCamion(q.camion, q.JoinChofer, q.JoinTransportista, q.JoinTipoCamion));
             }
 
             return listaQuery;

@@ -10,7 +10,7 @@ using OfficeOpenXml;
 
 namespace JuncalApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenController : Controller
@@ -24,6 +24,8 @@ namespace JuncalApi.Controllers
             _mapper = mapper;
             _uow = uow;
         }
+
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
