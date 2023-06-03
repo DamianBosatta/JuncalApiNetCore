@@ -2,6 +2,8 @@
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
+using System.Diagnostics.Contracts;
+using System;
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
@@ -43,12 +45,24 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id
                         join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id
                         join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id
-                        select new ItemRemito(_orden, aceria, contrato, camion, chofer, transportista, acoplado, estado, proveedor, direccionProveedor);
+                        select new { _orden, aceria, contrato, camion, chofer, transportista, acoplado, estado, proveedor, direccionProveedor };
+           
+            
+                         List<ItemRemito> listaRemitos = new List<ItemRemito>();
+
+            foreach(var remito in query)
+            {
+
+                listaRemitos.Add(new ItemRemito(remito._orden, remito.aceria, remito.contrato, remito.camion,
+                remito.chofer, remito.transportista, remito.acoplado, remito.estado, remito.proveedor, remito.direccionProveedor));
+            
+            
+            }
 
 
-            return (List<ItemRemito>)query;
 
 
+            return listaRemitos;
         }
 
 

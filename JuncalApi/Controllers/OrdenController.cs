@@ -10,7 +10,7 @@ using OfficeOpenXml;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenController : Controller
@@ -29,7 +29,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
         {
 
-            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetAllRemitos();
+            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetAllRemitos().ToList();
 
             if (ListaOrdenes.Count() > 0)
             {
