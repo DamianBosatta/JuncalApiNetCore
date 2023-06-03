@@ -2,23 +2,22 @@
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
-using System.Diagnostics.Contracts;
-using System;
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
-    public class RepositorioJuncalOrden:RepositorioGenerico<JuncalOrden>,IRepositorioJuncalOrdencs
+    public class RepositorioJuncalOrdenInterno : RepositorioGenerico<JuncalOrdenInterno>, IRepositorioJuncalOrdenInterno
     {
-        public RepositorioJuncalOrden(JuncalContext db) : base(db)
+        public RepositorioJuncalOrdenInterno(JuncalContext db) : base(db)
         {
         }
 
-        public ItemRemito GetRemito(int id)
+
+        public ItemRemitoInterno GetRemito(int id)
         {
-            var query = from _orden in _db.JuncalOrdens.Where(a => a.Id == id && a.Isdeleted ==false)
-                        join aceria in _db.JuncalAceria.Where(a=>a.Isdeleted==false) on _orden.IdAceria equals aceria.Id into JoinAceria
+            var query = from _orden in _db.JuncalOrdenInternos.Where(a => a.Id == id && a.Isdeleted == false)
+                        join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
                         from aceria in JoinAceria.DefaultIfEmpty()
-                        join contrato in _db.JuncalContratos.Where(a=>a.Isdeleted==false ) on _orden.IdContrato equals contrato.Id into JoinContrato
+                        join contrato in _db.JuncalContratos.Where(a => a.Isdeleted == false) on _orden.IdContrato equals contrato.Id into JoinContrato
                         from contrato in JoinContrato.DefaultIfEmpty()
                         join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
                         from camion in JoinCamion.DefaultIfEmpty()
@@ -28,37 +27,37 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         from transportista in JoinTransportista.DefaultIfEmpty()
                         join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
                         from acoplado in JoinAcoplado.DefaultIfEmpty()
-                        join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
+                        join estado in _db.JuncalEstadosInternos.Where(a => a.Isdeleted == false) on _orden.IdEstadoInterno equals estado.Id into JoinEstado
                         from estado in JoinEstado.DefaultIfEmpty()
                         join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
                         from proveedor in JoinProveedor.DefaultIfEmpty()
                         join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
                         from direccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                        select new { _orden, JoinAceria = aceria, JoinContrato = contrato, JoinCamion = camion, JoinChofer = chofer, JoinTransportista = transportista, JoinAcoplado = acoplado, JoinEstado = estado, JoinProveedor = proveedor, JoinDireccionProveedor = direccionProveedor };
+                        select new {_orden, JoinAceria = aceria, JoinContrato=contrato,JoinCamion= camion,JoinChofer= chofer, JoinTransportista=transportista, JoinAcoplado= acoplado,JoinEstado = estado, JoinProveedor=proveedor,JoinDireccionProveedor= direccionProveedor};
 
-            ItemRemito? remito = query.Select(result => new ItemRemito
+
+            ItemRemitoInterno? remitoInterno = query.Select(result => new ItemRemitoInterno
             {
-                RemitoOrden = result._orden,
-                Aceria = result.JoinAceria,
-                Contrato = result.JoinContrato,
-                Camion = result.JoinCamion,
-                Chofer = result.JoinChofer,
-                Transportista = result.JoinTransportista,
-                Acoplado = result.JoinAcoplado,
-                Estado = result.JoinEstado,
-                Proveedor = result.JoinProveedor,
-                DireccionProveedores = result.JoinDireccionProveedor
+            RemitoOrden=result._orden,
+            Aceria=result.JoinAceria,
+            Contrato=result.JoinContrato,
+            Camion=result.JoinCamion,
+            Chofer=result.JoinChofer,
+            Transportista=result.JoinTransportista,
+            Acoplado= result.JoinAcoplado,
+            Estado=result.JoinEstado,
+            Proveedor=result.JoinProveedor,
+            DireccionProveedores=result.JoinDireccionProveedor
 
-
+             
             }).FirstOrDefault();
 
-            return remito;
-
+            return remitoInterno;
         }
 
-        public List<ItemRemito> GetAllRemitos() 
+        public List<ItemRemitoInterno> GetAllRemitos()
         {
-            var query = from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
+            var query = from _orden in _db.JuncalOrdenInternos.Where(a => a.Isdeleted == false)
                         join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
                         from aceria in JoinAceria.DefaultIfEmpty()
 
@@ -72,21 +71,21 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         from transportista in JoinTransportista.DefaultIfEmpty()
                         join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
                         from acoplado in JoinAcoplado.DefaultIfEmpty()
-                        join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
+                        join estado in _db.JuncalEstadosInternos.Where(a => a.Isdeleted == false) on _orden.IdEstadoInterno equals estado.Id into JoinEstado
                         from estado in JoinEstado.DefaultIfEmpty()
                         join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
                         from proveedor in JoinProveedor.DefaultIfEmpty()
                         join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
                         from direccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                        select new { _orden, JoinAceria=aceria, JoinContrato=contrato, JoinCamion=camion, JoinChofer=chofer, JoinTransportista=transportista, JoinAcoplado=acoplado, JoinEstado=estado, JoinProveedor=proveedor, JoinDireccionProveedor =direccionProveedor};
-           
-            
-                         List<ItemRemito> listaRemitos = new List<ItemRemito>();
-                         
+                        select new { _orden, JoinAceria = aceria, JoinContrato = contrato, JoinCamion = camion, JoinChofer = chofer, JoinTransportista = transportista, JoinAcoplado = acoplado, JoinEstado = estado, JoinProveedor = proveedor, JoinDireccionProveedor = direccionProveedor };
+
+
+            List<ItemRemitoInterno> listaRemitos = new List<ItemRemitoInterno>();
+
 
             foreach (var remito in query)
             {
-                ItemRemito itemRemito = new ItemRemito(remito._orden, remito.JoinAceria, remito.JoinContrato, remito.JoinCamion,
+                ItemRemitoInterno itemRemito = new ItemRemitoInterno(remito._orden, remito.JoinAceria, remito.JoinContrato, remito.JoinCamion,
                 remito.JoinChofer, remito.JoinTransportista, remito.JoinAcoplado, remito.JoinEstado, remito.JoinProveedor, remito.JoinDireccionProveedor);
 
                 listaRemitos.Add(itemRemito);
@@ -99,8 +98,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return listaRemitos;
         }
-
-
 
     }
 }

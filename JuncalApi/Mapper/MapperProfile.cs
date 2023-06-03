@@ -3,7 +3,7 @@ using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
-using JuncalApi.Repositorios.InterfaceRepositorio;
+
 
 namespace JuncalApi.Mapper
 {
@@ -106,6 +106,7 @@ namespace JuncalApi.Mapper
             CreateMap<OrdenRequerido, JuncalOrden>();
             CreateMap<JuncalOrden, OrdenRespuesta>();
             CreateMap<ItemRemito, RemitoResponse>().ReverseMap();
+            CreateMap<ItemRemitoInterno, RemitoResponse>().ReverseMap();
             #endregion
 
             #region ORDEN MATERIAL
@@ -113,15 +114,27 @@ namespace JuncalApi.Mapper
             CreateMap<JuncalOrdenMarterial, OrdenMaterialRespuesta>();
             #endregion
 
+            #region ORDEN MATERIAL INTERNO RECIBIDO
+            CreateMap<OrdenMaterialInternoRecibidoRequerido, JuncalOrdenMaterialInternoRecibido>();
+            CreateMap<JuncalOrdenMaterialInternoRecibido, OrdenMaterialInternoRecibidoRespuesta>();
+            #endregion
+
+            #region ORDEN MATERIAL INTERNO RECOGIDO
+            CreateMap<OrdenMaterialInternoRecibidoRequerido, JuncalOrdenMaterialInternoRecogido>();
+            CreateMap<JuncalOrdenMaterialInternoRecogido, OrdenMaterialInternoRecogidoRespuesta>();
+            #endregion
+            
+            #region ORDEN INTERNA
+            CreateMap<OrdenInternaRequerida, JuncalOrdenInterno>();
+            CreateMap<JuncalOrdenInterno, OrdenInternaResponse>();
+            #endregion
+
             #region SUCURSAL
             CreateMap<SucursalRequerida, JuncalSucursal>();
             CreateMap<JuncalSucursal, SucursalRespuesta>();
             #endregion
 
-            #region REMITO HISTORIAL
-            CreateMap<RemitoHistorialRequerido, JuncalRemitoHistorial>();
-            CreateMap<JuncalRemitoHistorial, RemitoHistorialRespuesta>();
-            #endregion
+
 
             #region TIPO ACOPLADO
             CreateMap<TipoAcopladoRequerido, JuncalTipoAcoplado>();

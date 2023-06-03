@@ -34,17 +34,23 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalEstado> JuncalEstados { get; set; }
 
+    public virtual DbSet<JuncalEstadosInterno> JuncalEstadosInternos { get; set; }
+
     public virtual DbSet<JuncalMaterial> JuncalMaterials { get; set; }
 
     public virtual DbSet<JuncalMaterialProveedor> JuncalMaterialProveedors { get; set; }
 
     public virtual DbSet<JuncalOrden> JuncalOrdens { get; set; }
 
+    public virtual DbSet<JuncalOrdenInterno> JuncalOrdenInternos { get; set; }
+
     public virtual DbSet<JuncalOrdenMarterial> JuncalOrdenMarterials { get; set; }
 
-    public virtual DbSet<JuncalProveedor> JuncalProveedors { get; set; }
+    public virtual DbSet<JuncalOrdenMaterialInternoRecibido> JuncalOrdenMaterialInternoRecibidos { get; set; }
 
-    public virtual DbSet<JuncalRemitoHistorial> JuncalRemitoHistorials { get; set; }
+    public virtual DbSet<JuncalOrdenMaterialInternoRecogido> JuncalOrdenMaterialInternoRecogidos { get; set; }
+
+    public virtual DbSet<JuncalProveedor> JuncalProveedors { get; set; }
 
     public virtual DbSet<JuncalRole> JuncalRoles { get; set; }
 
@@ -60,7 +66,7 @@ public partial class JuncalContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=sd-1812852-l.dattaweb.com;database=nicoales_nuevo;uid=nicoales_felix;pwd=Idra2023", Microsoft.EntityFrameworkCore.ServerVersion.Parse("5.7.30-mysql"));
+        => optionsBuilder.UseMySql("server=sd-1812852-l.dattaweb.com;database=nicoales_nuevo;uid=nicoales_felix;pwd=Idra2023", ServerVersion.Parse("5.7.30-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -368,6 +374,21 @@ public partial class JuncalContext : DbContext
                 .HasColumnName("nombre");
         });
 
+        modelBuilder.Entity<JuncalEstadosInterno>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.estados_internos");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(255)
+                .HasColumnName("nombre");
+        });
+
         modelBuilder.Entity<JuncalMaterial>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -510,6 +531,93 @@ public partial class JuncalContext : DbContext
                 .HasConstraintName("fk_id_proveedor");
         });
 
+        modelBuilder.Entity<JuncalOrdenInterno>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.orden_interno");
+
+            entity.HasIndex(e => e.IdAceria, "fk_id_aceria");
+
+            entity.HasIndex(e => e.IdAcoplado, "fk_id_acoplado_interno");
+
+            entity.HasIndex(e => e.IdCamion, "fk_id_camion");
+
+            entity.HasIndex(e => e.IdContrato, "fk_id_contrato");
+
+            entity.HasIndex(e => e.IdDireccionProveedor, "fk_id_direccion_proveedor");
+
+            entity.HasIndex(e => e.IdEstadoInterno, "fk_id_estado_interno");
+
+            entity.HasIndex(e => e.IdProveedor, "fk_id_proveedor_interno");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Fecha).HasColumnName("fecha");
+            entity.Property(e => e.IdAceria)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_aceria");
+            entity.Property(e => e.IdAcoplado)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_acoplado");
+            entity.Property(e => e.IdCamion)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_camion");
+            entity.Property(e => e.IdContrato)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_contrato");
+            entity.Property(e => e.IdDireccionProveedor)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_direccion_proveedor");
+            entity.Property(e => e.IdEstadoInterno)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_estado_interno");
+            entity.Property(e => e.IdProveedor)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_proveedor");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Observaciones).HasMaxLength(255);
+            entity.Property(e => e.Remito)
+                .HasMaxLength(255)
+                .HasColumnName("remito");
+
+            entity.HasOne(d => d.IdAceriaNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdAceria)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_aceria");
+
+            entity.HasOne(d => d.IdAcopladoNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdAcoplado)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_acoplado_interno");
+
+            entity.HasOne(d => d.IdCamionNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdCamion)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_camion");
+
+            entity.HasOne(d => d.IdContratoNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdContrato)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_contrato");
+
+            entity.HasOne(d => d.IdDireccionProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdDireccionProveedor)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_direccion_proveedor");
+
+            entity.HasOne(d => d.IdEstadoInternoNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdEstadoInterno)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_estado_interno");
+
+            entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
+                .HasForeignKey(d => d.IdProveedor)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_proveedor_interno");
+        });
+
         modelBuilder.Entity<JuncalOrdenMarterial>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -545,6 +653,76 @@ public partial class JuncalContext : DbContext
                 .HasConstraintName("fk_orden_marterial_orden");
         });
 
+        modelBuilder.Entity<JuncalOrdenMaterialInternoRecibido>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.orden_material_interno_recibido");
+
+            entity.HasIndex(e => e.IdMaterial, "fk_id_material_interno_recibido");
+
+            entity.HasIndex(e => e.IdOrdenInterno, "fk_id_orden_interno_recibido");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.IdMaterial)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_material");
+            entity.Property(e => e.IdOrdenInterno)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_orden_interno");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Peso)
+                .HasPrecision(10)
+                .HasColumnName("peso");
+
+            entity.HasOne(d => d.IdMaterialNavigation).WithMany(p => p.JuncalOrdenMaterialInternoRecibidos)
+                .HasForeignKey(d => d.IdMaterial)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_material_interno_recibido");
+
+            entity.HasOne(d => d.IdOrdenInternoNavigation).WithMany(p => p.JuncalOrdenMaterialInternoRecibidos)
+                .HasForeignKey(d => d.IdOrdenInterno)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_orden_interno_recibido");
+        });
+
+        modelBuilder.Entity<JuncalOrdenMaterialInternoRecogido>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.orden_material_interno_recogido");
+
+            entity.HasIndex(e => e.IdMaterial, "fk_id_material_interno");
+
+            entity.HasIndex(e => e.IdOrdenInterno, "fk_id_orden_interno");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.IdMaterial)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_material");
+            entity.Property(e => e.IdOrdenInterno)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_orden_interno");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Peso)
+                .HasPrecision(10)
+                .HasColumnName("peso");
+
+            entity.HasOne(d => d.IdMaterialNavigation).WithMany(p => p.JuncalOrdenMaterialInternoRecogidos)
+                .HasForeignKey(d => d.IdMaterial)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_material_interno");
+
+            entity.HasOne(d => d.IdOrdenInternoNavigation).WithMany(p => p.JuncalOrdenMaterialInternoRecogidos)
+                .HasForeignKey(d => d.IdOrdenInterno)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_id_orden_interno");
+        });
+
         modelBuilder.Entity<JuncalProveedor>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -561,51 +739,6 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Origen)
                 .HasMaxLength(255)
                 .HasColumnName("origen");
-        });
-
-        modelBuilder.Entity<JuncalRemitoHistorial>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("juncal.remito.historial");
-
-            entity.Property(e => e.Id)
-                .HasColumnType("int(11)")
-                .HasColumnName("id");
-            entity.Property(e => e.Aceria)
-                .HasMaxLength(255)
-                .HasColumnName("aceria");
-            entity.Property(e => e.Acoplado)
-                .HasMaxLength(255)
-                .HasColumnName("acoplado");
-            entity.Property(e => e.Camion)
-                .HasMaxLength(255)
-                .HasColumnName("camion");
-            entity.Property(e => e.Contrato)
-                .HasMaxLength(255)
-                .HasColumnName("contrato");
-            entity.Property(e => e.DireccionProveedor)
-                .HasMaxLength(255)
-                .HasColumnName("direccion_proveedor");
-            entity.Property(e => e.Estado)
-                .HasMaxLength(255)
-                .HasColumnName("estado");
-            entity.Property(e => e.Fecha)
-                .HasMaxLength(255)
-                .HasColumnName("fecha");
-            entity.Property(e => e.FechaGenerado).HasColumnName("fecha_generado");
-            entity.Property(e => e.IdOrden)
-                .HasColumnType("int(11)")
-                .HasColumnName("idOrden");
-            entity.Property(e => e.Observaciones)
-                .HasMaxLength(255)
-                .HasColumnName("observaciones");
-            entity.Property(e => e.Proveedor)
-                .HasMaxLength(255)
-                .HasColumnName("proveedor");
-            entity.Property(e => e.Remito)
-                .HasMaxLength(255)
-                .HasColumnName("remito");
         });
 
         modelBuilder.Entity<JuncalRole>(entity =>

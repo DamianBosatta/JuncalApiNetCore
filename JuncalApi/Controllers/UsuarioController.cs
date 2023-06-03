@@ -84,9 +84,7 @@ namespace JuncalApi.Controllers
                 }
 
                 string token = _servicio.CreateToken(usuario,expiraToken);
-                var refreshToken = _servicio.GenerateRefreshToken(expiraToken);
-                var cookieOptions = _servicio.SetRefreshToken(usuario, refreshToken);
-                Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+               
 
 
 
@@ -111,41 +109,7 @@ namespace JuncalApi.Controllers
             return Ok(new { success = false, message = "No Se Encontro El Usuario", result = loginRespuesta.Token });
         }
 
-        [HttpPost("refresh-token") ,Authorize]
-        public async Task<ActionResult<string>> RefreshToken(int idUser, bool logout)
-        {
-            var user = _uow.RepositorioJuncalUsuario.GetById(idUser);
-
-
-            DateTime expiraToken = DateTime.Now;
-
-           expiraToken = logout is true ? expiraToken = DateTime.Now.AddMinutes(1) : expiraToken = DateTime.Now.AddHours(1);
-
-
-            if(user is null)
-            {
-                return Ok(new { success = false, message = "No Se Encontro El Usuario", result = new UsuarioRespuesta() });
-            }
-
-
-            var refreshToken = Request.Cookies["refreshToken"];
-
-            if (!user.RefreshToken.Equals(refreshToken))
-            {
-                return Unauthorized("Invalid Refresh Token.");
-            }
-            else if (user.TokenExpires < DateTime.Now)
-            {
-                return Unauthorized("Token expired.");
-            }
-
-            string token = _servicio.CreateToken(user,expiraToken);
-            var refreshTokenNew = _servicio.GenerateRefreshToken(expiraToken);
-            var cookieOptions = _servicio.SetRefreshToken(user, refreshTokenNew);
-            Response.Cookies.Append("refreshToken", refreshTokenNew.Token, cookieOptions);
-
-            return Ok(token);
-        }
+    
 
 
         [HttpPut("{id}"),Authorize]

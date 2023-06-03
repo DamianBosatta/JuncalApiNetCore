@@ -17,5 +17,7 @@ public partial class JuncalProveedor
 
     public virtual ICollection<JuncalMaterialProveedor> JuncalMaterialProveedors { get; } = new List<JuncalMaterialProveedor>();
 
+    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
+
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

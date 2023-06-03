@@ -19,5 +19,7 @@ public partial class JuncalAcoplado
 
     public virtual JuncalTipoAcoplado IdTipoNavigation { get; set; } = null!;
 
+    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
+
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

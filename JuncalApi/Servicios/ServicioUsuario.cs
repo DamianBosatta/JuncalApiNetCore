@@ -103,46 +103,6 @@ namespace JuncalApi.Servicios
 
 
 
-        public RefreshToken GenerateRefreshToken(DateTime expiraToken)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                Expires = expiraToken,
-                Created = DateTime.Now
-            };
-
-            return refreshToken;
-        }
-
-
-        public CookieOptions SetRefreshToken(JuncalUsuario user, RefreshToken newRefreshToken)
-        {
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = newRefreshToken.Expires
-            };
-
-            user.RefreshToken = newRefreshToken.Token;
-            user.TokenCreated = newRefreshToken.Created;
-            user.TokenExpires = newRefreshToken.Expires;
-            if(user.RefreshToken ==  string.Empty || user.TokenExpires is null)
-            {
-                _uow.RepositorioJuncalUsuario.Insert(user);
-            }
-            else
-            {
-                _uow.RepositorioJuncalUsuario.Update(user);
-
-            }
-            
-
-            return cookieOptions;
-        }
-
-
-
         public void CreatePasswordhHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using(var hmac = new HMACSHA512())

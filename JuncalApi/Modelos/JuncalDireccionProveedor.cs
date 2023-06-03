@@ -15,5 +15,7 @@ public partial class JuncalDireccionProveedor
 
     public virtual JuncalProveedor IdProveedorNavigation { get; set; } = null!;
 
+    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
+
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

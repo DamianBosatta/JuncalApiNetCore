@@ -5,9 +5,9 @@ namespace JuncalApi.Modelos;
 
 public partial class JuncalCamion
 {
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
-    public string? Patente { get; set; } = null!;
+    public string Patente { get; set; } = null!;
 
     public string? Marca { get; set; }
 
@@ -28,6 +28,8 @@ public partial class JuncalCamion
     public virtual JuncalTipoCamion? IdTipoCamionNavigation { get; set; }
 
     public virtual JuncalTransportistum? IdTransportistaNavigation { get; set; }
+
+    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
 
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

@@ -27,5 +27,7 @@ public partial class JuncalContrato
 
     public virtual ICollection<JuncalContratoItem> JuncalContratoItems { get; } = new List<JuncalContratoItem>();
 
+    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
+
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 }

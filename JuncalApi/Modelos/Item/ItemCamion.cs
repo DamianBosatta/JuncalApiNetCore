@@ -25,7 +25,7 @@ namespace JuncalApi.Modelos.Item
         TipoCamion = pTipoCamion;             
         }
 
-        public int Id { get { return (int)(Camion is null ? 0 : Camion.Id is null ? 0 : Camion.Id); } }
+        public int Id { get { return Camion is null ? 0 : (int)Camion.Id; } }
 
         public string Patente { get {return Camion is null ? string.Empty:Camion.Patente is null ? string.Empty:Camion.Patente;} }
 

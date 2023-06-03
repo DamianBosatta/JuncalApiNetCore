@@ -31,9 +31,11 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalUsuario=new RepositorioJuncalUsuario(context); 
             this.RepositorioJuncalTipoCamion= new RepositorioJuncalTipoCamion(context);
             this.RepositorioJuncalSucursal=new RepositorioJuncalSucursal(context);
-            this.RepositorioJuncalDireccionProveedor = new RepositorioJuncalDireccionProveedores(context);
-            this.RepositorioJuncalRemitoHistorial=new RepositorioJuncalRemitoHistorial(context);
+            this.RepositorioJuncalDireccionProveedor = new RepositorioJuncalDireccionProveedores(context);           
             this.RepositorioJuncalTipoAcoplado = new RepositorioJuncalTipoAcoplado(context);
+            this.RepositorioJuncalOrdenInterno=new RepositorioJuncalOrdenInterno(context);
+            this.RepositorioJuncalOrdenMaterialInternoRecibido=new RepositorioJuncalOrdenMaterialInternoRecibido(context);
+            this.RepositorioJuncalOrdenMaterialInternoRecogido= new RepositorioJuncalOrdenMaterialInternoRecogido(context);
 
         } 
 
@@ -90,10 +92,14 @@ namespace JuncalApi.UnidadDeTrabajo
         public IRepositorioJuncalSucursal RepositorioJuncalSucursal { get; private set; }
 
         public IRepositorioJuncalDireccionProveedor RepositorioJuncalDireccionProveedor { get; private set; }
-
-        public IRepositorioJuncalRemitoHistorial RepositorioJuncalRemitoHistorial { get; private set; }
-
+   
         public IRepositorioJuncalTipoAcoplado RepositorioJuncalTipoAcoplado { get; private set; }
+
+        public IRepositorioJuncalOrdenInterno RepositorioJuncalOrdenInterno { get; private set; }
+
+        public IRepositorioJuncalOrdenMaterialInternoRecibido RepositorioJuncalOrdenMaterialInternoRecibido { get; private set; }
+
+        public IRepositorioJuncalOrdenMaterialInternoRecogido RepositorioJuncalOrdenMaterialInternoRecogido { get; private set; }
 
         public void Dispose()
         {
