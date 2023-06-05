@@ -7,7 +7,10 @@ namespace JuncalApi.Modelos;
     [NotMapped]
      public string TipoAcoplado { get; set; }
 
-    public JuncalAcoplado() { }
+    public JuncalAcoplado() 
+    { 
+    Isdeleted = false;
+    }
 
     public JuncalAcoplado(int pId,string pPatente,string pMarca, string pAño,int pIdTipo):this()
     {

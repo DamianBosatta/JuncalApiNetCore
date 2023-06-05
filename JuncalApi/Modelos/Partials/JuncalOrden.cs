@@ -32,7 +32,11 @@ public partial class JuncalOrden
     public string DireccionProveedor { get; set; }
 
 
-    public JuncalOrden() { }
+    public JuncalOrden() 
+    {
+        Isdeleted = false;
+    
+    }
 
 
     public JuncalOrden(int pId,int pIdAceria,int pIdContrato,string pRemito,int pIdCamion,int pIdEstado,

@@ -44,7 +44,7 @@ namespace JuncalApi.Servicios
 
             CreatePasswordhHash(userReq.Password, out byte[] passwordHash, out byte[] passwordSalt);
             user.Usuario=userReq.Usuario;
-            user.Dni = userReq.Dni;
+            user.Dni = (int)userReq.Dni;
             user.Nombre=userReq.Nombre;
             user.Apellido = userReq.Apellido;
             user.IdRol=2;

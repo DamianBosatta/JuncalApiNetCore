@@ -4,13 +4,12 @@ using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OfficeOpenXml;
+
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenController : Controller
@@ -48,11 +47,7 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarOrdenes([FromBody] OrdenRequerido ordenReq)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.IdAceria == ordenReq.IdAceria
-            && c.IdCamion == ordenReq.IdCamion
-            && c.IdContrato == ordenReq.IdContrato
-            && c.IdProveedor == ordenReq.IdProveedor
-            && c.Isdeleted == false);
+            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.Isdeleted==false);
 
             if (orden is null)
             {

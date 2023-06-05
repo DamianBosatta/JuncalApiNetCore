@@ -4,10 +4,14 @@ namespace JuncalApi.Modelos;
 
     public partial class JuncalAceriaMaterial
     {
+    
     [NotMapped]
     public string MaterialDescripcion { get; set; }
 
-    public JuncalAceriaMaterial() { }
+    public JuncalAceriaMaterial() 
+    {
+      Isdeleted = false;    
+    }
 
     public JuncalAceriaMaterial(int pId,string pNombre,int pIdAceria,int pIdMaterial,string pCod)
     :this()
@@ -24,8 +28,5 @@ namespace JuncalApi.Modelos;
     {
         MaterialDescripcion = pMaterialDescripcion;
     }
-
-
-
-    }
+  }
 

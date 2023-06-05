@@ -7,7 +7,11 @@ namespace JuncalApi.Modelos;
     [NotMapped]
     public string NombreAceria { get; set; }
 
-    public JuncalContrato() { }
+    public JuncalContrato() 
+    { 
+    Isdeleted = false;
+    
+    }
 
 
     public JuncalContrato(int pId, string pNombre,string pNumero,DateTime pFechaVigencia, 

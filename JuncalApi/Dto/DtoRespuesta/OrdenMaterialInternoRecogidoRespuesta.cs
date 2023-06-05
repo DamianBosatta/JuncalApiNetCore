@@ -10,5 +10,7 @@
 
         public decimal Peso { get; set; }
 
+        public string? NombreMaterial { get; set; }
+
     }
 }

@@ -23,12 +23,12 @@ namespace JuncalApi.Controllers
             _mapper = mapper;
             _uow = uow;
         }
-
+        [Route("Lista Materiales/{idOrdenInterna}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrdenMaterialInternoRecogidoRespuesta>>> GetOrdenMateriales(int idOrdenInterno)
+        public async Task<ActionResult<IEnumerable<OrdenMaterialInternoRecogidoRespuesta>>> GetOrdenMaterialesInternoRecogido(int idOrdenInterno)
         {
 
-            var ListaOrdenMateriales = _uow.RepositorioJuncalOrdenMaterialInternoRecogido.GetAllByCondition(c => c.IdOrdenInterno == idOrdenInterno && c.Isdeleted == false).ToList();
+            var ListaOrdenMateriales = _uow.RepositorioJuncalOrdenMaterialInternoRecogido.listaMaterialesRecogidos(idOrdenInterno);
 
             if (ListaOrdenMateriales.Count() > 0)
             {

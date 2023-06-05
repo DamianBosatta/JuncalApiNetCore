@@ -7,7 +7,10 @@ public partial class JuncalAcerium
     [NotMapped]
     public string NombreAceria { get; set; }
 
-    public JuncalAcerium() { }
+    public JuncalAcerium() 
+    { 
+    Isdeleted = false;
+    }
 
     public JuncalAcerium(int pId, string pNombre, string pDireccion, string pCuit, string pCodProveedor)
     :this()

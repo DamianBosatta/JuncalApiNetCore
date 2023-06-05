@@ -7,7 +7,10 @@ namespace JuncalApi.Modelos;
     [NotMapped]
     public string MaterialDescripcion { get; set; }
 
-    public JuncalContratoItem() { }
+    public JuncalContratoItem() 
+    { 
+    Isdeleted = false;
+    }
 
 
     public JuncalContratoItem(int pId,int pIdContrato,int pIdMaterial,decimal pPrecio):this()

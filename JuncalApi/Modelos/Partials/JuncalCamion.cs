@@ -15,7 +15,10 @@ namespace JuncalApi.Modelos;
     [NotMapped]
     public string DescripcionTipoCamion { get; set; }
 
-    public JuncalCamion() { }
+    public JuncalCamion() 
+    { 
+    Isdeleted = false;
+    }
 
     public JuncalCamion(int pId,string pPatente,string pMarca,int pTara,int pIdChofer,int pIdTransportista,
         int pIdInterno,int pIdTipoCamion): this()
