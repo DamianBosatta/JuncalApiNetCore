@@ -2,7 +2,7 @@
 {
     public class OrdenMaterialRequerido
     {  
-        public int? Id { get; set; }
+        public int Id { get; set; }
         
         public int? IdOrden { get; set; }
 
@@ -10,7 +10,7 @@
 
         public decimal? Peso { get; set; }
 
-        public OrdenMaterialRequerido(int? _id,int? idOrden, int? idMaterial, decimal? peso)
+        public OrdenMaterialRequerido(int _id,int? idOrden, int? idMaterial, decimal? peso)
         {
             Id= _id ;
             IdOrden = idOrden ==0? null:idOrden;
