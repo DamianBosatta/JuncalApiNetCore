@@ -12,7 +12,7 @@
 
         public OrdenMaterialRequerido(int? _id,int? idOrden, int? idMaterial, decimal? peso)
         {
-            Id= _id == 0 ? null:_id;
+            Id= _id ;
             IdOrden = idOrden ==0? null:idOrden;
             IdMaterial = idMaterial==0?null:idMaterial;
             Peso = peso is null ? 0 : peso;
