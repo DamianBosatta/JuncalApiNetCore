@@ -44,9 +44,10 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarOrdenMaterial([FromBody] List<OrdenMaterialInternoRecibidoRequerido> listOrdenMaterialReq)
         {
-            JuncalOrdenMaterialInternoRecibido ordenMaterialNuevo = new();
+            
             foreach (var item in listOrdenMaterialReq)
             {
+                JuncalOrdenMaterialInternoRecibido ordenMaterialNuevo = new();
                 ordenMaterialNuevo = _mapper.Map<JuncalOrdenMaterialInternoRecibido>(item);
                 _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Insert(ordenMaterialNuevo);
 
@@ -62,6 +63,8 @@ namespace JuncalApi.Controllers
 
 
         }
+
+
 
 
         [Route("Borrar/{id?}")]

@@ -4,12 +4,13 @@ using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace JuncalApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenController : Controller
@@ -47,7 +48,7 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarOrdenes([FromBody] OrdenRequerido ordenReq)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.Isdeleted==false);
+            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.Remito==ordenReq.Remito);
 
             if (orden is null)
             {
@@ -59,7 +60,7 @@ namespace JuncalApi.Controllers
             }
             OrdenRespuesta ordenExiste = new();
             _mapper.Map(orden, ordenExiste);
-            return Ok(new { success = false, message = " La Orden Ya Esta Cargada ", result = ordenExiste });
+            return Ok(new { success = false, message = " Ya esta Cargado Ese Numero De Remito ", result = ordenExiste });
 
         }
 

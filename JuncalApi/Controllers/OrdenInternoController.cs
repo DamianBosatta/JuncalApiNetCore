@@ -26,7 +26,7 @@ namespace JuncalApi.Controllers
         }
 
 
-
+        [Route("TodosLosRemitos/")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
         {
@@ -66,11 +66,7 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarOrdenes([FromBody] OrdenInternaRequerida ordenReq)
         {
-            var orden = _uow.RepositorioJuncalOrdenInterno.GetByCondition(c => c.IdAceria == ordenReq.IdAceria
-            && c.IdCamion == ordenReq.IdCamion
-            && c.IdContrato == ordenReq.IdContrato
-            && c.IdProveedor == ordenReq.IdProveedor
-            && c.Isdeleted == false);
+            var orden = _uow.RepositorioJuncalOrdenInterno.GetByCondition(c => c.Remito==ordenReq.Remito);
 
             if (orden is null)
             {
@@ -82,7 +78,7 @@ namespace JuncalApi.Controllers
             }
             OrdenInternaResponse ordenExiste = new();
             _mapper.Map(orden, ordenExiste);
-            return Ok(new { success = false, message = " La Orden Ya Esta Cargada ", result = ordenExiste });
+            return Ok(new { success = false, message = " Ya Hay Esta Cargado Ese Numero De Remito ", result = ordenExiste });
 
         }
 
