@@ -43,6 +43,24 @@ namespace JuncalApi.Controllers
 
 
         }
+        [Route("MaterialesRecogidos/")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenesRecogidos()
+        {
+
+            var ListaOrdenes = _uow.RepositorioJuncalOrdenInterno.GetAllRemitos().Where(a=> a.IdEstado==2).ToList();
+
+            if (ListaOrdenes.Count() > 0)
+            {
+                List<RemitoResponse> listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(ListaOrdenes);
+                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
+
+            }
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoResponse>() == null });
+
+
+        }
+
 
 
         [HttpPost]
@@ -92,18 +110,18 @@ namespace JuncalApi.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> EditOrden(int id, OrdenRequerido ordenEdit)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetById(id);
+            var orden = _uow.RepositorioJuncalOrdenInterno.GetById(id);
 
             if (orden != null && orden.Isdeleted == false)
             {
                 _mapper.Map(ordenEdit, orden);
-                _uow.RepositorioJuncalOrden.Update(orden);
+                _uow.RepositorioJuncalOrdenInterno.Update(orden);
                 OrdenRespuesta ordenRes = new();
                 _mapper.Map(orden, ordenRes);
                 return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
             }
 
-            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenRespuesta() == null });
+            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenInternaResponse() == null });
 
 
         }

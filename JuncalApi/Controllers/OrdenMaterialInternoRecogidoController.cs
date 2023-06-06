@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenMaterialInternoRecogidoController : Controller
@@ -23,7 +23,7 @@ namespace JuncalApi.Controllers
             _mapper = mapper;
             _uow = uow;
         }
-        [Route("Lista Materiales/{idOrdenInterna}")]
+        [Route("Lista Materiales Recogidos")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrdenMaterialInternoRecogidoRespuesta>>> GetOrdenMaterialesInternoRecogido(int idOrdenInterno)
         {

@@ -120,7 +120,7 @@ namespace JuncalApi.Mapper
             #endregion
 
             #region ORDEN MATERIAL INTERNO RECOGIDO
-            CreateMap<OrdenMaterialInternoRecibidoRequerido, JuncalOrdenMaterialInternoRecogido>();
+            CreateMap<OrdenMaterialInternoRecogidoRequerido, JuncalOrdenMaterialInternoRecogido>();
             CreateMap<JuncalOrdenMaterialInternoRecogido, OrdenMaterialInternoRecogidoRespuesta>();
             #endregion
             
