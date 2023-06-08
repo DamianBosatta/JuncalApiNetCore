@@ -23,7 +23,7 @@ namespace JuncalApi.Controllers
             _mapper = mapper;
             _uow = uow;
         }
-        [Route("Lista Materiales Recogidos")]
+        [Route("listaMateriales")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrdenMaterialInternoRecogidoRespuesta>>> GetOrdenMaterialesInternoRecogido(int idOrdenInterno)
         {

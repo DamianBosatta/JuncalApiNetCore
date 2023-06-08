@@ -22,7 +22,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             foreach(var q in query)
             {
-                listaOrdenInterna.Add(new JuncalOrdenMaterialInternoRecogido(q.materialRecogido.IdOrdenInterno,
+                listaOrdenInterna.Add(new JuncalOrdenMaterialInternoRecogido(q.materialRecogido.Id,q.materialRecogido.IdOrdenInterno,
                 q.materialRecogido.IdMaterial, q.materialRecogido.Peso, q.material.Nombre));
 
 
