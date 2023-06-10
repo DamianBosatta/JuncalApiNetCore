@@ -1,4 +1,6 @@
-﻿using JuncalApi.Dto.DtoExcel;
+﻿using AutoMapper;
+using JuncalApi.Dto.DtoExcel;
+using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
@@ -8,6 +10,16 @@ namespace JuncalApi.Controllers
     [ApiController]
     public class ExcelController : Controller
     {
+
+        private readonly IUnidadDeTrabajo _uow;
+        private readonly IMapper _mapper;
+
+        public ExcelController(IUnidadDeTrabajo uow, IMapper mapper)
+        {
+
+            _mapper = mapper;
+            _uow = uow;
+        }
 
         [HttpPost("map")]
         public IActionResult MapExcel(IFormFile file)
@@ -45,6 +57,7 @@ namespace JuncalApi.Controllers
                         KgDescuento = worksheet.Cells[row, 18].Value?.ToString(),
                         Descuento = worksheet.Cells[row, 19].Value?.ToString(),
                         KgDescargados = worksheet.Cells[row, 20].Value?.ToString(),
+                        NombreMaterialJuncal =_uow.RepositorioJuncalAceriaMaterial.NombreMaterial(7, worksheet.Cells[row, 7].Value?.ToString().TrimStart('0'))
                         // Mapea las propiedades adicionales según la estructura de tu archivo Excel
                     };
 
