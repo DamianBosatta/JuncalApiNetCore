@@ -1,6 +1,8 @@
 using JuncalApi.Controllers;
 using JuncalApi.DataBase;
 using JuncalApi.Servicios;
+using JuncalApi.Servicios.Excel;
+using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,8 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajo>();
 builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
+builder.Services.AddScoped<IServiceRemito,ServiceRemito>();
+builder.Services.AddScoped<IServicioExcel, ServicioExcel>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

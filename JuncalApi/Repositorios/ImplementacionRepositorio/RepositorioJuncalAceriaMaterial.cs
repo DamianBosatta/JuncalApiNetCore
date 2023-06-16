@@ -33,27 +33,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return respuesta;
         }
 
-        public string NombreMaterial(int idAceria, string CodigoMaterial)
-        {
-            var material = _db.JuncalAceriaMaterials
-           .FirstOrDefault(a => a.Cod == CodigoMaterial && a.IdAceria == idAceria);
-
-            if (material != null)
-            {
-                PropertyInfo nombreProperty = material.GetType().GetProperty("Nombre");
-                if (nombreProperty != null)
-                {
-                    var nombreValue = nombreProperty.GetValue(material);
-                    if (nombreValue != null)
-                    {
-                        return nombreValue.ToString();
-                    }
-                }
-            }
-
-            return string.Empty;
-
-
-        }
+      
     }
 }

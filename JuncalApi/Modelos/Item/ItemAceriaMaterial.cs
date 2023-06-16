@@ -7,6 +7,7 @@
 
         public JuncalMaterial Material { get; set; }
 
+      
 
         public ItemAceriaMaterial() { }
 

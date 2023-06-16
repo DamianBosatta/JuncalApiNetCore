@@ -7,7 +7,6 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
     {
         public List<ItemAceriaMaterial> GetAceriaMaterialesForId(int idAceria);
 
-        public string NombreMaterial(int idAceria, string CodigoMaterial);
-     
+
     }
 }
