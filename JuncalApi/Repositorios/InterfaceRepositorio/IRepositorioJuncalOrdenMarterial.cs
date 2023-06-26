@@ -6,6 +6,6 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
     public interface IRepositorioJuncalOrdenMarterial:IRepositorioGenerico<JuncalOrdenMarterial>
     {
 
-        public ItemDataMateriales DataMaterial(int idAceria, int idOrden, string codigoMateria);
+        public List<ItemDataMateriales> DataMaterial(int idAceria, List<string> remito);
     }
 }

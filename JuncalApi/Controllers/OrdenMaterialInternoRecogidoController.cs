@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
- 
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenMaterialInternoRecogidoController : Controller

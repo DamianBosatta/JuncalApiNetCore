@@ -3,6 +3,7 @@ using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
+using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,14 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly IServiceRemito _serviceRemito; 
 
-        public OrdenController(IUnidadDeTrabajo uow, IMapper mapper)
+        public OrdenController(IUnidadDeTrabajo uow, IMapper mapper,IServiceRemito serviceRemito)
         {
 
             _mapper = mapper;
             _uow = uow;
+            _serviceRemito = serviceRemito; 
         }
 
 
@@ -31,15 +34,16 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
         {
 
-            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetAllRemitos().ToList();
+            var ListaOrdenes = _serviceRemito.GetRemitos(0);
 
             if (ListaOrdenes.Count() > 0)
             {
-                List<RemitoResponse> listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(ListaOrdenes);
-                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
+               
+                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenes });
 
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoResponse>() == null });
+           
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenes});
 
 
         }
@@ -103,25 +107,18 @@ namespace JuncalApi.Controllers
 
 
         }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetRemitoById(int id)
+     
+        [HttpGet("api/remitos/{idOrden}")]
+        public async Task<IActionResult> GetRemitoById(int idOrden)
         {
-
-            ItemRemito orden = _uow.RepositorioJuncalOrden.GetRemito(id);
+            var orden = await Task.Run(() => _serviceRemito.GetRemitos(idOrden));
 
             if (orden != null)
             {
-                RemitoResponse response = new RemitoResponse();
-                _mapper.Map(orden,response);
-
-                return Ok(new { success = true, message = "Response Confirmado", result = response });
-
+                return Ok(new { success = true, message = "Response Confirmado", result = orden });
             }
 
-
-            return Ok(new { success = false, message = "No Se Encontro Remito", result = new RemitoResponse() });
-
+            return Ok(new { success = false, message = "No Se Encontro Remito", result = orden });
         }
 
 

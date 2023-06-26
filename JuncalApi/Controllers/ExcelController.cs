@@ -3,11 +3,13 @@ using JuncalApi.Dto.DtoExcel;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Servicios.Excel;
 using JuncalApi.UnidadDeTrabajo;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 
 namespace JuncalApi.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExcelController : Controller
@@ -29,7 +31,7 @@ namespace JuncalApi.Controllers
         public IActionResult MapExcel(IFormFile file,int idAceria)
         {
 
-           var listaMapeada = _excel.GetExcel(file, idAceria).ToList();
+           var listaMapeada = _excel.GetExcel(file, idAceria).OrderBy(a=>a.IdOrden).ToList();
 
             if (listaMapeada.Count() > 0)
             {

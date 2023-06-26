@@ -14,34 +14,36 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         }
 
 
-        public List<ItemCamion> GetAllCamiones()
+        public List<JuncalCamion> GetCamiones()
         {
-            var query = from camion in _db.JuncalCamions.Where(a=>a.Isdeleted==false)
+            var query = (from camion in _db.JuncalCamions.Where(a=>a.Isdeleted==false)
                         join chofer in _db.JuncalChofers.Where(a=>a.Isdeleted==false)
                         on camion.IdChofer equals chofer.Id into JoinChofer
-                        from chofer in JoinChofer.DefaultIfEmpty()
+                        from jchofer in JoinChofer.DefaultIfEmpty()
                         join transportista in _db.JuncalTransportista.Where(a=>a.Isdeleted==false)
                         on camion.IdTransportista equals transportista.Id into JoinTransportista
-                        from transportista in JoinTransportista.DefaultIfEmpty()
+                        from jtransportista in JoinTransportista.DefaultIfEmpty()
                         join tipoCamion in _db.JuncalTipoCamions 
                         on camion.IdTipoCamion equals tipoCamion.Id into JoinTipoCamion
-                        from tipoCamion in JoinTipoCamion.DefaultIfEmpty()
-                        select new
+                        from jtipoCamion in JoinTipoCamion.DefaultIfEmpty()
+                        select new JuncalCamion
                         {
-                            camion,JoinChofer=chofer,JoinTransportista=transportista, JoinTipoCamion=tipoCamion
+                           Id=camion.Id,
+                           Patente=camion.Patente,
+                           Marca=camion.Marca,
+                           Tara=camion.Tara,
+                           IdChofer=camion.IdChofer,
+                           IdTransportista=camion.IdTransportista,
+                           IdInterno=camion.IdInterno,
+                           IdTipoCamion=camion.IdTipoCamion,
+                           NombreChofer=jchofer.Nombre,
+                           NombreTransportista=jtransportista.Nombre,
+                           DescripcionTipoCamion=jtipoCamion.Nombre
                         
-                        };
+                        });
+       
 
-            
-
-            var listaQuery = new List<ItemCamion>();
-
-            foreach (var q in query)
-            {
-                listaQuery.Add(new ItemCamion(q.camion, q.JoinChofer, q.JoinTransportista, q.JoinTipoCamion));
-            }
-
-            return listaQuery;
+            return query.ToList();
 
         }
     }

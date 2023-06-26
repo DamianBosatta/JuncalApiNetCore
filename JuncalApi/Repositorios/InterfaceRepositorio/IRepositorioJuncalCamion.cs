@@ -5,7 +5,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalCamion:IRepositorioGenerico<JuncalCamion>
     {
-        public List<ItemCamion> GetAllCamiones();
+        public List<JuncalCamion> GetCamiones();
     }
 
    

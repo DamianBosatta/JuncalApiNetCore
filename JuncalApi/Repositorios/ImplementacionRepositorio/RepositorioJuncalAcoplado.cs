@@ -11,23 +11,25 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
         }
 
-        public List<ItemAcoplado> GetAcoplados()
+        public List<JuncalAcoplado> GetAcoplados()
         {
-            var query = from acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false)
+           
+
+            var query = (from acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false)
                         join tipoAcoplado in _db.JuncalTipoAcoplados
                         on acoplado.IdTipo equals tipoAcoplado.Id
-                        select new { acoplado, tipoAcoplado };
+                        select new JuncalAcoplado{ 
+                        Id=acoplado.Id,
+                        Patente=acoplado.Patente,
+                        Marca=acoplado.Marca,
+                        Año=acoplado.Año,
+                        IdTipo=acoplado.IdTipo,
+                        TipoAcoplado=tipoAcoplado.Nombre                        
+                        
+                        });
 
-            List<ItemAcoplado> listaAcoplados = new List<ItemAcoplado>();
-
-            foreach (var q in query)
-            {
-                listaAcoplados.Add(new ItemAcoplado(q.acoplado, q.tipoAcoplado));
-
-
-            }
-
-            return listaAcoplados;
+     
+            return query.ToList();
 
         }
     }

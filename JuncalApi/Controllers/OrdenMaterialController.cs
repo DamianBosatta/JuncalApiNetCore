@@ -30,6 +30,7 @@ namespace JuncalApi.Controllers
 
             var ListaOrdenMateriales = _uow.RepositorioJuncalOrdenMarterial.GetAllByCondition(c => c.IdOrden == idOrden && c.Isdeleted == false).ToList();
 
+          
             if (ListaOrdenMateriales.Count() > 0)
             {
                 List<OrdenMaterialRespuesta> listaOrdenMaterialRespuesta = _mapper.Map<List<OrdenMaterialRespuesta>>(ListaOrdenMateriales);

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using JuncalApi.Dto.DtoRespuesta;
+using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 
 namespace JuncalApi.Servicios.Remito
@@ -15,7 +17,23 @@ namespace JuncalApi.Servicios.Remito
 
         }
 
+        public List<RemitoResponse> GetRemitos(int idOrden)
+        {
+            List<RemitoResponse> listaOrdenesRespuesta= new List<RemitoResponse>();
 
+            var remitos = _uow.RepositorioJuncalOrden.GetRemito(idOrden);
+
+            if(remitos.Count>0||remitos!=null)
+            {
+                 listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(remitos);
+
+            }
+
+
+            return listaOrdenesRespuesta;
+
+
+        }
 
 
 

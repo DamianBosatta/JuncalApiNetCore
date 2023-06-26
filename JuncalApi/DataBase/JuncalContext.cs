@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
 
+
+
 namespace JuncalApi.DataBase;
 
 public partial class JuncalContext : DbContext
@@ -36,6 +38,8 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalEstadosInterno> JuncalEstadosInternos { get; set; }
 
+    public virtual DbSet<JuncalExcelConfig> JuncalExcelConfigs { get; set; }
+
     public virtual DbSet<JuncalMaterial> JuncalMaterials { get; set; }
 
     public virtual DbSet<JuncalMaterialProveedor> JuncalMaterialProveedors { get; set; }
@@ -65,8 +69,19 @@ public partial class JuncalContext : DbContext
     public virtual DbSet<JuncalUsuario> JuncalUsuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseMySql("server=sd-1812852-l.dattaweb.com;database=nicoales_nuevo;uid=nicoales_felix;pwd=Idra2023", ServerVersion.Parse("5.7.30-mysql"));
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            string? connectionString = configuration.GetConnectionString("JuncalApiDB");
+
+            optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
+        }
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -389,6 +404,33 @@ public partial class JuncalContext : DbContext
                 .HasColumnName("nombre");
         });
 
+        modelBuilder.Entity<JuncalExcelConfig>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.excel_config");
+
+            entity.Property(e => e.Id).HasColumnType("int(10)");
+            entity.Property(e => e.Bruto).HasColumnType("int(2)");
+            entity.Property(e => e.Descuento).HasColumnType("int(2)");
+            entity.Property(e => e.DescuentoDetalle)
+                .HasColumnType("int(2)")
+                .HasColumnName("Descuento_Detalle");
+            entity.Property(e => e.Fecha).HasColumnType("int(2)");
+            entity.Property(e => e.IdAceria)
+                .HasColumnType("int(10)")
+                .HasColumnName("Id_Aceria");
+            entity.Property(e => e.MaterialCodigo)
+                .HasColumnType("int(2)")
+                .HasColumnName("Material_Codigo");
+            entity.Property(e => e.MaterialNombre)
+                .HasColumnType("int(2)")
+                .HasColumnName("Material_Nombre");
+            entity.Property(e => e.Neto).HasColumnType("int(2)");
+            entity.Property(e => e.Remito).HasColumnType("int(2)");
+            entity.Property(e => e.Tara).HasColumnType("int(2)");
+        });
+
         modelBuilder.Entity<JuncalMaterial>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
@@ -589,22 +631,18 @@ public partial class JuncalContext : DbContext
 
             entity.HasOne(d => d.IdAcopladoNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdAcoplado)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_acoplado_interno");
 
             entity.HasOne(d => d.IdCamionNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdCamion)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_camion");
 
             entity.HasOne(d => d.IdContratoNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdContrato)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_contrato");
 
             entity.HasOne(d => d.IdDireccionProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdDireccionProveedor)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_direccion_proveedor");
 
             entity.HasOne(d => d.IdEstadoInternoNavigation).WithMany(p => p.JuncalOrdenInternos)
@@ -614,7 +652,6 @@ public partial class JuncalContext : DbContext
 
             entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdProveedor)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_proveedor_interno");
         });
 

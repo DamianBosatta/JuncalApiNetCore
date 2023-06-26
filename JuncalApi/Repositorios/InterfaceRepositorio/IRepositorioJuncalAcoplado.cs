@@ -5,7 +5,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalAcoplado:IRepositorioGenerico<JuncalAcoplado>
     {
-        public List<ItemAcoplado> GetAcoplados();
+        public List<JuncalAcoplado> GetAcoplados();
 
     }
 }

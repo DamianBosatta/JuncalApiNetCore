@@ -27,5 +27,6 @@ namespace JuncalApi.UnidadDeTrabajo
         IRepositorioJuncalOrdenInterno RepositorioJuncalOrdenInterno { get; }
         IRepositorioJuncalOrdenMaterialInternoRecibido RepositorioJuncalOrdenMaterialInternoRecibido { get; }
         IRepositorioJuncalOrdenMaterialInternoRecogido RepositorioJuncalOrdenMaterialInternoRecogido { get; }
+        IRepositorioJuncalExcelConfig RepositorioJuncalExcelConfig { get; }
     }
 }

@@ -33,7 +33,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<CamionRespuesta>>> GetCamiones()
         {
 
-            List<ItemCamion> ListaCamiones = _uow.RepositorioJuncalCamion.GetAllCamiones().ToList(); 
+            var ListaCamiones = _uow.RepositorioJuncalCamion.GetCamiones().ToList(); 
 
             if (ListaCamiones.Count() > 0)
             {

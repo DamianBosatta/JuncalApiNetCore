@@ -36,6 +36,8 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalOrdenInterno=new RepositorioJuncalOrdenInterno(context);
             this.RepositorioJuncalOrdenMaterialInternoRecibido=new RepositorioJuncalOrdenMaterialInternoRecibido(context);
             this.RepositorioJuncalOrdenMaterialInternoRecogido= new RepositorioJuncalOrdenMaterialInternoRecogido(context);
+            this.RepositorioJuncalExcelConfig=new RepositorioJuncalExcelConfig(context);
+           
 
         } 
 
@@ -100,6 +102,8 @@ namespace JuncalApi.UnidadDeTrabajo
         public IRepositorioJuncalOrdenMaterialInternoRecibido RepositorioJuncalOrdenMaterialInternoRecibido { get; private set; }
 
         public IRepositorioJuncalOrdenMaterialInternoRecogido RepositorioJuncalOrdenMaterialInternoRecogido { get; private set; }
+
+        public IRepositorioJuncalExcelConfig RepositorioJuncalExcelConfig { get; private set; }
 
         public void Dispose()
         {

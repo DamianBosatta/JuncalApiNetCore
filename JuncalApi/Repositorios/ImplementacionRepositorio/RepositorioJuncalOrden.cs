@@ -13,93 +13,65 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
         }
 
-        public ItemRemito GetRemito(int id)
+        public List<JuncalOrden>? GetRemito(int idOrden)
         {
-            var query = from _orden in _db.JuncalOrdens.Where(a => a.Id == id && a.Isdeleted ==false)
-                        join aceria in _db.JuncalAceria.Where(a=>a.Isdeleted==false) on _orden.IdAceria equals aceria.Id into JoinAceria
-                        from aceria in JoinAceria.DefaultIfEmpty()
-                        join contrato in _db.JuncalContratos.Where(a=>a.Isdeleted==false ) on _orden.IdContrato equals contrato.Id into JoinContrato
-                        from contrato in JoinContrato.DefaultIfEmpty()
-                        join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
-                        from camion in JoinCamion.DefaultIfEmpty()
-                        join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false) on camion.IdChofer equals chofer.Id into JoinChofer
-                        from chofer in JoinChofer.DefaultIfEmpty()
-                        join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on camion.IdTransportista equals transportista.Id into JoinTransportista
-                        from transportista in JoinTransportista.DefaultIfEmpty()
-                        join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
-                        from acoplado in JoinAcoplado.DefaultIfEmpty()
-                        join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
-                        from estado in JoinEstado.DefaultIfEmpty()
-                        join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
-                        from proveedor in JoinProveedor.DefaultIfEmpty()
-                        join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
-                        from direccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                        select new { _orden, JoinAceria = aceria, JoinContrato = contrato, JoinCamion = camion, JoinChofer = chofer, JoinTransportista = transportista, JoinAcoplado = acoplado, JoinEstado = estado, JoinProveedor = proveedor, JoinDireccionProveedor = direccionProveedor };
-
-            ItemRemito? remito = query.Select(result => new ItemRemito
-            {
-                RemitoOrden = result._orden,
-                Aceria = result.JoinAceria,
-                Contrato = result.JoinContrato,
-                Camion = result.JoinCamion,
-                Chofer = result.JoinChofer,
-                Transportista = result.JoinTransportista,
-                Acoplado = result.JoinAcoplado,
-                Estado = result.JoinEstado,
-                Proveedor = result.JoinProveedor,
-                DireccionProveedores = result.JoinDireccionProveedor
-
-
-            }).FirstOrDefault();
-
-            return remito;
-
-        }
-
-        public List<ItemRemito> GetAllRemitos() 
-        {
-            var query = from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
-                        join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
-                        from aceria in JoinAceria.DefaultIfEmpty()
-
-                        join contrato in _db.JuncalContratos.Where(a => a.Isdeleted == false) on _orden.IdContrato equals contrato.Id into JoinContrato
-                        from contrato in JoinContrato.DefaultIfEmpty()
-                        join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
-                        from camion in JoinCamion.DefaultIfEmpty()
-                        join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false) on camion.IdChofer equals chofer.Id into JoinChofer
-                        from chofer in JoinChofer.DefaultIfEmpty()
-                        join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on camion.IdTransportista equals transportista.Id into JoinTransportista
-                        from transportista in JoinTransportista.DefaultIfEmpty()
-                        join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
-                        from acoplado in JoinAcoplado.DefaultIfEmpty()
-                        join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
-                        from estado in JoinEstado.DefaultIfEmpty()
-                        join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
-                        from proveedor in JoinProveedor.DefaultIfEmpty()
-                        join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
-                        from direccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                        select new { _orden, JoinAceria=aceria, JoinContrato=contrato, JoinCamion=camion, JoinChofer=chofer, JoinTransportista=transportista, JoinAcoplado=acoplado, JoinEstado=estado, JoinProveedor=proveedor, JoinDireccionProveedor =direccionProveedor};
-           
-            
-                         List<ItemRemito> listaRemitos = new List<ItemRemito>();
-                         
-
-            foreach (var remito in query)
-            {
-                ItemRemito itemRemito = new ItemRemito(remito._orden, remito.JoinAceria, remito.JoinContrato, remito.JoinCamion,
-                remito.JoinChofer, remito.JoinTransportista, remito.JoinAcoplado, remito.JoinEstado, remito.JoinProveedor, remito.JoinDireccionProveedor);
-
-                listaRemitos.Add(itemRemito);
+            var query = (from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
+                         join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
+                         from jaceria in JoinAceria.DefaultIfEmpty()
+                         join contrato in _db.JuncalContratos.Where(a => a.Isdeleted == false) on _orden.IdContrato equals contrato.Id into JoinContrato
+                         from jcontrato in JoinContrato.DefaultIfEmpty()
+                         join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
+                         from jcamion in JoinCamion.DefaultIfEmpty()
+                         join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false) on jcamion.IdChofer equals chofer.Id into JoinChofer
+                         from jchofer in JoinChofer.DefaultIfEmpty()
+                         join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on jcamion.IdTransportista equals transportista.Id into JoinTransportista
+                         from jtransportista in JoinTransportista.DefaultIfEmpty()
+                         join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
+                         from jacoplado in JoinAcoplado.DefaultIfEmpty()
+                         join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
+                         from jestado in JoinEstado.DefaultIfEmpty()
+                         join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
+                         from jproveedor in JoinProveedor.DefaultIfEmpty()
+                         join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
+                         from jdireccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
+                         select new JuncalOrden
+                         {
+                             Id = _orden.Id,
+                             Remito = _orden.Remito,
+                             Observaciones = _orden.Observaciones,
+                             IdAceria = _orden.IdAceria,
+                             NombreAceria = jaceria.Nombre,
+                             DireccionAceria = jaceria.Direccion,
+                             CuitAceria = jaceria.Cuit,
+                             CodigoProveedorAceria = jaceria.CodProveedor,
+                             IdContrato = jcontrato.Id,
+                             NumeroContrato = jcontrato.Numero,
+                             IdCamion = _orden.IdCamion,
+                             PatenteCamion = jcamion.Patente,
+                             IdChofer = jchofer.Id,
+                             NombreChofer = jchofer.Nombre,
+                             ApellidoChofer = jchofer.Apellido,
+                             LicenciaChofer = jchofer.Dni,
+                             IdTransportista = jtransportista.Id,
+                             NombreTransportista = jtransportista.Nombre,
+                             IdAcoplado = _orden.IdAcoplado,
+                             PatenteAcoplado = jacoplado.Patente,
+                             IdEstado = _orden.IdEstado,
+                             DescripcionEstado = jestado.Nombre,
+                             IdProveedor = _orden.IdProveedor,
+                             NombreProveedor = jproveedor.Nombre,
+                             IdDireccionProveedor = _orden.IdDireccionProveedor,
+                             DireccionProveedor = jdireccionProveedor.Direccion,
+                             
+                         }) ;
 
 
-            }
+             query = idOrden== 0 ? query : query.Where(a=>a.Id==idOrden);
 
-
-
-
-            return listaRemitos;
-        }
-
+              return query.ToList();
+    
+  
+       }
 
 
     }

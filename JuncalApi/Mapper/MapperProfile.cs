@@ -15,13 +15,13 @@ namespace JuncalApi.Mapper
             #region CAMION
             CreateMap<CamionRequerido, JuncalCamion>();
             CreateMap<JuncalCamion,CamionRespuesta >();
-            CreateMap<ItemCamion,CamionRespuesta>();
+            //CreateMap<ItemCamion,CamionRespuesta>();
             #endregion
 
             #region ACOPLADO
             CreateMap<AcopladoRequerido, JuncalAcoplado>();
             CreateMap<JuncalAcoplado, AcopladoRespuesta>();
-            CreateMap<ItemAcoplado, AcopladoRespuesta>();
+            //CreateMap<ItemAcoplado, AcopladoRespuesta>();
             #endregion
 
             #region TIPO CAMION
@@ -105,7 +105,7 @@ namespace JuncalApi.Mapper
             #region ORDEN
             CreateMap<OrdenRequerido, JuncalOrden>();
             CreateMap<JuncalOrden, OrdenRespuesta>();
-            CreateMap<ItemRemito, RemitoResponse>().ReverseMap();
+            //CreateMap<ItemRemito, RemitoResponse>().ReverseMap();
             CreateMap<ItemRemitoInterno, RemitoResponse>().ReverseMap();
             #endregion
 
@@ -134,7 +134,10 @@ namespace JuncalApi.Mapper
             CreateMap<JuncalSucursal, SucursalRespuesta>();
             #endregion
 
-
+            #region ExcelConfig
+            CreateMap<ExcelConfigRequerido, JuncalExcelConfig>();
+            CreateMap<JuncalExcelConfig, ExcelConfigRespuesta>();
+            #endregion
 
             #region TIPO ACOPLADO
             CreateMap<TipoAcopladoRequerido, JuncalTipoAcoplado>();

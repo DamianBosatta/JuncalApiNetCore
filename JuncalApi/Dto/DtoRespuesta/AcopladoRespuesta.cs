@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
 
-        public string Patente { get; set; } = null!;
+        public string? Patente { get; set; } 
 
         public string? Marca { get; set; }
 
@@ -12,6 +12,6 @@
 
         public int IdTipo { get; set; }
 
-        public string? TipoDescripcion { get; set; }
+        public string? TipoAcoplado { get; set; }
     }
 }

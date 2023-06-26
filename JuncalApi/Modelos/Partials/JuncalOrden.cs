@@ -5,31 +5,37 @@ namespace JuncalApi.Modelos;
 public partial class JuncalOrden
 {
     [NotMapped]
-    public string NombreAceria { get; set; }
+    public string? NombreAceria { get; set; }
     [NotMapped]
-    public string DireccionAceria {get;set;}
+    public string? DireccionAceria {get;set;}
     [NotMapped]
-    public string CuitAceria {get;set;}
+    public string? CuitAceria {get;set;}
     [NotMapped]
-    public string CodigoProveedorAceria { get; set; }
+    public string? CodigoProveedorAceria { get; set; }
     [NotMapped]
-    public string NumeroContrato {get;set;}
+    public string? NumeroContrato {get;set;}
     [NotMapped]
-    public string PatenteCamion { get; set; }
+    public string? PatenteCamion { get; set; }
     [NotMapped]
-    public string NombreChofer { get;set;}
+    public int? IdChofer { get; set; }
     [NotMapped]
-    public int LicenciaChofer { get;set;}
+    public string? NombreChofer { get;set;}
     [NotMapped]
-    public string NombreTransportista { get; set; }
+    public string? ApellidoChofer { get; set; }
     [NotMapped]
-    public string PatenteAcoplado { get; set; }
+    public int? LicenciaChofer { get;set;}
     [NotMapped]
-    public string DescripcionEstado { get; set; }
+    public int? IdTransportista { get; set; }
     [NotMapped]
-    public string NombreProveedor { get; set; }
+    public string? NombreTransportista { get; set; }
     [NotMapped]
-    public string DireccionProveedor { get; set; }
+    public string? PatenteAcoplado { get; set; }
+    [NotMapped]
+    public string? DescripcionEstado { get; set; }
+    [NotMapped]
+    public string? NombreProveedor { get; set; }
+    [NotMapped]
+    public string? DireccionProveedor { get; set; }
 
 
     public JuncalOrden() 
@@ -62,7 +68,7 @@ public partial class JuncalOrden
     string pDireccionAceria,string pCuitAceria, string pCodigoProveedorAceria,
     string pNumeroContrato,string pPatenteCamion,string pNombreChofer,int pLicenciaChofer,
     string pNombreTransportista,string pPatenteAcoplado,string pDescripcionEstado,
-    string pNombreProveedor,string pDireccionProveedor):this( pId, pIdAceria,  pIdContrato,pRemito,
+    string pNombreProveedor,string pDireccionProveedor, string pApellidoChofer,int pIdChofer,int pIdTransportista):this( pId, pIdAceria,  pIdContrato,pRemito,
      pIdCamion, pIdEstado, pFecha, pIdProveedor,pIdAcoplado,
     pObservaciones,pIdDireccionProveedor)
     {
@@ -79,6 +85,9 @@ public partial class JuncalOrden
         DescripcionEstado = pDescripcionEstado;
         NombreProveedor = pNombreProveedor;
         DireccionProveedor = pDireccionProveedor;
+        ApellidoChofer = pApellidoChofer;
+        IdChofer = pIdChofer;
+        IdTransportista = pIdTransportista;
     }
 
 
