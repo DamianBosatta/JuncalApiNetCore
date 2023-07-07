@@ -14,7 +14,7 @@ namespace JuncalApi.Modelos;
     }
 
 
-    public JuncalContrato(int pId, string pNombre,string pNumero,DateTime pFechaVigencia, 
+    public JuncalContrato(int pId,string pNombre,string pNumero,DateTime pFechaVigencia, 
     DateTime pFechaVencimiento,int pIdAceria,bool pActivo,decimal pValorFlete ):this()
     {
         Id = pId;
@@ -29,7 +29,7 @@ namespace JuncalApi.Modelos;
     }
 
 
-    public JuncalContrato(int pId, string pNombre, string pNumero, DateTime pFechaVigencia,
+    public JuncalContrato(int pId,string pNombre, string pNumero, DateTime pFechaVigencia,
     DateTime pFechaVencimiento, int pIdAceria, bool pActivo, decimal pValorFlete,string pNombreAceria):
     this(pId,pNombre,pNumero,pFechaVigencia,pFechaVencimiento, pIdAceria,pActivo,pValorFlete)
     {

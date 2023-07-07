@@ -5,7 +5,7 @@ namespace JuncalApi.Servicios.Remito
 {
     public interface IServiceRemito
     {
-        public List<RemitoResponse> GetRemitos(int idOrden);
+        public List<RemitoRespuesta> GetRemitos(int idOrden);
 
     }
 }

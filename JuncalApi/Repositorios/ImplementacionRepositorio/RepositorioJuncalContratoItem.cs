@@ -1,6 +1,5 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
@@ -11,27 +10,35 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
         }
 
-        public List<ItemContratoItem> GetContratoItemForIdContrato(int idContrato)
+        #region GetContratoItemForIdContrato
+
+        /// <summary>
+        /// Obtiene una lista de objetos JuncalContratoItem que representan los elementos de un contrato específico.
+        /// </summary>
+        /// <param name="idContrato">ID del contrato</param>
+        /// <returns>Lista de objetos JuncalContratoItem</returns>
+        public List<JuncalContratoItem> GetContratoItemForIdContrato(int idContrato)
         {
-            var  query = from itemContrato in _db.JuncalContratoItems.Where(a=>a.IdContrato==idContrato && a.Isdeleted==false)
-                         join  material in _db.JuncalMaterials.Where(a=>a.Isdeleted==false)
-                         on itemContrato.IdMaterial equals material.Id
-                         select new { itemContrato, material };
+            // Consulta para obtener los elementos del contrato para el ID de contrato dado
+            var query = from itemContrato in _db.JuncalContratoItems.Where(a => a.IdContrato == idContrato && a.Isdeleted == false)
+                        join material in _db.JuncalMaterials.Where(a => a.Isdeleted == false)
+                        on itemContrato.IdMaterial equals material.Id
+                        select new { itemContrato, material };
 
+            // Crear una lista de objetos JuncalContratoItem a partir de los resultados de la consulta
+            List<JuncalContratoItem> itemsContrato = query.Select(objQuery => new JuncalContratoItem(
+                objQuery.itemContrato.Id,
+                objQuery.itemContrato.IdContrato,
+                objQuery.itemContrato.IdMaterial,
+                objQuery.itemContrato.Precio,
+                objQuery.material.Nombre))
+                .ToList();
 
-        List<ItemContratoItem> itemsContrato = new List<ItemContratoItem>();
-
-
-            foreach(var q in query)
-            {
-                itemsContrato.Add(new ItemContratoItem(q.itemContrato, q.material));
-
-            }
-
-            var respuesta = itemsContrato.Count()>0? itemsContrato.ToList() : new List<ItemContratoItem>();
-
-            return respuesta;
-
+            // Devolver la lista de elementos del contrato
+            return itemsContrato;
         }
+
+        #endregion GetContratoItemForIdContrato
+
     }
 }

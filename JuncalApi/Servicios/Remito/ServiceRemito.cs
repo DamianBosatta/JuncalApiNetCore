@@ -17,15 +17,15 @@ namespace JuncalApi.Servicios.Remito
 
         }
 
-        public List<RemitoResponse> GetRemitos(int idOrden)
+        public List<RemitoRespuesta> GetRemitos(int idOrden)
         {
-            List<RemitoResponse> listaOrdenesRespuesta= new List<RemitoResponse>();
+            List<RemitoRespuesta> listaOrdenesRespuesta= new List<RemitoRespuesta>();
 
             var remitos = _uow.RepositorioJuncalOrden.GetRemito(idOrden);
 
             if(remitos.Count>0||remitos!=null)
             {
-                 listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(remitos);
+                 listaOrdenesRespuesta = _mapper.Map<List<RemitoRespuesta>>(remitos);
 
             }
 

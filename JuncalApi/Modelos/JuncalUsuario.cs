@@ -32,4 +32,16 @@ public partial class JuncalUsuario
     public DateTime? TokenExpires { get; set; }
 
     public virtual JuncalRole? IdRolNavigation { get; set; }
+
+    public virtual ICollection<JuncalOrden> JuncalOrdenIdUsuarioCreacionNavigations { get; } = new List<JuncalOrden>();
+
+    public virtual ICollection<JuncalOrden> JuncalOrdenIdUsuarioFacturacionNavigations { get; } = new List<JuncalOrden>();
+
+    public virtual ICollection<JuncalProveedorPresupuesto> JuncalProveedorPresupuestos { get; } = new List<JuncalProveedorPresupuesto>();
+
+    public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamadoIdUsuarioFinalizadoNavigations { get; } = new List<JuncalRemitosReclamado>();
+
+    public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamadoIdUsuarioIngresoNavigations { get; } = new List<JuncalRemitosReclamado>();
+
+    public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamadoIdUsuarioReclamoNavigations { get; } = new List<JuncalRemitosReclamado>();
 }

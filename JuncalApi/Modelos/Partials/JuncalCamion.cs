@@ -5,15 +5,16 @@ namespace JuncalApi.Modelos;
     public partial class JuncalCamion
     {
 
+    [NotMapped]
+    public string ? ApellidoChofer { get; set; }
+    [NotMapped]
+    public string? NombreChofer { get; set; }
 
     [NotMapped]
-    public string NombreChofer { get; set; }
+    public string? NombreTransportista { get; set; }
 
     [NotMapped]
-    public string NombreTransportista { get; set; }
-
-    [NotMapped]
-    public string DescripcionTipoCamion { get; set; }
+    public string? DescripcionTipoCamion { get; set; }
 
     public JuncalCamion() 
     { 
@@ -34,9 +35,10 @@ namespace JuncalApi.Modelos;
     }
 
     public JuncalCamion(int pId, string pPatente, string pMarca, int pTara, int pIdChofer, int pIdTransportista,
-        int pIdInterno, int pIdTipoCamion,string pNombreChofer,string pNombreTransportista,string pDescripcionTipoCamion):this(pId, pPatente,pMarca,pTara,pIdChofer,pIdTransportista,
+        int pIdInterno, int pIdTipoCamion,string pApellidoChofer,string pNombreChofer,string pNombreTransportista,string pDescripcionTipoCamion):this(pId, pPatente,pMarca,pTara,pIdChofer,pIdTransportista,
         pIdInterno,pIdTipoCamion)
     {
+        ApellidoChofer = pApellidoChofer;
         NombreChofer=pNombreChofer;
         NombreTransportista=pNombreTransportista;
         DescripcionTipoCamion = pDescripcionTipoCamion;

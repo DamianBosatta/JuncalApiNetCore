@@ -6,7 +6,7 @@ namespace JuncalApi.Modelos;
     {
     
     [NotMapped]
-    public string MaterialDescripcion { get; set; }
+    public string? MaterialDescripcion { get; set; }
 
     public JuncalAceriaMaterial() 
     {

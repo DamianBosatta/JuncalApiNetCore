@@ -1,6 +1,6 @@
 ﻿namespace JuncalApi.Dto.DtoRespuesta
 {
-    public class OrdenInternaResponse
+    public class OrdenInternaRespuesta
     {
         public int Id { get; set; }
 

@@ -1,8 +1,9 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Item;
+using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Repositorios.InterfaceRepositorio;
-using System.Reflection;
+using System.Drawing;
+
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
@@ -12,27 +13,40 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
         }
 
-        public List<ItemAceriaMaterial> GetAceriaMaterialesForId(int idAceria)
+        #region GetAceriaMaterialesForIdAceria
+
+        /// <summary>
+        /// Obtiene una lista de objetos JuncalAceriaMaterial para el Id de la acería especificado.
+        /// </summary>
+        /// <param name="idAceria">Id de la acería</param>
+        /// <returns>Lista de objetos JuncalAceriaMaterial</returns>
+        public List<JuncalAceriaMaterial> GetAceriaMaterialesForIdAceria(int idAceria)
         {
-            var query = from aceriaMaterial in _db.JuncalAceriaMaterials.Where(a => a.IdAceria == idAceria && a.Isdeleted == false)
+            // Consulta para obtener los registros relacionados con la acería y el material
+            var query = from aceriaMaterial in _db.JuncalAceriaMaterials
+                        .Where(a => a.IdAceria == idAceria && a.Isdeleted == false)
                         join material in _db.JuncalMaterials.Where(a => a.Isdeleted == false)
                         on aceriaMaterial.IdMaterial equals material.Id
-                        select new {aceriaMaterial, material};
-                         
-            List<ItemAceriaMaterial> materials = new List<ItemAceriaMaterial>();
+                        select new { aceriaMaterial, material };
 
-            foreach(var q in query)
+            // Lista para almacenar los materiales
+            List<JuncalAceriaMaterial> materials = new List<JuncalAceriaMaterial>();
+
+            // Iterar sobre los resultados de la consulta
+            foreach (var objQuery in query)
             {
-                materials.Add(new ItemAceriaMaterial(q.aceriaMaterial, q.material));
-
+                // Crear una instancia de JuncalAceriaMaterial y agregarla a la lista de materiales
+                materials.Add(new JuncalAceriaMaterial(objQuery.aceriaMaterial.Id, objQuery.aceriaMaterial.Nombre, objQuery.aceriaMaterial.IdAceria,
+                    objQuery.aceriaMaterial.IdMaterial, objQuery.aceriaMaterial.Cod, objQuery.material.Nombre));
             }
-         
-          var respuesta = materials.Count()>0? materials.ToList() : new List<ItemAceriaMaterial>();
 
+            // Verificar si se encontraron materiales y devolver la lista o una lista vacía
+            var respuesta = materials.Count() > 0 ? materials.ToList() : new List<JuncalAceriaMaterial>();
 
             return respuesta;
         }
 
-      
+        #endregion 
+
     }
 }

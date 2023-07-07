@@ -5,7 +5,7 @@ namespace JuncalApi.Modelos;
     public partial class JuncalAcoplado
     {
     [NotMapped]
-     public string TipoAcoplado { get; set; }
+     public string? TipoAcoplado { get; set; }
 
     public JuncalAcoplado() 
     { 

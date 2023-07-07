@@ -31,7 +31,7 @@ namespace JuncalApi.Controllers
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
+        public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenes()
         {
 
             var ListaOrdenes = _serviceRemito.GetRemitos(0);

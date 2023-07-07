@@ -2,7 +2,7 @@
 
 namespace JuncalApi.Dto.DtoRespuesta
 {
-    public class RemitoResponse
+    public class RemitoRespuesta
     {
 
 

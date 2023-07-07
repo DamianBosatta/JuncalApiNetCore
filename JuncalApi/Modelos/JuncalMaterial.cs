@@ -20,4 +20,6 @@ public partial class JuncalMaterial
     public virtual ICollection<JuncalOrdenMaterialInternoRecibido> JuncalOrdenMaterialInternoRecibidos { get; } = new List<JuncalOrdenMaterialInternoRecibido>();
 
     public virtual ICollection<JuncalOrdenMaterialInternoRecogido> JuncalOrdenMaterialInternoRecogidos { get; } = new List<JuncalOrdenMaterialInternoRecogido>();
+
+    public virtual ICollection<JuncalProveedorPresupuestoMateriale> JuncalProveedorPresupuestoMateriales { get; } = new List<JuncalProveedorPresupuestoMateriale>();
 }

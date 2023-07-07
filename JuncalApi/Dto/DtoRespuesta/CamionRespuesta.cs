@@ -6,9 +6,9 @@ namespace JuncalApi.Dto.DtoRespuesta
     {
         public int Id { get; set; }
 
-        public string Patente { get; set; }
+        public string? Patente { get; set; }
 
-        public string Marca { get; set; }
+        public string? Marca { get; set; }
 
         public int Tara { get; set; }
 
@@ -19,12 +19,14 @@ namespace JuncalApi.Dto.DtoRespuesta
         public int IdInterno { get; set; }
 
         public int IdTipoCamion { get; set; }
+
+        public string? ApellidoChofer { get; set;}
          
-        public string NombreChofer { get; set; }
+        public string? NombreChofer { get; set; }
  
-        public string NombreTransportista { get; set; }
+        public string? NombreTransportista { get; set; }
         
-        public string DescripcionTipoCamion { get; set; }
+        public string? DescripcionTipoCamion { get; set; }
 
     }
 }

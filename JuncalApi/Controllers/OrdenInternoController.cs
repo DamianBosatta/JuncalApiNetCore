@@ -28,35 +28,35 @@ namespace JuncalApi.Controllers
 
         [Route("TodosLosRemitos/")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenes()
+        public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenes()
         {
 
             var ListaOrdenes = _uow.RepositorioJuncalOrdenInterno.GetAllRemitos().ToList();
 
             if (ListaOrdenes.Count() > 0)
             {
-                List<RemitoResponse> listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(ListaOrdenes);
+                List<RemitoRespuesta> listaOrdenesRespuesta = _mapper.Map<List<RemitoRespuesta>>(ListaOrdenes);
                 return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
 
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoResponse>() == null });
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoRespuesta>() == null });
 
 
         }
         [Route("MaterialesRecogidos/")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RemitoResponse>>> GetOrdenesRecogidos()
+        public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenesRecogidos()
         {
 
             var ListaOrdenes = _uow.RepositorioJuncalOrdenInterno.GetAllRemitos().Where(a=> a.IdEstado==2).ToList();
 
             if (ListaOrdenes.Count() > 0)
             {
-                List<RemitoResponse> listaOrdenesRespuesta = _mapper.Map<List<RemitoResponse>>(ListaOrdenes);
+                List<RemitoRespuesta> listaOrdenesRespuesta = _mapper.Map<List<RemitoRespuesta>>(ListaOrdenes);
                 return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = listaOrdenesRespuesta });
 
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoResponse>() == null });
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoRespuesta>() == null });
 
 
         }
@@ -72,11 +72,11 @@ namespace JuncalApi.Controllers
             {
                 JuncalOrdenInterno ordenNuevo = _mapper.Map<JuncalOrdenInterno>(ordenReq);
                 _uow.RepositorioJuncalOrdenInterno.Insert(ordenNuevo);
-                OrdenInternaResponse ordenRes = new();
+                OrdenInternaRespuesta ordenRes = new();
                 _mapper.Map(ordenNuevo, ordenRes);
                 return Ok(new { success = true, message = "La Orden Interna Fue Creada Con Exito", result = ordenRes });
             }
-            OrdenInternaResponse ordenExiste = new();
+            OrdenInternaRespuesta ordenExiste = new();
             _mapper.Map(orden, ordenExiste);
             return Ok(new { success = false, message = " Ya Hay Esta Cargado Ese Numero De Remito ", result = ordenExiste });
 
@@ -93,13 +93,13 @@ namespace JuncalApi.Controllers
             {
                 orden.Isdeleted = true;
                 _uow.RepositorioJuncalOrdenInterno.Update(orden);
-                OrdenInternaResponse ordenRes = new();
+                OrdenInternaRespuesta ordenRes = new();
                 _mapper.Map(orden, ordenRes);
 
                 return Ok(new { success = true, message = "La Orden Fue Eliminada ", result = ordenRes });
 
             }
-            return Ok(new { success = false, message = "La Orden No Fue Encontrado", result = new OrdenInternaResponse() == null });
+            return Ok(new { success = false, message = "La Orden No Fue Encontrado", result = new OrdenInternaRespuesta() == null });
 
         }
 
@@ -117,7 +117,7 @@ namespace JuncalApi.Controllers
                 return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
             }
 
-            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenInternaResponse() == null });
+            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenInternaRespuesta() == null });
 
 
         }
@@ -130,7 +130,7 @@ namespace JuncalApi.Controllers
 
             if (orden != null)
             {
-                RemitoResponse response = new RemitoResponse();
+                RemitoRespuesta response = new RemitoRespuesta();
                 _mapper.Map(orden, response);
 
                 return Ok(new { success = true, message = "Response Confirmado", result = response });
@@ -138,7 +138,7 @@ namespace JuncalApi.Controllers
             }
 
 
-            return Ok(new { success = false, message = "No Se Encontro Remito", result = new RemitoResponse() });
+            return Ok(new { success = false, message = "No Se Encontro Remito", result = new RemitoRespuesta() });
 
         }
     }

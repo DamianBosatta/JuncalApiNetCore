@@ -1,9 +1,7 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
-using System.Diagnostics.Contracts;
-using System;
+
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
@@ -12,7 +10,15 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public RepositorioJuncalOrden(JuncalContext db) : base(db)
         {
         }
+    
+        #region GetRemito
 
+        /// <summary>
+        /// Obtiene una lista de objetos JuncalOrden para el Id de la orden especificado.
+        /// Si se proporciona un Id de orden específico, devuelve solo esa orden. De lo contrario, devuelve todas las órdenes.
+        /// </summary>
+        /// <param name="idOrden">Id de la orden (opcional)</param>
+        /// <returns>Lista de objetos JuncalOrden</returns>
         public List<JuncalOrden>? GetRemito(int idOrden)
         {
             var query = (from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
@@ -62,17 +68,15 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              NombreProveedor = jproveedor.Nombre,
                              IdDireccionProveedor = _orden.IdDireccionProveedor,
                              DireccionProveedor = jdireccionProveedor.Direccion,
-                             
-                         }) ;
+                         });
 
+            // Filtrar por Id de orden si se proporciona
+            query = idOrden == 0 ? query : query.Where(a => a.Id == idOrden);
 
-             query = idOrden== 0 ? query : query.Where(a=>a.Id==idOrden);
+            return query.ToList();
+        }
 
-              return query.ToList();
-    
-  
-       }
-
+        #endregion 
 
     }
 }

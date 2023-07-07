@@ -29,6 +29,12 @@ public partial class JuncalOrden
 
     public int? IdDireccionProveedor { get; set; }
 
+    public DateTime? FechaFacturacion { get; set; }
+
+    public int? IdUsuarioCreacion { get; set; }
+
+    public int? IdUsuarioFacturacion { get; set; }
+
     public virtual JuncalAcerium IdAceriaNavigation { get; set; } = null!;
 
     public virtual JuncalAcoplado? IdAcopladoNavigation { get; set; }
@@ -43,5 +49,11 @@ public partial class JuncalOrden
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }
 
+    public virtual JuncalUsuario? IdUsuarioCreacionNavigation { get; set; }
+
+    public virtual JuncalUsuario? IdUsuarioFacturacionNavigation { get; set; }
+
     public virtual ICollection<JuncalOrdenMarterial> JuncalOrdenMarterials { get; } = new List<JuncalOrdenMarterial>();
+
+    public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamados { get; } = new List<JuncalRemitosReclamado>();
 }

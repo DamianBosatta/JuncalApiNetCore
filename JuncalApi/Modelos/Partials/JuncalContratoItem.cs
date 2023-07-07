@@ -5,7 +5,7 @@ namespace JuncalApi.Modelos;
     public partial class JuncalContratoItem
     {
     [NotMapped]
-    public string MaterialDescripcion { get; set; }
+    public string? MaterialDescripcion { get; set; }
 
     public JuncalContratoItem() 
     { 
@@ -27,8 +27,6 @@ namespace JuncalApi.Modelos;
         MaterialDescripcion=pMaterialDescripcion;
 
     }
-
-
 
     }
 

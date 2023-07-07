@@ -19,6 +19,8 @@ namespace JuncalApi.Dto.DtoExcel
 
         public int? IdOrden { get { return DataMateriales is null ? 0 : DataMateriales.IdOrden; } }
 
+        public int IdMaterial { get { return DataMateriales is null ? 0 : DataMateriales.IdMaterial; } }
+
         public DateTime? FechaRemitoJuncal
         {
             get
@@ -48,7 +50,18 @@ namespace JuncalApi.Dto.DtoExcel
 
         public string? NombreMaterialAceria { get { return ExcelAcerbrag?.NombreMaterial; } }
         
-        public string? CodigoMaterial { get { return DataMateriales?.Cod; } }
+        public string? CodigoMaterialJuncal { get { return DataMateriales?.Cod; } }
+
+        public string ? CodigoMaterialAceria { get { return ExcelAcerbrag?.CodigoMaterial; } }
+
+
+        public decimal? PesoBruto { get { return ExcelAcerbrag is null ? null : decimal.Parse(ExcelAcerbrag?.Bruto); } }
+
+        public decimal? PesoTara { get { return ExcelAcerbrag is null ? null : decimal.Parse(ExcelAcerbrag?.Tara); } }
+
+        public decimal? Descuento { get { return ExcelAcerbrag is null ? null : decimal.Parse(ExcelAcerbrag?.Descuento); } }
+
+        public string? DescuentoDetalle { get { return ExcelAcerbrag is null ? null : ExcelAcerbrag?.DescuentoDetalle; } }
 
         public decimal? PesoDescargadoAceria
         {
@@ -66,9 +79,14 @@ namespace JuncalApi.Dto.DtoExcel
        
         public decimal? DiferenciaPeso { get { return ((decimal)(PesoEnviadoJuncal - PesoDescargadoAceria)); } }
 
-        public bool? DiferenciaMaterial { get { return NombreMaterialJuncal.Equals(NombreMaterialAceria) ? false : true; } }
+        public bool? DiferenciaMaterial { get { return ExcelAcerbrag?.CodigoMaterial == DataMateriales?.Cod ? false : true; } }
 
         public bool? DiferenciaPesoBool { get { return DiferenciaPeso >= 400 && DiferenciaMaterial is false ? true : false; } }
+
+
+
+        
+
 
     }
 }

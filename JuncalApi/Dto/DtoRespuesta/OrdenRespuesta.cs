@@ -8,7 +8,7 @@
 
         public int? IdContrato { get; set; }
 
-        public string? Remito { get; set; } 
+        public string Remito { get; set; } = null!;
 
         public int? IdCamion { get; set; }
 
@@ -16,14 +16,14 @@
 
         public DateTime Fecha { get; set; }
 
-        public bool? Isdeleted { get; set; }
-
         public int? IdProveedor { get; set; }
 
         public int? IdAcoplado { get; set; }
 
-        public string? Observaciones { get; set; }
+        public string Observaciones { get; set; } = null!;
 
         public int? IdDireccionProveedor { get; set; }
+
+        public DateTime? FechaFacturacion { get; set; }
     }
 }

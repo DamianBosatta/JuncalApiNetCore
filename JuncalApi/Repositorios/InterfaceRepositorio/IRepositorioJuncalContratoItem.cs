@@ -5,7 +5,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalContratoItem:IRepositorioGenerico<JuncalContratoItem>
     {
-        public List<ItemContratoItem> GetContratoItemForIdContrato(int idContrato);
+        public List<JuncalContratoItem> GetContratoItemForIdContrato(int idContrato);
 
     }
 }
