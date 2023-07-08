@@ -58,7 +58,7 @@ namespace JuncalApi.Controllers
         [HttpGet]
         public ActionResult GetAllReclamos(int idRemito,int idAceria)
         {
-            var reclamos = _uow.RepositorioJuncalRemitosReclamado.GetReclamos(idRemito,idAceria);
+            var reclamos = _uow.RepositorioJuncalRemitosReclamado.GetReclamos().Where(a=>a.IdAceria==idAceria && a.IdRemito==idRemito);
 
             List<RemitoReclamadoRespuesta> reclamosNew = new List<RemitoReclamadoRespuesta>();
 

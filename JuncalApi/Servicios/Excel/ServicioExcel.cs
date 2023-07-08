@@ -84,9 +84,9 @@ namespace JuncalApi.Servicios.Excel
                         {
                             var excelData = new ExcelMapper
                             {
-                                Remito = worksheet.Cells[row, configExcel.Remito].Value?.ToString()?.Split('/')[0],
+                                Remito = ObtenerSubString(configExcel.ConfigRemitoDesde,configExcel.ConfigRemitoCantidad,worksheet.Cells[row, configExcel.Remito].Value?.ToString()),
                                 Fecha = (worksheet.Cells[row, configExcel.Fecha].Value is double fechaNumero) ? DateTime.FromOADate(fechaNumero).ToString("dd/MM/yyyy") : string.Empty,
-                                CodigoMaterial = worksheet.Cells[row, configExcel.MaterialCodigo].Value?.ToString().TrimStart('0'),
+                                CodigoMaterial = ObtenerSubString(configExcel.ConfigMaterialHasta, configExcel.ConfigMaterialCantidad, worksheet.Cells[row, configExcel.MaterialCodigo].Value?.ToString()),
                                 NombreMaterial = worksheet.Cells[row, configExcel.MaterialNombre].Value?.ToString(),
                                 Bruto = worksheet.Cells[row, configExcel.Bruto].Value?.ToString(),
                                 Tara = worksheet.Cells[row, configExcel.Tara].Value?.ToString(),
@@ -220,9 +220,37 @@ namespace JuncalApi.Servicios.Excel
             return listaResultado;
         }
 
+        private string ObtenerSubString(int desde, int total, string mapperString)
+        {
+            // Asegurarse de que el rango especificado esté dentro de los límites de la cadena original
+            if (desde < 0 || desde >= mapperString.Length || total <= 0)
+            {
+                return string.Empty; // Devolver cadena vacía si el rango no es válido
+            }
+
+            // Calcular el índice de finalización del rango
+            int hasta = desde + total - 1;
+            hasta = Math.Min(hasta, mapperString.Length - 1);
+
+            string respuesta = string.Empty;
+
+            // Recorrer la cadena original y cargar la nueva palabra en el rango especificado
+            for (int i = 0; i < mapperString.Length; i++)
+            {
+                if (i >= desde && i <= hasta)
+                {
+               
+                    respuesta += mapperString[i];
+                }
+            }
+
+            return respuesta;
+        }
+
+
         #endregion
 
 
     }
-}
 
+}

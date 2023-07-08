@@ -3,7 +3,7 @@
     public class ExcelConfigRespuesta
     {
         public int Id { get; set; }
-       
+
         public int IdAceria { get; set; }
 
         public int Remito { get; set; }
@@ -23,5 +23,13 @@
         public int DescuentoDetalle { get; set; }
 
         public int Neto { get; set; }
+
+        public sbyte ConfigRemitoDesde { get; set; }
+
+        public sbyte ConfigRemitoCantidad { get; set; }
+
+        public sbyte ConfigMaterialCantidad { get; set; }
+
+        public sbyte ConfigMaterialHasta { get; set; }
     }
 }

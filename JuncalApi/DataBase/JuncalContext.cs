@@ -433,6 +433,18 @@ public partial class JuncalContext : DbContext
 
             entity.Property(e => e.Id).HasColumnType("int(10)");
             entity.Property(e => e.Bruto).HasColumnType("int(2)");
+            entity.Property(e => e.ConfigMaterialCantidad)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("configMaterialCantidad");
+            entity.Property(e => e.ConfigMaterialHasta)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("configMaterialHasta");
+            entity.Property(e => e.ConfigRemitoCantidad)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("configRemitoCantidad");
+            entity.Property(e => e.ConfigRemitoDesde)
+                .HasColumnType("tinyint(4)")
+                .HasColumnName("configRemitoDesde");
             entity.Property(e => e.Descuento).HasColumnType("int(2)");
             entity.Property(e => e.DescuentoDetalle)
                 .HasColumnType("int(2)")

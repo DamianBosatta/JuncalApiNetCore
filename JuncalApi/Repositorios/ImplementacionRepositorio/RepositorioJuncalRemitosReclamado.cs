@@ -10,18 +10,41 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
         }
 
-        public List<JuncalRemitosReclamado> GetReclamos(int idRemito, int idAceria)
+        public List<JuncalRemitosReclamado> GetReclamos()
         {
             var query = from reclamos in _db.JuncalRemitosReclamados.Where(a=>a.IsDeleted==0 )
-                        select reclamos;
+                        join aceria in _db.JuncalAceria.Where(a=>a.Isdeleted==false)
+                        on reclamos.IdAceria equals aceria.Id
+                        join remito in _db.JuncalOrdens.Where(a=>a.Isdeleted==false)
+                        on reclamos.IdRemito equals remito.Id
+                        join estadoReclamo in _db.JuncalEstadosReclamos.Where(a=>a.Isdelete==false)
+                        on reclamos.IdEstadoReclamo equals estadoReclamo.Id
+                        join usuarioReclamo in _db.JuncalUsuarios.Where(a=>a.Isdeleted==false)
+                        on reclamos.IdUsuarioReclamo equals usuarioReclamo.Id
+                        join usuarioIngresado in _db.JuncalUsuarios.Where(a => a.Isdeleted == false)
+                        on reclamos.IdUsuarioIngreso equals usuarioIngresado.Id
+                        join usuarioFinalizado in _db.JuncalUsuarios.Where(a => a.Isdeleted == false)
+                        on reclamos.IdUsuarioFinalizado equals usuarioFinalizado.Id
+                        select new { reclamos,aceria,remito,estadoReclamo,usuarioReclamo,usuarioIngresado,
+                        usuarioFinalizado};
 
-            query = idRemito == 0 ? query : query.Where(a => a.IdRemito == idRemito);
+            List<JuncalRemitosReclamado> listaRespuesta = new List<JuncalRemitosReclamado>();
 
-            query = idAceria == 0 ? query : query.Where(a => a.IdAceria == idAceria);
+            foreach(var objQuery in query)
+            {
+                listaRespuesta.Add(new JuncalRemitosReclamado(objQuery.reclamos.Id, objQuery.reclamos.IdEstadoReclamo,
+                   objQuery.reclamos.IdRemito, (DateTime)objQuery.reclamos.Fecha, objQuery.reclamos.Observacion,
+                   (DateTime)objQuery.reclamos.FechaReclamo, objQuery.reclamos.ObservacionReclamo, (DateTime)objQuery.reclamos.FechaFinalizado,
+                   objQuery.reclamos.ObservacionFinalizado, (int)objQuery.reclamos.IdUsuarioReclamo,(int)objQuery.reclamos.IdUsuarioIngreso,(int)objQuery.reclamos.IdUsuarioFinalizado,
+                   objQuery.reclamos.IdAceria,objQuery.estadoReclamo.Nombre,objQuery.remito.Remito, objQuery.usuarioReclamo.Apellido, objQuery.usuarioFinalizado.Apellido,
+                   objQuery.usuarioIngresado.Apellido,
+                   objQuery.aceria.Nombre));
 
 
-            return query.ToList();
+            }
 
+
+            return listaRespuesta;
 
         }
 

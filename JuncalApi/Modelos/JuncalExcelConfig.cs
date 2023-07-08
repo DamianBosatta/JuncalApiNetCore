@@ -26,4 +26,12 @@ public partial class JuncalExcelConfig
     public int DescuentoDetalle { get; set; }
 
     public int Neto { get; set; }
+
+    public sbyte ConfigRemitoDesde { get; set; }
+
+    public sbyte ConfigRemitoCantidad { get; set; }
+
+    public sbyte ConfigMaterialCantidad { get; set; }
+
+    public sbyte ConfigMaterialHasta { get; set; }
 }
