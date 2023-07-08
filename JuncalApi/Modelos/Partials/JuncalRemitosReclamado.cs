@@ -1,17 +1,20 @@
-﻿namespace JuncalApi.Modelos
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JuncalApi.Modelos
 {
     public partial class JuncalRemitosReclamado
     {
+        [NotMapped]
         public string? DescripcionEstadoReclamo { get; set; } = string.Empty;
-
+        [NotMapped]
         public string? Remito { get; set; } = string.Empty;
-
+        [NotMapped]
         public string? NombreUsuarioReclamo { get; set; } = string.Empty;
-
+        [NotMapped]
         public string? NombreUsuarioFinalizado { get; set; } = string.Empty;
-
+        [NotMapped]
         public string? NombreUsuarioIngresado { get; set; } = string.Empty;
-
+        [NotMapped]
         public string? NombreAceria { get; set; } = string.Empty;
 
         public JuncalRemitosReclamado() 

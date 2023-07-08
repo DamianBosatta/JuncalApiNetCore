@@ -86,7 +86,7 @@ namespace JuncalApi.Servicios.Excel
                             {
                                 Remito = ObtenerSubString(configExcel.ConfigRemitoDesde,configExcel.ConfigRemitoCantidad,worksheet.Cells[row, configExcel.Remito].Value?.ToString()),
                                 Fecha = (worksheet.Cells[row, configExcel.Fecha].Value is double fechaNumero) ? DateTime.FromOADate(fechaNumero).ToString("dd/MM/yyyy") : string.Empty,
-                                CodigoMaterial = ObtenerSubString(configExcel.ConfigMaterialHasta, configExcel.ConfigMaterialCantidad, worksheet.Cells[row, configExcel.MaterialCodigo].Value?.ToString()),
+                                CodigoMaterial = ObtenerSubString(configExcel.ConfigMaterialCantidad, configExcel.ConfigMaterialHasta, worksheet.Cells[row, configExcel.MaterialCodigo].Value?.ToString()),
                                 NombreMaterial = worksheet.Cells[row, configExcel.MaterialNombre].Value?.ToString(),
                                 Bruto = worksheet.Cells[row, configExcel.Bruto].Value?.ToString(),
                                 Tara = worksheet.Cells[row, configExcel.Tara].Value?.ToString(),

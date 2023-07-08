@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RemitosReclamadosController : Controller
@@ -54,11 +54,11 @@ namespace JuncalApi.Controllers
         /// <param name="idRemito">El ID del remito.</param>
         /// <param name="idAceria">El ID de la acería.</param>
         /// <returns>Una acción de resultado que contiene una lista de reclamos o un mensaje de lista vacía.</returns>
-        [Route("api/reclamos/{idRemito}/{idAceria}")]
+        [Route("api/reclamos")]
         [HttpGet]
-        public ActionResult GetAllReclamos(int idRemito,int idAceria)
+        public ActionResult GetAllReclamos()
         {
-            var reclamos = _uow.RepositorioJuncalRemitosReclamado.GetReclamos().Where(a=>a.IdAceria==idAceria && a.IdRemito==idRemito);
+            var reclamos = _uow.RepositorioJuncalRemitosReclamado.GetReclamos();
 
             List<RemitoReclamadoRespuesta> reclamosNew = new List<RemitoReclamadoRespuesta>();
 

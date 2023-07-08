@@ -49,6 +49,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              NombreAceria = jaceria.Nombre,
                              DireccionAceria = jaceria.Direccion,
                              CuitAceria = jaceria.Cuit,
+                             Fecha=_orden.Fecha,
                              CodigoProveedorAceria = jaceria.CodProveedor,
                              IdContrato = jcontrato.Id,
                              NumeroContrato = jcontrato.Numero,

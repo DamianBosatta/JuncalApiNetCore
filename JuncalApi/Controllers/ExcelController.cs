@@ -9,7 +9,7 @@ using OfficeOpenXml;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExcelController : Controller
