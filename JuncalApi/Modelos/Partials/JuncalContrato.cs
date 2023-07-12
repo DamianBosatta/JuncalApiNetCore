@@ -5,7 +5,7 @@ namespace JuncalApi.Modelos;
     public partial class JuncalContrato
     {
     [NotMapped]
-    public string NombreAceria { get; set; }
+    public string? NombreAceria { get; set; }
 
     public JuncalContrato() 
     { 

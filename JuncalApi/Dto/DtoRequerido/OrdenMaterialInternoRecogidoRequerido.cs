@@ -8,14 +8,5 @@
 
         public decimal? Peso { get; set; }
 
-      
-
-        public OrdenMaterialInternoRecogidoRequerido(int? idOrdenInterno, int? idMaterial, decimal? peso)
-        {
-            IdOrdenInterno = idOrdenInterno == 0 ? null : idOrdenInterno;
-            IdMaterial = idMaterial == 0 ? null : idMaterial;
-            Peso = peso is null ? 0 : peso;
-           
-        }
     }
 }

@@ -222,6 +222,12 @@ namespace JuncalApi.Servicios.Excel
 
         private string ObtenerSubString(int desde, int total, string mapperString)
         {
+            // Asegurarse de que el parámetro mapperString no sea nulo
+            if (mapperString == null)
+            {
+                return string.Empty; // Devolver cadena vacía si el parámetro es nulo
+            }
+
             // Asegurarse de que el rango especificado esté dentro de los límites de la cadena original
             if (desde < 0 || desde >= mapperString.Length || total <= 0)
             {
@@ -239,7 +245,6 @@ namespace JuncalApi.Servicios.Excel
             {
                 if (i >= desde && i <= hasta)
                 {
-               
                     respuesta += mapperString[i];
                 }
             }

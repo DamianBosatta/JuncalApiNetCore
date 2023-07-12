@@ -174,7 +174,5 @@ namespace JuncalApi.Mapper
 
         }
 
-
-
     }
 }
