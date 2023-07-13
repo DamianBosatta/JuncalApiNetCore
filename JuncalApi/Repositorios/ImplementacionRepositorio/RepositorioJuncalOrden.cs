@@ -102,13 +102,13 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          {
                              IdOrden = orden.Id,
                              IdAceria = aceria != null ? aceria.Id : 0,
-                             NombreAceria = aceria != null ? aceria.NombreAceria : string.Empty,
+                             NombreAceria = aceria != null ? aceria.Nombre : string.Empty,
                              IdContrato = contrato != null ? contrato.Id : 0,
                              IdEstado = estado != null ? estado.Id : 0,
                              DescripcionEstado = estado != null ? estado.Nombre : string.Empty,
                              ListaMaterialesOrden = _db.JuncalOrdenMarterials
                                 .Where(om => om.IdOrden == orden.Id)
-                                .Join(_db.JuncalMaterials, om => om.IdMaterial, m => m.Id, (om, m) => m)
+                                .Join(_db.JuncalOrdenMarterials, om => om.IdMaterial, m => m.Id, (om, m) => m)
                                 .ToList()
                          });
 

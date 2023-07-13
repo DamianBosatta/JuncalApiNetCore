@@ -16,7 +16,7 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public string DescripcionEstado { get; set; }
 
-        public List<JuncalMaterial> ListaMaterialesOrden { get; set; }
+        public List<JuncalOrdenMarterial> ListaMaterialesOrden { get; set; }
 
 
     }

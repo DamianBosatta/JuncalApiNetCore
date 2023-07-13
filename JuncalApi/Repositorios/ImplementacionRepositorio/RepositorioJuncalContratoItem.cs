@@ -40,5 +40,24 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         #endregion GetContratoItemForIdContrato
 
+
+        public decimal GetPrecioMaterial(int idContrato, int idMaterial)
+        {
+            var query = (from itemMaterial in _db.JuncalContratoItems
+                         join contrato in _db.JuncalContratos
+                         on itemMaterial.IdContrato equals contrato.Id
+                         join material in _db.JuncalMaterials
+                         on itemMaterial.IdMaterial equals material.Id
+                         select new { itemMaterial, contrato, material });
+
+
+            return query.FirstOrDefault().itemMaterial.Precio;
+
+
+
+
+        }
+
+
     }
 }

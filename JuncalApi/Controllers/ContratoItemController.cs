@@ -48,6 +48,24 @@ namespace JuncalApi.Controllers
 
         }
 
+        [HttpGet("api/precio/{idContrato}/{idMaterial}")]
+        public async Task<ActionResult<decimal>> GetPrecioMaterial(int idContrato,int idMaterial)
+        {
+
+            var precioMaterial = _uow.RepositorioJuncalContratoItem.GetPrecioMaterial(idContrato,idMaterial);
+
+            if (precioMaterial>0)
+            {
+               
+                return Ok(new { success = true, message = "El Precio Ha Sido Enviado", result = precioMaterial });
+
+            }
+
+            return Ok(new { success = false, message = "El Precio Dio 0 o No tiene precio", result =precioMaterial });
+
+
+        }
+
 
         [HttpPost]
         public ActionResult CargarContratoItem([FromBody] List<ContratoItemRequerido> listaContratoItemRequerido)
