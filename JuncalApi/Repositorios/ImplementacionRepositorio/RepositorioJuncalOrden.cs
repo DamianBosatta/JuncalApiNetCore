@@ -1,5 +1,7 @@
 ﻿using JuncalApi.DataBase;
+using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 
@@ -19,7 +21,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         /// </summary>
         /// <param name="idOrden">Id de la orden (opcional)</param>
         /// <returns>Lista de objetos JuncalOrden</returns>
-        public List<JuncalOrden>? GetRemito(int idOrden)
+        public List<RemitoRespuesta>? GetRemito(int idOrden)
         {
             var query = (from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
                          join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
@@ -40,7 +42,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          from jproveedor in JoinProveedor.DefaultIfEmpty()
                          join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
                          from jdireccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                         select new JuncalOrden
+                         select new RemitoRespuesta
                          {
                              Id = _orden.Id,
                              Remito = _orden.Remito,
@@ -49,7 +51,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              NombreAceria = jaceria.Nombre,
                              DireccionAceria = jaceria.Direccion,
                              CuitAceria = jaceria.Cuit,
-                             Fecha=_orden.Fecha,
+                             FechaRemito = _orden.Fecha,
                              CodigoProveedorAceria = jaceria.CodProveedor,
                              IdContrato = jcontrato.Id,
                              NumeroContrato = jcontrato.Numero,
@@ -68,8 +70,9 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              IdProveedor = _orden.IdProveedor,
                              NombreProveedor = jproveedor.Nombre,
                              IdDireccionProveedor = _orden.IdDireccionProveedor,
-                             DireccionProveedor = jdireccionProveedor.Direccion,
+                             DireccionProveedor = jdireccionProveedor.Direccion
                          });
+
 
             // Filtrar por Id de orden si se proporciona
             query = idOrden == 0 ? query : query.Where(a => a.Id == idOrden);
@@ -77,7 +80,41 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return query.ToList();
         }
 
-        #endregion 
+        #endregion
+
+
+        public List<RemitosPendientesRespuesta> GetRemitosPendientes()
+        {
+            var query = (from orden in _db.JuncalOrdens.Where(a => a.IdEstado > 1 && a.IdEstado < 4)
+                         join ordenMaterial in _db.JuncalOrdenMarterials
+                         on orden.Id equals ordenMaterial.IdOrden into materialJoin
+                         from material in materialJoin.DefaultIfEmpty()
+                         join aceria in _db.JuncalAceria
+                         on orden.IdAceria equals aceria.Id into aceriaJoin
+                         from aceria in aceriaJoin.DefaultIfEmpty()
+                         join estado in _db.JuncalEstados
+                         on orden.IdEstado equals estado.Id into estadoJoin
+                         from estado in estadoJoin.DefaultIfEmpty()
+                         join contrato in _db.JuncalContratos
+                         on orden.IdContrato equals contrato.Id into contratoJoin
+                         from contrato in contratoJoin.DefaultIfEmpty()
+                         select new RemitosPendientesRespuesta
+                         {
+                             IdOrden = orden.Id,
+                             IdAceria = aceria != null ? aceria.Id : 0,
+                             NombreAceria = aceria != null ? aceria.NombreAceria : string.Empty,
+                             IdContrato = contrato != null ? contrato.Id : 0,
+                             IdEstado = estado != null ? estado.Id : 0,
+                             DescripcionEstado = estado != null ? estado.Nombre : string.Empty,
+                             ListaMaterialesOrden = _db.JuncalOrdenMarterials
+                                .Where(om => om.IdOrden == orden.Id)
+                                .Join(_db.JuncalMaterials, om => om.IdMaterial, m => m.Id, (om, m) => m)
+                                .ToList()
+                         });
+
+            return query.ToList();
+        }
+
 
     }
 }

@@ -6,58 +6,58 @@ namespace JuncalApi.Dto.DtoRespuesta
     {
 
 
-        public int Id { get; set;}
+        public int? Id { get; set; } = 0;
 
-        public string? Remito { get; set;}
+        public string? Remito { get; set;} = string.Empty;
 
-        public DateTime FechaRemito { get; set; }
+        public DateTime? FechaRemito { get; set; } = new DateTime();
 
-        public string? Observacion { get; set; }
+        public string? Observaciones { get; set; } = string.Empty;
 
-        public int IdAceria { get; set; }
+        public int? IdAceria { get; set; } = 0;
 
-        public string? NombreAceria { get; set; }
+        public string? NombreAceria { get; set; } = string.Empty;
 
-        public string? DireccionAceria { get; set; }
+        public string? DireccionAceria { get; set; } = string.Empty;
 
-        public string? CuitAceria { get; set; }
+        public string? CuitAceria { get; set; } = string.Empty;
 
-        public string? CodigoProveedorAceria { get; set; }
+        public string? CodigoProveedorAceria { get; set; } = string.Empty;
 
-        public int IdContrato { get; set; }
+        public int? IdContrato { get; set; } = 0;
 
-        public string? NumeroContrato { get; set; }
+        public string? NumeroContrato { get; set; } = string.Empty;
 
-        public int IdCamion { get; set; }
+        public int? IdCamion { get; set; } = 0;
 
-        public string? PatenteCamion { get; set; }
+        public string? PatenteCamion { get; set; } = string.Empty;
 
-        public int IdChofer { get; set; }
+        public int? IdChofer { get; set; } = 0;
 
-        public string? NombreChofer { get; set; }
+        public string? NombreChofer { get; set; } = string.Empty;
 
-        public string? ApellidoChofer { get; set; }
+        public string? ApellidoChofer { get; set; } = string.Empty;
 
-        public int LicenciaChofer { get; set; }
+        public int LicenciaChofer { get; set; } = 0;
 
-        public int IdTransportista { get; set; }
+        public int? IdTransportista { get; set; } = 0;
 
-        public string? NombreTransportista { get; set; }
+        public string? NombreTransportista { get; set; } = string.Empty;
 
-        public int IdAcoplado { get; set; }
+        public int? IdAcoplado { get; set; } = 0;
 
-        public string? PatenteAcoplado { get; set; }
+        public string? PatenteAcoplado { get; set; }= string.Empty;
 
-        public int IdEstado { get; set; }
+        public int? IdEstado { get; set; } = 0;
 
-        public string? DescripcionEstado { get; set; }
+        public string? DescripcionEstado { get; set; } = string.Empty;
 
-        public int IdProveedor { get; set; }
+        public int? IdProveedor { get; set; } = 0;
 
-        public string? NombreProveedor { get; set; }
+        public string? NombreProveedor { get; set; } = string.Empty;
 
-        public int IdDireccionProveedor { get; set; }
+        public int? IdDireccionProveedor { get; set; } = 0;
 
-        public string? DireccionProveedor { get; set; }
+        public string? DireccionProveedor { get; set; } = string.Empty;
     }
 }

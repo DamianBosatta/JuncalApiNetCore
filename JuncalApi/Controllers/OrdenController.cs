@@ -34,7 +34,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenes()
         {
 
-            var ListaOrdenes = _serviceRemito.GetRemitos(0);
+            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetRemito(0);
 
             if (ListaOrdenes.Count() > 0)
             {
@@ -43,7 +43,29 @@ namespace JuncalApi.Controllers
 
             }
            
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenes});
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenes= new List<RemitoRespuesta>()});
+
+
+        }
+
+
+
+        
+        [HttpGet]
+        [Route("api/pendientes")]
+        public async Task<ActionResult<IEnumerable<RemitosPendientesRespuesta>>> GetPendientes()
+        {
+
+            var ListaOrdenesPendientes = _uow.RepositorioJuncalOrden.GetRemitosPendientes();
+
+            if (ListaOrdenesPendientes.Count() > 0)
+            {
+
+                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenesPendientes });
+
+            }
+
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenesPendientes = new List<RemitosPendientesRespuesta>() });
 
 
         }
