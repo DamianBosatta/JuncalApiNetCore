@@ -107,9 +107,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              IdEstado = estado != null ? estado.Id : 0,
                              DescripcionEstado = estado != null ? estado.Nombre : string.Empty,
                              ListaMaterialesOrden = _db.JuncalOrdenMarterials
-                                .Where(om => om.IdOrden == orden.Id)
-                                .Join(_db.JuncalOrdenMarterials, om => om.IdMaterial, m => m.Id, (om, m) => m)
-                                .ToList()
+                                .Where(om => om.IdOrden == orden.Id).ToList()
                          });
 
             return query.ToList();

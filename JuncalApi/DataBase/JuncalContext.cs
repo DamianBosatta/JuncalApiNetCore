@@ -54,6 +54,8 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalOrdenMaterialInternoRecogido> JuncalOrdenMaterialInternoRecogidos { get; set; }
 
+    public virtual DbSet<JuncalPreFacturar> JuncalPreFacturars { get; set; }
+
     public virtual DbSet<JuncalProveedor> JuncalProveedors { get; set; }
 
     public virtual DbSet<JuncalProveedorPresupuesto> JuncalProveedorPresupuestos { get; set; }
@@ -722,6 +724,7 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
+            entity.Property(e => e.FacturadoParcial).HasColumnName("facturadoParcial");
             entity.Property(e => e.IdMaterial)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_material");
@@ -729,6 +732,9 @@ public partial class JuncalContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("id_orden");
             entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.NumFactura)
+                .HasMaxLength(255)
+                .HasColumnName("num_Factura");
             entity.Property(e => e.Peso)
                 .HasPrecision(10)
                 .HasColumnName("peso");
@@ -812,6 +818,64 @@ public partial class JuncalContext : DbContext
                 .HasForeignKey(d => d.IdOrdenInterno)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_orden_interno");
+        });
+
+        modelBuilder.Entity<JuncalPreFacturar>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.preFacturar");
+
+            entity.HasIndex(e => e.IdMaterialEnviado, "fk_MaterialEnviado_OrdenMaterial");
+
+            entity.HasIndex(e => e.IdMaterialRecibido, "fk_MaterialRecibido_MaterialAceria");
+
+            entity.HasIndex(e => e.IdOrden, "fk_idOrden_orden");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.Facturado).HasColumnName("facturado");
+            entity.Property(e => e.IdMaterialEnviado)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_material_enviado");
+            entity.Property(e => e.IdMaterialRecibido)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_material_recibido");
+            entity.Property(e => e.IdOrden)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_orden");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.Peso)
+                .HasPrecision(11)
+                .HasColumnName("peso");
+            entity.Property(e => e.PesoBruto)
+                .HasPrecision(11)
+                .HasColumnName("peso_bruto");
+            entity.Property(e => e.PesoNeto)
+                .HasPrecision(11)
+                .HasColumnName("peso_neto");
+            entity.Property(e => e.PesoTara)
+                .HasPrecision(11)
+                .HasColumnName("peso_tara");
+            entity.Property(e => e.Remito)
+                .HasMaxLength(255)
+                .HasColumnName("remito");
+
+            entity.HasOne(d => d.IdMaterialEnviadoNavigation).WithMany(p => p.JuncalPreFacturars)
+                .HasForeignKey(d => d.IdMaterialEnviado)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_MaterialEnviado_OrdenMaterial");
+
+            entity.HasOne(d => d.IdMaterialRecibidoNavigation).WithMany(p => p.JuncalPreFacturars)
+                .HasForeignKey(d => d.IdMaterialRecibido)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_MaterialRecibido_MaterialAceria");
+
+            entity.HasOne(d => d.IdOrdenNavigation).WithMany(p => p.JuncalPreFacturars)
+                .HasForeignKey(d => d.IdOrden)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_idOrden_orden");
         });
 
         modelBuilder.Entity<JuncalProveedor>(entity =>

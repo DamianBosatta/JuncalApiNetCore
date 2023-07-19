@@ -41,7 +41,7 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalEstadosReclamo = new RepositorioJuncalEstadosReclamo(context);
             this.RepositorioJuncalProveedorPresupuesto = new RepositorioJuncalProveedorPresupuesto(context);
             this.RepositorioJuncalProveedorPresupuestoMaterial = new RepositorioJuncalProveedorPresupuestoMaterial(context);
-
+            this.RepositorioJuncalPreFactura = new RepositorioJuncalPreFacturar(context);
 
         } 
 
@@ -116,6 +116,8 @@ namespace JuncalApi.UnidadDeTrabajo
         public IRepositorioJuncalProveedorPresupuesto RepositorioJuncalProveedorPresupuesto { get; private set; }
 
         public IRepositorioJuncalProveedorPresupuestoMaterial RepositorioJuncalProveedorPresupuestoMaterial { get; private set; }
+
+        public IRepositorioJuncalPreFactura RepositorioJuncalPreFactura { get; private set; }
 
         public void Dispose()
         {

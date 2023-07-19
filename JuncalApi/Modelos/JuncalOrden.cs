@@ -55,5 +55,7 @@ public partial class JuncalOrden
 
     public virtual ICollection<JuncalOrdenMarterial> JuncalOrdenMarterials { get; } = new List<JuncalOrdenMarterial>();
 
+    public virtual ICollection<JuncalPreFacturar> JuncalPreFacturars { get; } = new List<JuncalPreFacturar>();
+
     public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamados { get; } = new List<JuncalRemitosReclamado>();
 }
