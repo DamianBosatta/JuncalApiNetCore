@@ -5,6 +5,6 @@ namespace JuncalApi.Servicios.Facturar
 {
     public interface IFacturarServicio
     {
-        public List<ItemFacturado> itemFacturados(List<JuncalPreFacturar> listaPreFacturados);
+      
     }
 }

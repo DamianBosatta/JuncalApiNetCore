@@ -18,12 +18,6 @@ namespace JuncalApi.Servicios.Facturar
 
         }
 
-        public List<ItemFacturado> itemFacturados(List<JuncalPreFacturar> listaPreFacturados)
-        {         
-
-            return _uow.RepositorioJuncalPreFactura.GetAgrupamientoFacturacion(listaPreFacturados);
-            
-
-        }
+   
     }
 }
