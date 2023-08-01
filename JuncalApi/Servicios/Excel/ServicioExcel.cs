@@ -43,7 +43,7 @@ namespace JuncalApi.Servicios.Excel
 
             listaExcelGenerico = ComparadorRemitoExcel(listaMapeoExcel, remitosComparar); // Comparamos Excel Con Query En Base De Datos
 
-            CargarPreFacturado(listaExcelGenerico); // Cargamos El Pre Facturado
+       
            
             #endregion
 
@@ -256,18 +256,7 @@ namespace JuncalApi.Servicios.Excel
         }
 
 
-        private void CargarPreFacturado(List<ExcelGenerico> listaExcelRemitoMapeado)
-        {
-            foreach(var obj in listaExcelRemitoMapeado)
-            {
-              JuncalPreFacturar newPreFacturar = new JuncalPreFacturar((int)obj.IdOrden,obj.IdMaterial,int.Parse(obj.CodigoMaterialJuncal),
-              (decimal)obj.PesoEnviadoJuncal,(decimal)obj.PesoTara,(decimal)obj.PesoBruto,(decimal)obj.PesoDescargadoAceria,obj.Remito);
-
-                _uow.RepositorioJuncalPreFactura.Insert(newPreFacturar);
-
-            }
-
-        }
+    
 
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
@@ -41,24 +42,48 @@ namespace JuncalApi.Controllers
 
         }
 
-
-        [HttpGet]
-        public async Task<ActionResult<IGrouping<int,ItemFacturado>>> GetAgrupacionFacturado(List<JuncalPreFacturar> listaPreFacturado)
+        [HttpPost]
+        public ActionResult CargarPreFacturado([FromBody] PreFacturadoRequerido preFacturadoReq)
         {
+            var preFacturado = _uow.RepositorioJuncalPreFactura.GetByCondition(c => c.IdOrden==preFacturadoReq.IdOrden && 
+            c.IdMaterialEnviado==preFacturadoReq.IdMaterialEnviado && c.Remito==preFacturadoReq.Remito);
 
-            var ListaAgrupada = _uow.RepositorioJuncalPreFactura.GetAgrupamientoFacturacion(listaPreFacturado);
+            PreFacturadoRespuesta preFacturarNuevo = new PreFacturadoRespuesta();
 
-            if (ListaAgrupada.Count() > 0)
+            if (preFacturado is null)
             {
-              
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = ListaAgrupada });
+                var preFacturarobj = _mapper.Map<JuncalPreFacturar>(preFacturadoReq);
 
+                _uow.RepositorioJuncalPreFactura.Insert(preFacturarobj);
+               
+                preFacturarNuevo =  _mapper.Map<PreFacturadoRespuesta>(preFacturarobj);
+                
+                return Ok(new { success = true, message = "Pre Facturar Con Exito", result = preFacturarNuevo });
             }
-           
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaAgrupada});
-
+       
+         
+            return Ok(new { success = false, message = " El Dato Enviado Ya Esta Pre Facturado ", result = preFacturarNuevo});
 
         }
+
+
+        //[HttpGet]
+        //public async Task<ActionResult<IGrouping<int,ItemFacturado>>> GetAgrupacionFacturado(List<JuncalPreFacturar> listaPreFacturado)
+        //{
+
+        //    var ListaAgrupada = _uow.RepositorioJuncalPreFactura.GetAgrupamientoFacturacion(listaPreFacturado);
+
+        //    if (ListaAgrupada.Count() > 0)
+        //    {
+
+        //        return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = ListaAgrupada });
+
+        //    }
+
+        //    return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaAgrupada});
+
+
+        //}
 
 
 

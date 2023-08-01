@@ -54,7 +54,8 @@ namespace JuncalApi.Controllers
                 JuncalExcelConfig configNuevo = _mapper.Map<JuncalExcelConfig>(excelConfigReq);
 
                 _uow.RepositorioJuncalExcelConfig.Insert(configNuevo);
-                
+  
+              
                 _mapper.Map(configNuevo, configRes);
                 return Ok(new { success = true, message = " La Configuracion Fue Creada Con Exito ", result = configRes });
 
@@ -64,7 +65,6 @@ namespace JuncalApi.Controllers
             return Ok(new { success = false, message = "La Aceria Ya Tiene Una Configuracion Cargada ", result = configRes });
 
         }
-
         [HttpPut]
         public async Task<IActionResult> EditConfig(int idAceria, ExcelConfigRequerido configExcelEdit)
         {
