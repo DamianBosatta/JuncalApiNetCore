@@ -41,7 +41,7 @@ namespace JuncalApi.Servicios.Excel
 
             var remitosComparar = _uow.RepositorioJuncalOrdenMarterial.GetDatosMaterialesAndRemitoExcel(idAceria, listaRemito); // Query En Base De Datos
 
-            listaExcelGenerico = ComparadorRemitoExcel(listaMapeoExcel, remitosComparar); // Comparamos Excel Con Query En Base De Datos
+            listaExcelGenerico = ComparadorRemitoExcel(listaMapeoExcel, remitosComparar,idAceria); // Comparamos Excel Con Query En Base De Datos
 
        
            
@@ -131,13 +131,27 @@ namespace JuncalApi.Servicios.Excel
         /// <param name="listaExcel">Lista de objetos ExcelMapper</param>
         /// <param name="ListaDataMateriales">Lista de objetos ItemDataMateriales</param>
         /// <returns>Lista de objetos ExcelGenerico</returns>
-        private List<ExcelGenerico> ComparadorRemitoExcel(List<ExcelMapper> listaExcel, List<ItemDataMateriales> ListaDataMateriales)
+        private List<ExcelGenerico> ComparadorRemitoExcel(List<ExcelMapper> listaExcel, List<ItemDataMateriales> ListaDataMateriales,int idAceria)
         {
             var query = (from excel in listaExcel
                          join Remito in ListaDataMateriales on excel.Remito equals Remito.Remito
-                         select new ExcelGenerico(Remito, excel)).ToList();
+                         select new
+                         {
+                            Remito = Remito,
+                            Excel = excel,
+                            IdAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetByCondition
+                            (a => a.Cod == excel.CodigoMaterial && a.IdAceria==idAceria).Id
+                         });
 
-            return query;
+            List<ExcelGenerico> listaExcelGenerico = new List<ExcelGenerico>();
+            foreach(var objQuery in query)
+            {
+               listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+
+            }
+
+
+            return listaExcelGenerico;
         }
 
         /// <summary>

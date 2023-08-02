@@ -6,15 +6,18 @@ namespace JuncalApi.Dto.DtoExcel
 {
     public class ExcelGenerico
     {
-        ItemDataMateriales? DataMateriales { get; set; }
+      public  ItemDataMateriales? DataMateriales { get; set; }
 
-        ExcelMapper? ExcelAcerbrag { get; set; }
+      public ExcelMapper? ExcelAcerbrag { get; set; }
+
+      public int IdAceriaMaterial { get; set; }
 
 
-        public ExcelGenerico(ItemDataMateriales? dataMateriales, ExcelMapper? excelAcerbrag)
+        public ExcelGenerico(ItemDataMateriales? dataMateriales, ExcelMapper? excelAcerbrag,int idAceriaMaterial)
         {
             DataMateriales = dataMateriales;
             ExcelAcerbrag = excelAcerbrag;
+            IdAceriaMaterial = idAceriaMaterial;
         }
 
         public int? IdOrden { get { return DataMateriales is null ? 0 : DataMateriales.IdOrden; } }
@@ -75,6 +78,8 @@ namespace JuncalApi.Dto.DtoExcel
                 return 0;
             }
         }
+
+
         public decimal? PesoEnviadoJuncal { get { return DataMateriales is null ? 0 : DataMateriales.PesoEnviado; } }
        
         public decimal? DiferenciaPeso { get { return ((decimal)(PesoEnviadoJuncal - PesoDescargadoAceria)); } }
@@ -83,6 +88,7 @@ namespace JuncalApi.Dto.DtoExcel
 
         public bool? DiferenciaPesoBool { get { return DiferenciaPeso >= 400 && DiferenciaMaterial is false ? true : false; } }
 
+        public bool ? ExisteCodigoMaterial {get { return DataMateriales.ListaCodigoMaterialesACeria.Contains(ExcelAcerbrag.CodigoMaterial) ? false : true;} } 
 
 
         

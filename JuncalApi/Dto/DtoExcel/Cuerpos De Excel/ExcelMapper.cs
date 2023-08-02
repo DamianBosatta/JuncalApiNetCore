@@ -21,6 +21,6 @@
 
         public string? Descargado { get; set; }
     
-
+       
     }
 }

@@ -37,13 +37,34 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         on jOrdenMaterial.IdOrden equals orden.Id into joinOrden
                         from jOrden in joinOrden.DefaultIfEmpty()
                         where jOrden != null && (jMaterial.Isdeleted == false && jOrdenMaterial.Isdeleted == false)
-                        select new ItemDataMateriales(aceriaMaterial, jOrdenMaterial, jOrden, jMaterial);
+                        select new
+                        {
+                            aceriaMaterial,
+                            jOrdenMaterial,
+                            jOrden,
+                            jMaterial,
+                            CodigosMateriales = _db.JuncalAceriaMaterials
+                                        .Where(a => a.IdAceria == idAceria)
+                                        .Select(a => a.Cod)
+                                        .ToList()
+                        };
 
-            // Devolver la lista de objetos ItemDataMateriales
-            return query.ToList();
+            var itemList = query.ToList();
+
+            // Convertir la lista anonima a una lista de objetos ItemDataMateriales
+            var result = itemList.Select(item => new ItemDataMateriales(
+                item.aceriaMaterial,
+                item.jOrdenMaterial,
+                item.jOrden,
+                item.jMaterial,
+                item.CodigosMateriales
+            )).ToList();
+
+            return result;
         }
+    }
 
         #endregion GetDatosMaterialesAndRemitoExcel
 
     }
-}
+
