@@ -115,7 +115,7 @@ namespace JuncalApi.Controllers
         /// </summary>
         /// <param name="id">ID del reclamo</param>
        
-        [Route("Borrar/{id?}")]
+        [Route("Borrar/{idReclamo?}")]
         [HttpPut]
         public IActionResult IsDeletedReclamo(int idReclamo)
         {
@@ -141,7 +141,7 @@ namespace JuncalApi.Controllers
         /// </summary>
         /// <param name="id">ID de la reclamo</param>
         /// <param name="aceriaEdit">Datos actualizados del reclamo</param>
-        [HttpPut("{id}")]
+        [HttpPut("{idReclamo}")]
         public async Task<IActionResult> EditReclamo(int idReclamo, RemitosReclamadoRequerido reclamoEdit)
         {
             var reclamo = _uow.RepositorioJuncalRemitosReclamado.GetById(idReclamo);
