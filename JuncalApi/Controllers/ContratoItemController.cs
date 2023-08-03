@@ -48,7 +48,7 @@ namespace JuncalApi.Controllers
 
         }
 
-        [HttpGet("api/precio/{idContrato}/{idMaterial}")]
+        [HttpGet("precio/{idContrato}/{idMaterial}")]
         public async Task<ActionResult<decimal>> GetPrecioMaterial(int idContrato,int idMaterial)
         {
 

@@ -38,8 +38,10 @@ namespace JuncalApi.Servicios.Excel
 
             var listaRemito = (from l in listaMapeoExcel
                                select l.Remito).Distinct().ToList(); // Obtenemos La Lista De Los Remitos Del Excel
+            var listaCodigos = (from l in listaMapeoExcel
+                                select l.CodigoMaterial).Distinct().ToList();
 
-            var remitosComparar = _uow.RepositorioJuncalOrdenMarterial.GetDatosMaterialesAndRemitoExcel(idAceria, listaRemito); // Query En Base De Datos
+            var remitosComparar = _uow.RepositorioJuncalOrdenMarterial.GetDatosMaterialesAndRemitoExcel(idAceria, listaRemito,listaCodigos); // Query En Base De Datos
 
             listaExcelGenerico = ComparadorRemitoExcel(listaMapeoExcel, remitosComparar,idAceria); // Comparamos Excel Con Query En Base De Datos
 

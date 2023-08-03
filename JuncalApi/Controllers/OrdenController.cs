@@ -130,7 +130,7 @@ namespace JuncalApi.Controllers
 
         }
      
-        [HttpGet("api/remitos/{idOrden}")]
+        [HttpGet("remitos/{idOrden}")]
         public async Task<IActionResult> GetRemitoById(int idOrden)
         {
             var orden = await Task.Run(() => _serviceRemito.GetRemitos(idOrden));
