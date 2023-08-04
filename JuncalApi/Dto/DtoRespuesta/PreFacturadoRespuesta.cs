@@ -1,4 +1,6 @@
-﻿namespace JuncalApi.Dto.DtoRespuesta
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JuncalApi.Dto.DtoRespuesta
 {
     public class PreFacturadoRespuesta
     {
@@ -21,5 +23,9 @@
         public bool Facturado { get; set; }
 
         public string Remito { get; set; } = null!;
+      
+        public int IdAceria { get; set; } 
+     
+        public int IdContrato { get; set; } 
     }
 }

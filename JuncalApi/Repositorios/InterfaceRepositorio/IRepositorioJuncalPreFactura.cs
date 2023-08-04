@@ -5,7 +5,8 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalPreFactura:IRepositorioGenerico<JuncalPreFacturar>
     {
-        public List<IGrouping<int, ItemFacturado>> GetAgrupamientoFacturacion(List<JuncalPreFacturar> listaPreFacturados);
+        public List<JuncalPreFacturar> AgrupamientoPreFacturar(List<JuncalPreFacturar> listaPreFacturar);
+     
     }
 
    

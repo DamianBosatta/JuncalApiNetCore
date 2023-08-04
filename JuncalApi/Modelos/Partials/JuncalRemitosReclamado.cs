@@ -16,6 +16,10 @@ namespace JuncalApi.Modelos
         public string? NombreUsuarioIngresado { get; set; } = string.Empty;
         [NotMapped]
         public string? NombreAceria { get; set; } = string.Empty;
+        [NotMapped]
+        public int? IdMaterialEnviado { get; set; } = 0;
+        [NotMapped]
+        public string? NombreMaterialEnviado { get; set; } = string.Empty;
 
         public JuncalRemitosReclamado() 
         {
@@ -47,7 +51,7 @@ namespace JuncalApi.Modelos
           DateTime _fechaReclamo, string _observacionReclamo, DateTime _fechaFinalizado, string _obsrvacionFinalizado,
           int _idUsuarioReclamo, int _idUsuarioIngreso, int _idUsuarioFinalizado, int _idAceria,
           string _descripcionEstadoReclamo,string _remito,string _nombreUsuarioReclamo,string _nombreUsuarioFinalizado,
-          string _nombreUsuarioIngresado,string _nombreAceria) : 
+          string _nombreUsuarioIngresado,string _nombreAceria,int idMaterialEnviado, string nombreMaterialEnviado) : 
           this(_id,_idEstadoReclamo,_idRemito, _fecha,_observacion,_fechaReclamo,_observacionReclamo,
           _fechaFinalizado,_obsrvacionFinalizado,_idUsuarioReclamo,_idUsuarioIngreso, _idUsuarioFinalizado, 
           _idAceria)
@@ -58,7 +62,8 @@ namespace JuncalApi.Modelos
             NombreUsuarioFinalizado = _nombreUsuarioFinalizado;
             NombreUsuarioIngresado = _nombreUsuarioIngresado;
             NombreAceria = _nombreAceria;
-
+            IdMaterialEnviado = idMaterialEnviado;
+            NombreMaterialEnviado=nombreMaterialEnviado;
         }
 
 

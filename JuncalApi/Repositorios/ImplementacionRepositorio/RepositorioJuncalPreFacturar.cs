@@ -10,39 +10,48 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public RepositorioJuncalPreFacturar(JuncalContext db) : base(db)
         {
         }
-
-        public List<IGrouping<int, ItemFacturado>> GetAgrupamientoFacturacion(List<JuncalPreFacturar> listaPreFacturados)
+        public List<JuncalPreFacturar> AgrupamientoPreFacturar(List<JuncalPreFacturar> listaPreFacturar)
         {
-
-            var query = (from preFacturar in listaPreFacturados
+            var query = (from listaPreFacturarada in listaPreFacturar
                          join orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
-                         on preFacturar.IdOrden equals orden.Id into ordenGroup
-                         from orden in ordenGroup.DefaultIfEmpty()
-                         join contrato in _db.JuncalContratos.Where(a => a.Isdeleted == false)
-                         on orden?.IdContrato equals contrato.Id into contratoGroup
-                         from contrato in contratoGroup.DefaultIfEmpty()
-                         join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false)
-                         on orden?.IdAceria equals aceria.Id into aceriaGroup
-                         from aceria in aceriaGroup.DefaultIfEmpty()
-                         select new ItemFacturado
+                         on listaPreFacturarada.IdOrden equals orden.Id
+                         select new JuncalPreFacturar
                          {
-                             IdOrden = preFacturar.IdOrden,
-                             IdAceria= aceria.Id,
-                             Contrato = contrato != null ? contrato.Numero : null,
-                             Remito = preFacturar.Remito,
-                             Aceria = aceria != null ? aceria.Nombre : null,
-                             PesoEnviado = preFacturar.Peso,
-                             PesoRecibido = preFacturar.PesoNeto,
-                             ListaMateriales = _db.JuncalOrdenMarterials
-                             .Where(a => a.IdOrden == preFacturar.IdOrden && !a.Isdeleted).ToList()
-                         }).GroupBy(a => a.IdAceria).ToList();
+                             IdOrden = listaPreFacturarada.IdOrden,
+                             IdMaterialEnviado=listaPreFacturarada.IdMaterialEnviado,
+                             IdMaterialRecibido = listaPreFacturarada.IdMaterialRecibido,
+                             Peso = listaPreFacturarada.Peso,
+                             PesoTara = listaPreFacturarada.PesoTara,
+                             PesoBruto = listaPreFacturarada.PesoBruto,
+                             PesoNeto = listaPreFacturarada.PesoNeto,
+                             Remito = listaPreFacturarada.Remito,
+                             IdAceria = orden.IdAceria,
+                             IdContrato= (int)orden.IdContrato
+          
+                          }).ToList();
 
 
+                               var remitosOrdenados = query.OrderBy(r => r.IdAceria)
+                                .ThenBy(r => r.IdContrato)
+                                .ThenBy(r => r.IdMaterialRecibido);
 
-            return query;
+                               var remitosAgrupados = remitosOrdenados.GroupBy(r => new { r.IdAceria, r.IdContrato, r.IdMaterialRecibido })
+                                                  .Select(group => new JuncalPreFacturar
+                                                  {
+                                                      IdAceria = group.Key.IdAceria,
+                                                      IdContrato = group.Key.IdContrato,
+                                                      IdMaterialRecibido = group.Key.IdMaterialRecibido,
+                                                      Peso = group.Sum(r => r.Peso)
+                                                  });
+
+                               return remitosAgrupados.ToList();
+
 
 
         }
+
+
+        
 
     }
 }

@@ -30,6 +30,10 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalContratoItem> JuncalContratoItems { get; set; }
 
+    public virtual DbSet<JuncalCuentasCorriente> JuncalCuentasCorrientes { get; set; }
+
+    public virtual DbSet<JuncalCuentasCorrientesTipo> JuncalCuentasCorrientesTipos { get; set; }
+
     public virtual DbSet<JuncalDireccionProveedor> JuncalDireccionProveedors { get; set; }
 
     public virtual DbSet<JuncalEstado> JuncalEstados { get; set; }
@@ -310,6 +314,11 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Numero)
                 .HasMaxLength(255)
                 .HasColumnName("numero");
+            entity.Property(e => e.Tipo)
+                .HasDefaultValueSql("'1'")
+                .HasComment("1-CIF 2-FOB")
+                .HasColumnType("int(2)")
+                .HasColumnName("tipo");
             entity.Property(e => e.ValorFlete)
                 .HasPrecision(10)
                 .HasColumnName("valorFlete");
@@ -352,6 +361,56 @@ public partial class JuncalContext : DbContext
                 .HasForeignKey(d => d.IdMaterial)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_material");
+        });
+
+        modelBuilder.Entity<JuncalCuentasCorriente>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.cuentas_corrientes");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10)")
+                .HasColumnName("id");
+            entity.Property(e => e.Descripcion)
+                .HasColumnType("text")
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Fecha).HasColumnName("fecha");
+            entity.Property(e => e.Hora)
+                .HasColumnType("time")
+                .HasColumnName("hora");
+            entity.Property(e => e.IdProvedoor)
+                .HasColumnType("int(5)")
+                .HasColumnName("id_provedoor");
+            entity.Property(e => e.IdTipoMoviento)
+                .HasColumnType("int(2)")
+                .HasColumnName("id_tipo_moviento");
+            entity.Property(e => e.IdUsuario)
+                .HasColumnType("int(5)")
+                .HasColumnName("id_usuario");
+            entity.Property(e => e.Importe)
+                .HasPrecision(10, 2)
+                .HasColumnName("importe");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+        });
+
+        modelBuilder.Entity<JuncalCuentasCorrientesTipo>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.cuentas_corrientes_tipos");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(10)")
+                .HasColumnName("id");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(50)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Tipo)
+                .HasComment("1- Suma 2 - Resta")
+                .HasColumnType("int(1)")
+                .HasColumnName("tipo");
         });
 
         modelBuilder.Entity<JuncalDireccionProveedor>(entity =>

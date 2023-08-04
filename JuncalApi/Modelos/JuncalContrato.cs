@@ -23,6 +23,11 @@ public partial class JuncalContrato
 
     public decimal ValorFlete { get; set; }
 
+    /// <summary>
+    /// 1-CIF 2-FOB
+    /// </summary>
+    public int Tipo { get; set; }
+
     public virtual JuncalAcerium? IdAceriaNavigation { get; set; }
 
     public virtual ICollection<JuncalContratoItem> JuncalContratoItems { get; } = new List<JuncalContratoItem>();

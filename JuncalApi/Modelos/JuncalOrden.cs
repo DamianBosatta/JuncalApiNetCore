@@ -29,7 +29,7 @@ public partial class JuncalOrden
 
     public int? IdDireccionProveedor { get; set; }
 
-    public DateTime? FechaFacturacion { get; set; }
+    public DateOnly? FechaFacturacion { get; set; }
 
     public int? IdUsuarioCreacion { get; set; }
 

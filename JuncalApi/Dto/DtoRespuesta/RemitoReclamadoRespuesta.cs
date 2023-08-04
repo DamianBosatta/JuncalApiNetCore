@@ -1,4 +1,6 @@
-﻿namespace JuncalApi.Dto.DtoRespuesta
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JuncalApi.Dto.DtoRespuesta
 {
     public class RemitoReclamadoRespuesta
     {
@@ -39,5 +41,9 @@
         public string? NombreUsuarioIngresado { get; set; } = string.Empty;
 
         public string? NombreAceria { get; set; } = string.Empty;
+        
+        public int? IdMaterialEnviado { get; set; } 
+     
+        public string? NombreMaterialEnviado { get; set; } 
     }
 }

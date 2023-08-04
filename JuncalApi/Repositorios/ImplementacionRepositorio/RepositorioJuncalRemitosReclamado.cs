@@ -19,6 +19,12 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         join remito in _db.JuncalOrdens.Where(a=>a.Isdeleted==false)
                         on reclamos.IdRemito equals remito.Id into JoinRemito
                         from jRemito in JoinRemito.DefaultIfEmpty()
+                        join ordenMaterial in _db.JuncalOrdenMarterials.Where(a => a.Isdeleted == false)
+                        on jRemito.Id equals ordenMaterial.IdOrden into JoinOrdenMaterial
+                        from jOrdenMaterial in JoinOrdenMaterial.DefaultIfEmpty()
+                        join material in _db.JuncalMaterials.Where(a => a.Isdeleted == false)
+                        on jOrdenMaterial.IdMaterial equals material.Id into JoinMaterial
+                        from jMaterial in JoinMaterial.DefaultIfEmpty()
                         join estadoReclamo in _db.JuncalEstadosReclamos.Where(a=>a.Isdelete==false)
                         on reclamos.IdEstadoReclamo equals estadoReclamo.Id into JoinEstadoReclamo
                         from jEstadoReclamo in JoinEstadoReclamo.DefaultIfEmpty()
@@ -32,7 +38,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         on reclamos.IdUsuarioFinalizado equals usuarioFinalizado.Id into JoinUsuarioFinalizado
                         from jUsuarioFinalizado in JoinUsuarioFinalizado.DefaultIfEmpty()
                         select new { reclamos,jAceria,jRemito,jEstadoReclamo,jUsuarioReclamo,jUsuarioIngresado,
-                        jUsuarioFinalizado};
+                        jUsuarioFinalizado,jOrdenMaterial,jMaterial};
 
             List<JuncalRemitosReclamado> listaRespuesta = new List<JuncalRemitosReclamado>();
 
@@ -57,7 +63,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                     objQuery.jUsuarioReclamo?.Apellido,
                     objQuery.jUsuarioFinalizado?.Apellido,
                     objQuery.jUsuarioIngresado?.Apellido,
-                    objQuery.jAceria?.Nombre
+                    objQuery.jAceria?.Nombre,
+                    (int)(objQuery.jMaterial?.Id),
+                    objQuery.jMaterial.Nombre
+
                 );
 
                 listaRespuesta.Add(nuevoReclamo);
@@ -68,6 +77,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return listaRespuesta;
 
         }
+
+
 
 
     }

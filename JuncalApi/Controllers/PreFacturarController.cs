@@ -66,24 +66,27 @@ namespace JuncalApi.Controllers
 
         }
 
+        [Route("AgrupacionFacturado")]
+        [HttpGet]        
+        public async Task<ActionResult<PreFacturadoRespuesta>> GetAgrupacionFacturado(List<JuncalPreFacturar> listaPreFacturado)
+        {
 
-        //[HttpGet]
-        //public async Task<ActionResult<IGrouping<int,ItemFacturado>>> GetAgrupacionFacturado(List<JuncalPreFacturar> listaPreFacturado)
-        //{
+            var ListaAgrupada = _uow.RepositorioJuncalPreFactura.AgrupamientoPreFacturar(listaPreFacturado);
 
-        //    var ListaAgrupada = _uow.RepositorioJuncalPreFactura.GetAgrupamientoFacturacion(listaPreFacturado);
+            List<PreFacturadoRespuesta> listaPreFacturadoAgrupadoRespuesta = new List<PreFacturadoRespuesta>();
 
-        //    if (ListaAgrupada.Count() > 0)
-        //    {
+            if (ListaAgrupada.Count() > 0)
+            {
+                listaPreFacturadoAgrupadoRespuesta = _mapper.Map<List<PreFacturadoRespuesta>>(ListaAgrupada);
+               
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaPreFacturadoAgrupadoRespuesta });
 
-        //        return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = ListaAgrupada });
+            }
 
-        //    }
-
-        //    return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaAgrupada});
+            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = listaPreFacturadoAgrupadoRespuesta });
 
 
-        //}
+        }
 
 
 

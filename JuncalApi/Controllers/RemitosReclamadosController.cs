@@ -34,7 +34,7 @@ namespace JuncalApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RemitoReclamadoRespuesta>>> GetRemitosReclamo()
         {
-            var remitosReclamo = _uow.RepositorioJuncalRemitosReclamado.GetAllByCondition(c => c.IsDeleted == 0).ToList();
+            var remitosReclamo = _uow.RepositorioJuncalRemitosReclamado.GetReclamos();
 
             List<RemitoReclamadoRespuesta> listaAceriasRespuesta = new List<RemitoReclamadoRespuesta>();
 

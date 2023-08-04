@@ -1,7 +1,14 @@
-﻿namespace JuncalApi.Modelos
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace JuncalApi.Modelos
 {
     public partial class JuncalPreFacturar
     {
+        [NotMapped]
+        public int IdAceria { get; set; } = 0;
+        [NotMapped]
+        public int IdContrato{ get; set; } = 0;
+
 
         public JuncalPreFacturar() { Facturado = false;}
 
@@ -16,6 +23,15 @@
           PesoBruto= pPesoBruto;
           PesoNeto= pPesoNeto;
           Remito = pRemito;
+        }
+
+        public JuncalPreFacturar(int pIdOrden, int pIdMaterialEnviado, int pIdMaterialRecibido, decimal pPeso,
+       decimal pPesoTara, decimal pPesoBruto, decimal pPesoNeto, string pRemito,int pIdAceria,int pIdContrato) : this(pIdOrden,  pIdMaterialEnviado,  pIdMaterialRecibido,  pPeso,
+       pPesoTara, pPesoBruto,pPesoNeto, pRemito)
+        {
+            IdAceria= pIdAceria;
+            IdContrato= pIdContrato;
+
         }
     }
 }
