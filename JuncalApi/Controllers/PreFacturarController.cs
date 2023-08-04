@@ -28,8 +28,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<PreFacturadoRespuesta>>> GetPreFacturado()
         {
 
-            var ListaPreFacturado = _uow.RepositorioJuncalPreFactura.GetAllByCondition(c => c.IsDelete == false &&
-            c.Facturado==false).ToList();
+            var ListaPreFacturado = _uow.RepositorioJuncalPreFactura.GetAllPreFacturar();
 
             if (ListaPreFacturado.Count() > 0)
             {

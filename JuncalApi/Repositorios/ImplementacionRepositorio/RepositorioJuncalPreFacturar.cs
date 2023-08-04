@@ -11,6 +11,33 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public RepositorioJuncalPreFacturar(JuncalContext db) : base(db)
         {
         }
+
+        public List<JuncalPreFacturar> GetAllPreFacturar()
+        {
+
+            var query = (from listaPreFacturarada in _db.JuncalPreFacturars.Where(a=>a.IsDelete==false && a.Facturado==false)
+                         join orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
+                         on listaPreFacturarada.IdOrden equals orden.Id
+                         select new JuncalPreFacturar
+                         {
+                             IdOrden = listaPreFacturarada.IdOrden,
+                             IdMaterialEnviado = listaPreFacturarada.IdMaterialEnviado,
+                             IdMaterialRecibido = listaPreFacturarada.IdMaterialRecibido,
+                             Peso = listaPreFacturarada.Peso,
+                             PesoTara = listaPreFacturarada.PesoTara,
+                             PesoBruto = listaPreFacturarada.PesoBruto,
+                             PesoNeto = listaPreFacturarada.PesoNeto,
+                             Remito = listaPreFacturarada.Remito,
+                             IdAceria = orden.IdAceria,
+                             IdContrato = (int)orden.IdContrato,
+                             Id = listaPreFacturarada.Id
+
+                         }).ToList();
+
+            return query;
+
+        }
+
         public List<JuncalPreFacturar> AgrupamientoPreFacturar(List<PreFacturadoRequerido> listaPreFacturar)
         {
             var query = (from listaPreFacturarada in listaPreFacturar
