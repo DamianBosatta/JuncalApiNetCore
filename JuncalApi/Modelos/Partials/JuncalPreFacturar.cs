@@ -26,12 +26,12 @@ namespace JuncalApi.Modelos
         }
 
         public JuncalPreFacturar(int pIdOrden, int pIdMaterialEnviado, int pIdMaterialRecibido, decimal pPeso,
-       decimal pPesoTara, decimal pPesoBruto, decimal pPesoNeto, string pRemito,int pIdAceria,int pIdContrato) : this(pIdOrden,  pIdMaterialEnviado,  pIdMaterialRecibido,  pPeso,
+       decimal pPesoTara, decimal pPesoBruto, decimal pPesoNeto, string pRemito,int pIdAceria,int pIdContrato,int id) : this(pIdOrden,  pIdMaterialEnviado,  pIdMaterialRecibido,  pPeso,
        pPesoTara, pPesoBruto,pPesoNeto, pRemito)
         {
             IdAceria= pIdAceria;
             IdContrato= pIdContrato;
-
+            Id=id;
         }
     }
 }

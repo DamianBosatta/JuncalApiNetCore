@@ -67,8 +67,8 @@ namespace JuncalApi.Controllers
         }
 
         [Route("AgrupacionFacturado")]
-        [HttpGet]        
-        public async Task<ActionResult<PreFacturadoRespuesta>> GetAgrupacionFacturado(List<JuncalPreFacturar> listaPreFacturado)
+        [HttpPost]        
+        public async Task<ActionResult<PreFacturadoRespuesta>> GetAgrupacionFacturado(List<PreFacturadoRequerido> listaPreFacturado)
         {
 
             var ListaAgrupada = _uow.RepositorioJuncalPreFactura.AgrupamientoPreFacturar(listaPreFacturado);

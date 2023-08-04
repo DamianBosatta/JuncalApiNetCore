@@ -1,4 +1,5 @@
 ﻿using JuncalApi.DataBase;
+using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
@@ -10,7 +11,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public RepositorioJuncalPreFacturar(JuncalContext db) : base(db)
         {
         }
-        public List<JuncalPreFacturar> AgrupamientoPreFacturar(List<JuncalPreFacturar> listaPreFacturar)
+        public List<JuncalPreFacturar> AgrupamientoPreFacturar(List<PreFacturadoRequerido> listaPreFacturar)
         {
             var query = (from listaPreFacturarada in listaPreFacturar
                          join orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
@@ -26,7 +27,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              PesoNeto = listaPreFacturarada.PesoNeto,
                              Remito = listaPreFacturarada.Remito,
                              IdAceria = orden.IdAceria,
-                             IdContrato= (int)orden.IdContrato
+                             IdContrato= (int)orden.IdContrato,
+                             Id= listaPreFacturarada.Id
           
                           }).ToList();
 

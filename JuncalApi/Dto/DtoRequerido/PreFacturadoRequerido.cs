@@ -3,7 +3,8 @@
     public class PreFacturadoRequerido
     {
        
-
+        public int Id { get; set; }
+       
         public int IdOrden { get; set; }
 
         public int IdMaterialEnviado { get; set; }
