@@ -21,8 +21,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             // Consulta para obtener los elementos del contrato para el ID de contrato dado
             var query = from itemContrato in _db.JuncalContratoItems.Where(a => a.IdContrato == idContrato && a.Isdeleted == false)
+                        join aceriaMaterial in _db.JuncalAceriaMaterials.Where(a => a.Isdeleted == false)
+                        on itemContrato.IdMaterial equals aceriaMaterial.Id
                         join material in _db.JuncalMaterials.Where(a => a.Isdeleted == false)
-                        on itemContrato.IdMaterial equals material.Id
+                        on aceriaMaterial.IdMaterial equals material.Id
                         select new { itemContrato, material };
 
             // Crear una lista de objetos JuncalContratoItem a partir de los resultados de la consulta

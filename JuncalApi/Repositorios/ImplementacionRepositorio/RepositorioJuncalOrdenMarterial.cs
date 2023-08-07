@@ -1,8 +1,10 @@
 ﻿using JuncalApi.DataBase;
+using JuncalApi.Dto.DtoRequerido.DtoAgrupacionRequerido;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
+using System.Data;
 using System.Linq;
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
@@ -71,7 +73,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                             };
 
 
-           
+
 
             // Finalmente, puedes trabajar con el resultado para realizar las operaciones necesarias
             // resultado.ToList() o cualquier otra operación que necesites.
@@ -97,9 +99,40 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return result;
         }
-    }
-
         #endregion GetDatosMaterialesAndRemitoExcel
 
+        #region OBTENER MATERIALES POR LISTA DE ID ORDENES
+
+        public List<JuncalOrdenMarterial> ObtenerMaterialesPorListaDeOrdenes(List<int> idOrdenes)
+        {
+
+                                        return (from orden in idOrdenes
+                                                join material in _db.JuncalOrdenMarterials
+                                                    on orden equals material.IdOrden
+                                                where !material.Isdeleted
+                                                select new JuncalOrdenMarterial
+                                                {
+                                                    Id = material.Id,
+                                                    IdMaterial = material.IdMaterial,
+                                                    Peso = (decimal)material.Peso,
+                                                    NumFactura = material.NumFactura,
+                                                    FacturadoParcial = material.FacturadoParcial
+                                                }).ToList();
+
+           
+
+        }
+
+        #endregion
+
     }
+}
+
+
+
+
+
+
+
+
 

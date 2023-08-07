@@ -29,6 +29,8 @@ public partial class JuncalOrden
 
     public int? IdDireccionProveedor { get; set; }
 
+    public bool? Facturado { get; set; }
+
     public DateTime? FechaFacturacion { get; set; }
 
     public int? IdUsuarioCreacion { get; set; }

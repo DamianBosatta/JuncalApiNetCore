@@ -610,6 +610,7 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
+            entity.Property(e => e.Facturado).HasDefaultValueSql("'0'");
             entity.Property(e => e.Fecha).HasColumnName("fecha");
             entity.Property(e => e.FechaFacturacion).HasColumnName("fecha_facturacion");
             entity.Property(e => e.IdAceria)

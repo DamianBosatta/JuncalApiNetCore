@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using JuncalApi.Modelos;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JuncalApi.Dto.DtoRespuesta
 {
@@ -26,6 +27,16 @@ namespace JuncalApi.Dto.DtoRespuesta
       
         public int IdAceria { get; set; } 
      
-        public int IdContrato { get; set; } 
+        public int IdContrato { get; set; }
+
+        public JuncalAcerium? Aceria { get; set; }
+        
+        public string? NumeroContrato { get; set; }
+        
+        public string? NombreContrato { get; set; }
+        
+        public string? NombreMaterial { get; set; }
+        
+        public decimal? PrecioMaterial { get; set; }
     }
 }

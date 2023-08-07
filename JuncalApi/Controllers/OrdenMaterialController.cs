@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using JuncalApi.Dto.DtoRequerido;
+using JuncalApi.Dto.DtoRequerido.DtoAgrupacionRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Servicios.Facturar;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI.Common;
 using System;
 
 namespace JuncalApi.Controllers
@@ -16,12 +19,14 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly IFacturarServicio _facturar;
 
-        public OrdenMaterialController(IUnidadDeTrabajo uow, IMapper mapper)
+        public OrdenMaterialController(IUnidadDeTrabajo uow, IMapper mapper,IFacturarServicio facturar)
         {
 
             _mapper = mapper;
             _uow = uow;
+            _facturar = facturar;
         }
        
         [HttpGet]
@@ -65,6 +70,40 @@ namespace JuncalApi.Controllers
 
         }
 
+        [Route("Facturar}")]
+        [HttpPost]
+        public ActionResult Facturar([FromBody] List<AgrupacionPreFacturar> listPreFacturar)
+        {
+            List<int> idOrdenesFacturadas = new List<int>();
+
+            int cantidadMaterialesFacturados = 0;
+
+            bool checkLista = listPreFacturar.Count() > 0 ? true : false;
+
+            if (checkLista)
+            {
+                _facturar.Facturacion(listPreFacturar, out idOrdenesFacturadas, out cantidadMaterialesFacturados);
+
+                if (cantidadMaterialesFacturados > 0)
+                {
+
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Los Materiales y Ordenes pasaron a facturadas ",
+                        result = cantidadMaterialesFacturados,
+                        idOrdenesFacturadas
+                    });
+                }
+
+
+            }
+
+            return Ok(new { success = false, message = "La Lista de Pre Facturar Llego Vacia ", result = cantidadMaterialesFacturados,
+            idOrdenesFacturadas});
+
+
+        }
 
         [Route("Borrar/{id?}")]
         [HttpPut]

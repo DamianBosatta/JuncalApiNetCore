@@ -8,6 +8,16 @@ namespace JuncalApi.Modelos
         public int IdAceria { get; set; } = 0;
         [NotMapped]
         public int IdContrato{ get; set; } = 0;
+        [NotMapped]
+        public JuncalAcerium Aceria { get; set; }
+        [NotMapped]
+        public string NombreContrato { get; set; }
+        [NotMapped]
+        public string NumeroContrato { get; set; }
+        [NotMapped]
+        public string NombreMaterial { get; set; }
+        [NotMapped]
+        public decimal PrecioMaterial { get; set; }
 
 
         public JuncalPreFacturar() { Facturado = false;}
