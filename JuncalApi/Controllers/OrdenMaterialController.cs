@@ -70,7 +70,7 @@ namespace JuncalApi.Controllers
 
         }
 
-        [Route("Facturar}")]
+        [Route("Facturar")]
         [HttpPost]
         public ActionResult Facturar([FromBody] List<AgrupacionPreFacturar> listPreFacturar)
         {
