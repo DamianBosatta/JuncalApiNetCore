@@ -25,10 +25,10 @@ namespace JuncalApi.Servicios.Facturar
             ordenesFacturadas = new List<int>();
 
             List<int> idOrdenes = ObtenerListaDeIdOrden(listPreFacturar);
-            List<int> listaIdOrdenesMateriales = ObtenerListaIdOrdenesMateriales(listPreFacturar);
+            List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados = ObtenerListaIdOrdenesMateriales(listPreFacturar);
 
             List<JuncalOrdenMarterial> listaMaterialesFacturar = ObtenerMaterialesPorIdOrdenes(idOrdenes);
-            cantidadMaterialesFacturados = FacturarMaterialesEnviados(listaMaterialesFacturar, listaIdOrdenesMateriales);
+            FacturarMaterialesEnviados(listaMaterialesFacturar, listaReferenciaMaterialesEnviados, listPreFacturar, out listaMaterialesFacturar, out cantidadMaterialesFacturados);
 
             List<JuncalOrden> listaOrdenes = ObtenerOrdenesPorIdOrdenes(idOrdenes);
             ordenesFacturadas = PasarOrdenesAFacturado(listaMaterialesFacturar, listaOrdenes);
@@ -44,11 +44,11 @@ namespace JuncalApi.Servicios.Facturar
                 .ToList();
         }
 
-        private List<int> ObtenerListaIdOrdenesMateriales(List<AgrupacionPreFacturar> listPreFacturar)
+        private List<ReferenciaMaterialesEnviados> ObtenerListaIdOrdenesMateriales(List<AgrupacionPreFacturar> listPreFacturar)
         {
             return listPreFacturar
                 .SelectMany(referencia => referencia.referencia)
-                .SelectMany(idOrdenMaterial => idOrdenMaterial.MaterialesEnviados)
+                .SelectMany(materialesEnviados => materialesEnviados.MaterialesEnviados)
                 .ToList();
         }
 
@@ -57,24 +57,48 @@ namespace JuncalApi.Servicios.Facturar
             return _uow.RepositorioJuncalOrdenMarterial.ObtenerMaterialesPorListaDeOrdenes(idOrdenes);
         }
 
-        private int FacturarMaterialesEnviados(List<JuncalOrdenMarterial> listaMaterialesFacturar, List<int> listaIdOrdenesMateriales)
+        private void FacturarMaterialesEnviados(List<JuncalOrdenMarterial> listaMaterialesFacturar, List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados, List<AgrupacionPreFacturar> listPreFacturar, out List<JuncalOrdenMarterial> listaMaterialesFacturarActualizada, out int cantidadMaterialesFacturados )
         {
-            int cantidadMaterialesFacturados = 0;
-            var idOrdenesMaterialesHashSet = new HashSet<int>(listaIdOrdenesMateriales);
+            cantidadMaterialesFacturados = 0;
+            listaMaterialesFacturarActualizada = listaMaterialesFacturar;
 
             foreach (var ordenMaterial in listaMaterialesFacturar)
             {
-                if (idOrdenesMaterialesHashSet.Contains(ordenMaterial.IdMaterial))
+                if (listaReferenciaMaterialesEnviados.Any(referencia => referencia.idMaterial == ordenMaterial.IdMaterial))
                 {
-                    var orden = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
-                    orden.FacturadoParcial = true;
-                    bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(orden);
+                    var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
+                    om.FacturadoParcial = true;
+                    bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(om);
 
-                    cantidadMaterialesFacturados = respuesta is false ? cantidadMaterialesFacturados : cantidadMaterialesFacturados + 1;
+                    if (respuesta)
+                    {
+                        var materialEncontrado = listaMaterialesFacturarActualizada.Find(x => x.Id == om.Id);
+                        if (materialEncontrado != null)
+                        {
+                            materialEncontrado.FacturadoParcial = true;
+                        }
+
+                        var referenciasEncontradas = listPreFacturar
+                            .SelectMany(p => p.referencia)
+                            .Where(r => r.IdOrden == om.IdOrden && r.MaterialesEnviados.Any(me => me.idMaterial == om.IdMaterial))
+                            .ToList();
+
+                        foreach (var referencia in referenciasEncontradas)
+                        {
+                            foreach (var materialesEnviados in referencia.MaterialesEnviados)
+                            {
+                                var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
+                                prefactura.Facturado = true;
+                                bool response = _uow.RepositorioJuncalPreFactura.Update(prefactura);
+
+
+                                cantidadMaterialesFacturados = response is false ? cantidadMaterialesFacturados : cantidadMaterialesFacturados + 1;
+                            }
+                        }
+                    }
                 }
             }
 
-            return cantidadMaterialesFacturados;
         }
 
         private List<JuncalOrden> ObtenerOrdenesPorIdOrdenes(List<int> idOrdenes)

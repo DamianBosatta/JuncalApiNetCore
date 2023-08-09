@@ -1,5 +1,6 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Repositorios.InterfaceRepositorio;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
@@ -65,6 +66,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             return _db.SaveChanges() > 0;
         }
+
+        
 
         public bool Update(T model)
         {

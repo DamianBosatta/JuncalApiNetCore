@@ -11,5 +11,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
       
         public List<JuncalOrdenMarterial> ObtenerMaterialesPorListaDeOrdenes(List<int> idOrdenes);
 
+
+
     }
 }

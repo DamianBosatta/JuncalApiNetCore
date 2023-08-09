@@ -10,6 +10,8 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 
         public List<JuncalPreFacturar> GetAllPreFacturar();
 
+
+
     }
 
    
