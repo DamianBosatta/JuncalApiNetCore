@@ -2,6 +2,7 @@ using JuncalApi.Controllers;
 using JuncalApi.DataBase;
 using JuncalApi.Servicios;
 using JuncalApi.Servicios.Excel;
+using JuncalApi.Servicios.Facturar;
 using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IUnidadDeTrabajo, UnidadDeTrabajo>();
 builder.Services.AddScoped<IServicioUsuario, ServicioUsuario>();
 builder.Services.AddScoped<IServiceRemito,ServiceRemito>();
 builder.Services.AddScoped<IServicioExcel, ServicioExcel>();
+builder.Services.AddScoped<IFacturarServicio, FacturarServicio>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

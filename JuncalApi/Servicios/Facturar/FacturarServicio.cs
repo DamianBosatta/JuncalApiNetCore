@@ -39,7 +39,7 @@ namespace JuncalApi.Servicios.Facturar
         private List<int> ObtenerListaDeIdOrden(List<AgrupacionPreFacturar> listPreFacturar)
         {
             return listPreFacturar
-                .SelectMany(agrupacion => agrupacion.ListaReferencia)
+                .SelectMany(agrupacion => agrupacion.referencia)
                 .Select(remito => remito.IdOrden)
                 .ToList();
         }
@@ -47,7 +47,7 @@ namespace JuncalApi.Servicios.Facturar
         private List<int> ObtenerListaIdOrdenesMateriales(List<AgrupacionPreFacturar> listPreFacturar)
         {
             return listPreFacturar
-                .SelectMany(referencia => referencia.ListaReferencia)
+                .SelectMany(referencia => referencia.referencia)
                 .SelectMany(idOrdenMaterial => idOrdenMaterial.MaterialesEnviados)
                 .ToList();
         }
@@ -64,10 +64,11 @@ namespace JuncalApi.Servicios.Facturar
 
             foreach (var ordenMaterial in listaMaterialesFacturar)
             {
-                if (idOrdenesMaterialesHashSet.Contains(ordenMaterial.Id))
+                if (idOrdenesMaterialesHashSet.Contains(ordenMaterial.IdMaterial))
                 {
-                    ordenMaterial.FacturadoParcial = true;
-                    bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(ordenMaterial);
+                    var orden = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
+                    orden.FacturadoParcial = true;
+                    bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(orden);
 
                     cantidadMaterialesFacturados = respuesta is false ? cantidadMaterialesFacturados : cantidadMaterialesFacturados + 1;
                 }
@@ -96,6 +97,7 @@ namespace JuncalApi.Servicios.Facturar
                     {
                         orden.FechaFacturacion = DateTime.Now;
                         orden.Facturado = true;
+                        orden.IdEstado = 4;
                         bool respuesta = _uow.RepositorioJuncalOrden.Update(orden);
 
                         if (respuesta)

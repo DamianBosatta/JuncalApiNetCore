@@ -116,7 +116,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                                                     IdMaterial = material.IdMaterial,
                                                     Peso = (decimal)material.Peso,
                                                     NumFactura = material.NumFactura,
-                                                    FacturadoParcial = material.FacturadoParcial
+                                                    FacturadoParcial = material.FacturadoParcial,
+                                                    IdOrden = orden
                                                 }).ToList();
 
            

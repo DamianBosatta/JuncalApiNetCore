@@ -6,8 +6,8 @@
 
         public int IdContrato { get; set; }
 
-        public List<Agrupacion> ListaAgrupacion { get; set; }= new List<Agrupacion>();
+        public List<Agrupacion> agrupacion { get; set; }= new List<Agrupacion>();
 
-        public List<Referencia> ListaReferencia { get; set; } = new List<Referencia>();
+        public List<Referencia> referencia { get; set; } = new List<Referencia>();
     }
 }
