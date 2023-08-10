@@ -68,6 +68,7 @@ namespace JuncalApi.Servicios.Facturar
                 {
                     var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
                     om.FacturadoParcial = true;
+                    om.NumFactura = ordenMaterial.NumFactura;
                     bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(om);
 
                     if (respuesta)

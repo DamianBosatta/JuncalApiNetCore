@@ -32,7 +32,7 @@
        
         public string Remito => Orden?.Remito ?? string.Empty;
        
-        public int IdMaterial => AceriaMaterial?.IdMaterial ?? 0;
+        public int IdMaterial => Material?.Id ?? 0;
         
         public string NombreMaterialJuncal => Material?.Nombre ?? string.Empty;
         

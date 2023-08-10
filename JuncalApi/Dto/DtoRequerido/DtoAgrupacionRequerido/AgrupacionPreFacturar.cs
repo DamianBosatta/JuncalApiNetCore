@@ -6,7 +6,7 @@
 
         public int IdContrato { get; set; }
 
-        
+        public string num_factura { get; set; }
 
         public List<Agrupacion> agrupacion { get; set; }= new List<Agrupacion>();
 

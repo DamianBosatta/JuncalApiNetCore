@@ -45,7 +45,7 @@ namespace JuncalApi.Controllers
         public ActionResult CargarPreFacturado([FromBody] PreFacturadoRequerido preFacturadoReq)
         {
             var preFacturado = _uow.RepositorioJuncalPreFactura.GetByCondition(c => c.IdOrden==preFacturadoReq.IdOrden && 
-            c.IdMaterialEnviado==preFacturadoReq.IdMaterialEnviado && c.Remito==preFacturadoReq.Remito);
+            c.IdMaterialEnviado==preFacturadoReq.IdMaterialEnviado && c.Remito==preFacturadoReq.Remito && c.IsDelete == false);
 
             PreFacturadoRespuesta preFacturarNuevo = new PreFacturadoRespuesta();
 

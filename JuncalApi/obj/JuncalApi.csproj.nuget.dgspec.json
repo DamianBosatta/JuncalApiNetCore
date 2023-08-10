@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Felix\\Source\\Repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj": {}
+    "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Felix\\Source\\Repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj": {
+    "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Felix\\Source\\Repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
+        "projectUniqueName": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
         "projectName": "JuncalApi",
-        "projectPath": "C:\\Users\\Felix\\Source\\Repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
+        "projectPath": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore\\JuncalApi\\JuncalApi.csproj",
         "packagesPath": "C:\\Users\\Felix\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Felix\\Source\\Repos\\JuncalApiNetCore\\JuncalApi\\obj\\",
+        "outputPath": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore\\JuncalApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Felix\\AppData\\Roaming\\NuGet\\NuGet.Config",

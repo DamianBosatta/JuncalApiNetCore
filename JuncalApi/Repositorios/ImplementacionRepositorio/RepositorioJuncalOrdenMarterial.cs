@@ -40,11 +40,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 .ToList();
 
             // Obtener los identificadores de los materiales asociados a las ordenesMateriales
-            var materialIds = ordenesMateriales.Select(om => om.IdMaterial).ToList();
+            var materialOrdenesIds = ordenesMateriales.Select(om => om.IdMaterial).ToList();
 
             // Obtener los registros de JuncalMaterials asociados a los JuncalOrdenMaterials anteriores y que cumplen la condición de Isdeleted == false
-            var materiales = _db.JuncalMaterials
-                .Where(material => materialIds.Contains(material.Id) && material.Isdeleted == false)
+            var materialesJuncal = _db.JuncalMaterials
+                .Where(material => materialOrdenesIds.Contains(material.Id) && material.Isdeleted == false)
                 .ToList();
 
             // Obtener los registros de JuncalAceriaMaterials asociados a la aceria específica (idAceria)
@@ -57,7 +57,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                             join ordenMaterial in ordenesMateriales
                                 on orden.Id equals ordenMaterial.IdOrden into joinOrdenMaterial
                             from jOrdenMaterial in joinOrdenMaterial.DefaultIfEmpty()
-                            join material in materiales
+                            join material in materialesJuncal
                                 on jOrdenMaterial.IdMaterial equals material.Id into joinMaterial
                             from jMaterial in joinMaterial.DefaultIfEmpty()
                             join aceriaMaterial in aceriaMateriales
