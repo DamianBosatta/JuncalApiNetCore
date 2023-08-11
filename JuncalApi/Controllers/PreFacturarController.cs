@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PreFacturarController : Controller
@@ -64,30 +64,6 @@ namespace JuncalApi.Controllers
             return Ok(new { success = false, message = " El Dato Enviado Ya Esta Pre Facturado ", result = preFacturarNuevo});
 
         }
-
-        [Route("AgrupacionFacturado")]
-        [HttpPost]        
-        public async Task<ActionResult<PreFacturadoRespuesta>> GetAgrupacionFacturado(List<PreFacturadoRequerido> listaPreFacturado)
-        {
-
-            var ListaAgrupada = _uow.RepositorioJuncalPreFactura.AgrupamientoPreFacturar(listaPreFacturado);
-
-            List<PreFacturadoRespuesta> listaPreFacturadoAgrupadoRespuesta = new List<PreFacturadoRespuesta>();
-
-            if (ListaAgrupada.Count() > 0)
-            {
-                listaPreFacturadoAgrupadoRespuesta = _mapper.Map<List<PreFacturadoRespuesta>>(ListaAgrupada);
-               
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaPreFacturadoAgrupadoRespuesta });
-
-            }
-
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = listaPreFacturadoAgrupadoRespuesta });
-
-
-        }
-
-
 
     }
 }

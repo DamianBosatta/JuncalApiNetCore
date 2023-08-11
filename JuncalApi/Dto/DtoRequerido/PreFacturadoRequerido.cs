@@ -22,5 +22,7 @@
         public bool Facturado { get; set; }
 
         public string Remito { get; set; } = null!;
+
+        public int? IdUsuarioFacturacion { get; set; }
     }
 }

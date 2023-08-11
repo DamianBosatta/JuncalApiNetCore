@@ -16,6 +16,7 @@ public partial class JuncalContext : DbContext
     {
     }
 
+
     public virtual DbSet<JuncalAceriaMaterial> JuncalAceriaMaterials { get; set; }
 
     public virtual DbSet<JuncalAcerium> JuncalAceria { get; set; }
@@ -892,6 +893,8 @@ public partial class JuncalContext : DbContext
 
             entity.HasIndex(e => e.IdOrden, "fk_idOrden_orden");
 
+            entity.HasIndex(e => e.IdUsuarioFacturacion, "fk_idUsuarioFacturacion_Usuario");
+
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
@@ -905,6 +908,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdOrden)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_orden");
+            entity.Property(e => e.IdUsuarioFacturacion)
+                .HasColumnType("int(11)")
+                .HasColumnName("idUsuarioFacturacion");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Peso)
                 .HasPrecision(11)
@@ -936,6 +942,10 @@ public partial class JuncalContext : DbContext
                 .HasForeignKey(d => d.IdOrden)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_idOrden_orden");
+
+            entity.HasOne(d => d.IdUsuarioFacturacionNavigation).WithMany(p => p.JuncalPreFacturars)
+                .HasForeignKey(d => d.IdUsuarioFacturacion)
+                .HasConstraintName("fk_idUsuarioFacturacion_Usuario");
         });
 
         modelBuilder.Entity<JuncalProveedor>(entity =>

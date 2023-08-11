@@ -27,9 +27,13 @@ public partial class JuncalPreFacturar
 
     public string Remito { get; set; } = null!;
 
+    public int? IdUsuarioFacturacion { get; set; }
+
     public virtual JuncalOrdenMarterial IdMaterialEnviadoNavigation { get; set; } = null!;
 
     public virtual JuncalAceriaMaterial IdMaterialRecibidoNavigation { get; set; } = null!;
 
     public virtual JuncalOrden IdOrdenNavigation { get; set; } = null!;
+
+    public virtual JuncalUsuario? IdUsuarioFacturacionNavigation { get; set; }
 }

@@ -37,6 +37,8 @@ public partial class JuncalUsuario
 
     public virtual ICollection<JuncalOrden> JuncalOrdenIdUsuarioFacturacionNavigations { get; } = new List<JuncalOrden>();
 
+    public virtual ICollection<JuncalPreFacturar> JuncalPreFacturars { get; } = new List<JuncalPreFacturar>();
+
     public virtual ICollection<JuncalProveedorPresupuesto> JuncalProveedorPresupuestos { get; } = new List<JuncalProveedorPresupuesto>();
 
     public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamadoIdUsuarioFinalizadoNavigations { get; } = new List<JuncalRemitosReclamado>();
