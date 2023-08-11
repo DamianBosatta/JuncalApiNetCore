@@ -19,6 +19,8 @@ public partial class JuncalOrdenMarterial
 
     public bool FacturadoParcial { get; set; }
 
+    public DateTime? FechaFacturado { get; set; }
+
     public virtual JuncalMaterial IdMaterialNavigation { get; set; } = null!;
 
     public virtual JuncalOrden IdOrdenNavigation { get; set; } = null!;

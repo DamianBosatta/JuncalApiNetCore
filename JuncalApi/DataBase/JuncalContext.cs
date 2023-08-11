@@ -16,7 +16,6 @@ public partial class JuncalContext : DbContext
     {
     }
 
-
     public virtual DbSet<JuncalAceriaMaterial> JuncalAceriaMaterials { get; set; }
 
     public virtual DbSet<JuncalAcerium> JuncalAceria { get; set; }

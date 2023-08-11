@@ -69,6 +69,7 @@ namespace JuncalApi.Servicios.Facturar
                 if (referenciaMaterialesEnviados != null)
                 {
                     var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
+                    om.FechaFacturado = DateTime.Now;
                     om.FacturadoParcial = true;
 
                     if (_uow.RepositorioJuncalOrdenMarterial.Update(om))
@@ -86,6 +87,7 @@ namespace JuncalApi.Servicios.Facturar
                             foreach (var materialesEnviados in referencia.MaterialesEnviados)
                             {
                                 var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
+                                prefactura.FechaFacturado = DateTime.Now;
                                 prefactura.Facturado = true;
 
                                 var referenciaEncontrada = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));

@@ -31,6 +31,8 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public int? IdUsuarioFacturacion { get; set; }
 
+        public DateTime? FechaFacturado { get; set; }
+
         public JuncalAcerium? Aceria { get; set; }
         
         public string? NumeroContrato { get; set; }
