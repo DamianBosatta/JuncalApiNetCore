@@ -17,8 +17,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
          
 
- var query = (from listaPreFacturarada in _db.JuncalPreFacturars
-             where listaPreFacturarada.IsDelete == false && listaPreFacturarada.Facturado == false
+ var query = (from listaPreFacturarada in _db.JuncalPreFacturars           
              join orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
              on listaPreFacturarada.IdOrden equals orden.Id
              join aceria in _db.JuncalAceria
