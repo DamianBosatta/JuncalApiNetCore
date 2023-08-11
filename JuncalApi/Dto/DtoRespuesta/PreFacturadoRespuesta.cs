@@ -40,5 +40,7 @@ namespace JuncalApi.Dto.DtoRespuesta
         public string? NombreMaterial { get; set; }
         
         public decimal? PrecioMaterial { get; set; }
+
+        public string? NombreUsuario { get; set; }
     }
 }

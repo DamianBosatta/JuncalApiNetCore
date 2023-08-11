@@ -24,5 +24,7 @@
         public string Remito { get; set; } = null!;
 
         public int? IdUsuarioFacturacion { get; set; }
+
+
     }
 }

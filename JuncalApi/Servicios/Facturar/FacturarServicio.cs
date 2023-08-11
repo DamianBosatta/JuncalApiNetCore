@@ -57,27 +57,24 @@ namespace JuncalApi.Servicios.Facturar
             return _uow.RepositorioJuncalOrdenMarterial.ObtenerMaterialesPorListaDeOrdenes(idOrdenes);
         }
 
-        private void FacturarMaterialesEnviados(List<JuncalOrdenMarterial> listaMaterialesFacturar, List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados, List<AgrupacionPreFacturar> listPreFacturar, out List<JuncalOrdenMarterial> listaMaterialesFacturarActualizada, out int cantidadMaterialesFacturados )
+        private void FacturarMaterialesEnviados(List<JuncalOrdenMarterial> listaMaterialesFacturar, List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados, List<AgrupacionPreFacturar> listPreFacturar, out List<JuncalOrdenMarterial> listaMaterialesFacturarActualizada, out int cantidadMaterialesFacturados)
         {
             cantidadMaterialesFacturados = 0;
             listaMaterialesFacturarActualizada = listaMaterialesFacturar;
 
             foreach (var ordenMaterial in listaMaterialesFacturar)
             {
-                if (listaReferenciaMaterialesEnviados.Any(referencia => referencia.idMaterial == ordenMaterial.IdMaterial))
+                var referenciaMaterialesEnviados = listaReferenciaMaterialesEnviados.FirstOrDefault(referencia => referencia.idMaterial == ordenMaterial.IdMaterial);
+
+                if (referenciaMaterialesEnviados != null)
                 {
                     var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
                     om.FacturadoParcial = true;
-                    om.NumFactura = ordenMaterial.NumFactura;
-                    bool respuesta = _uow.RepositorioJuncalOrdenMarterial.Update(om);
 
-                    if (respuesta)
+                    if (_uow.RepositorioJuncalOrdenMarterial.Update(om))
                     {
                         var materialEncontrado = listaMaterialesFacturarActualizada.Find(x => x.Id == om.Id);
-                        if (materialEncontrado != null)
-                        {
-                            materialEncontrado.FacturadoParcial = true;
-                        }
+                        materialEncontrado.FacturadoParcial = true;
 
                         var referenciasEncontradas = listPreFacturar
                             .SelectMany(p => p.referencia)
@@ -90,17 +87,20 @@ namespace JuncalApi.Servicios.Facturar
                             {
                                 var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
                                 prefactura.Facturado = true;
+
+                                var referenciaEncontrada = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));
+                                om.NumFactura = referenciaEncontrada?.num_factura;
+                                _uow.RepositorioJuncalOrdenMarterial.Update(om);
+
                                 bool response = _uow.RepositorioJuncalPreFactura.Update(prefactura);
-
-
-                                cantidadMaterialesFacturados = response is false ? cantidadMaterialesFacturados : cantidadMaterialesFacturados + 1;
+                                cantidadMaterialesFacturados += response ? 1 : 0;
                             }
                         }
                     }
                 }
             }
-
         }
+
 
         private List<JuncalOrden> ObtenerOrdenesPorIdOrdenes(List<int> idOrdenes)
         {

@@ -9,5 +9,9 @@
         public int IdMaterial { get; set; }
 
         public decimal? Peso { get; set; }
+
+        public string? NumFactura { get; set; }
+
+        public bool FacturadoParcial { get; set; }
     }
 }

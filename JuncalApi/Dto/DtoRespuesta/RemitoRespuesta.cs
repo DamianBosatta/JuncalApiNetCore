@@ -59,5 +59,7 @@ namespace JuncalApi.Dto.DtoRespuesta
         public int? IdDireccionProveedor { get; set; } = 0;
 
         public string? DireccionProveedor { get; set; } = string.Empty;
+
+
     }
 }

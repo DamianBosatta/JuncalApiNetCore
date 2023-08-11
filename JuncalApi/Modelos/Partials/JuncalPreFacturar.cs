@@ -25,7 +25,7 @@ namespace JuncalApi.Modelos
         public JuncalPreFacturar() { Facturado = false;}
 
         public JuncalPreFacturar(int pIdOrden,int pIdMaterialEnviado,int pIdMaterialRecibido,decimal pPeso,
-            decimal pPesoTara,decimal pPesoBruto,decimal pPesoNeto,string pRemito):this()
+            decimal pPesoTara,decimal pPesoBruto,decimal pPesoNeto,string pRemito) :this()
         {         
           IdOrden = pIdOrden;
           IdMaterialEnviado = pIdMaterialEnviado;
@@ -35,6 +35,7 @@ namespace JuncalApi.Modelos
           PesoBruto= pPesoBruto;
           PesoNeto= pPesoNeto;
           Remito = pRemito;
+            
         }
 
         public JuncalPreFacturar(int pIdOrden, int pIdMaterialEnviado, int pIdMaterialRecibido, decimal pPeso,
@@ -44,6 +45,7 @@ namespace JuncalApi.Modelos
             IdAceria= pIdAceria;
             IdContrato= pIdContrato;
             Id=id;
+           
         }
     }
 }
