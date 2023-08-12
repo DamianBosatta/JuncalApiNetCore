@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class PreFacturarController : Controller
@@ -41,7 +41,7 @@ namespace JuncalApi.Controllers
 
         }
         
-        [Route("Pre Facturar Sin Facturar")]
+        [Route("notificacion")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PreFacturadoRespuesta>>> GetSinFacturar()
         {

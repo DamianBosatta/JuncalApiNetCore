@@ -71,6 +71,7 @@ namespace JuncalApi.Servicios.Facturar
                     var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
                     om.FechaFacturado = DateTime.Now;
                     om.FacturadoParcial = true;
+                    
 
                     if (_uow.RepositorioJuncalOrdenMarterial.Update(om))
                     {
@@ -78,26 +79,33 @@ namespace JuncalApi.Servicios.Facturar
                         materialEncontrado.FacturadoParcial = true;
 
                         var referenciasEncontradas = listPreFacturar
-                            .SelectMany(p => p.referencia)
+                        .SelectMany(p => p.referencia
                             .Where(r => r.IdOrden == om.IdOrden && r.MaterialesEnviados.Any(me => me.idMaterial == om.IdMaterial))
-                            .ToList();
+                            .Select(r => new { Referencia = r, IdUsuario = p.idUsuario })
+                        )
+                        .ToList();
 
-                        foreach (var referencia in referenciasEncontradas)
+                        foreach (var referenciaEncontrada in referenciasEncontradas)
                         {
+                            var referencia = referenciaEncontrada.Referencia;
+                            var idUsuario = referenciaEncontrada.IdUsuario;
+
                             foreach (var materialesEnviados in referencia.MaterialesEnviados)
                             {
                                 var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
                                 prefactura.FechaFacturado = DateTime.Now;
                                 prefactura.Facturado = true;
+                                prefactura.IdUsuarioFacturacion = idUsuario;
 
-                                var referenciaEncontrada = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));
-                                om.NumFactura = referenciaEncontrada?.num_factura;
+                                var referenciaPreFacturar = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));
+                                om.NumFactura = referenciaPreFacturar?.num_factura;
                                 _uow.RepositorioJuncalOrdenMarterial.Update(om);
 
                                 bool response = _uow.RepositorioJuncalPreFactura.Update(prefactura);
                                 cantidadMaterialesFacturados += response ? 1 : 0;
                             }
                         }
+
                     }
                 }
             }

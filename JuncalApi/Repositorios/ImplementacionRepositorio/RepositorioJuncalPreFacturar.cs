@@ -51,7 +51,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              NombreUsuario = usuario != null ? usuario.Nombre : string.Empty,
                              IdUsuarioFacturacion = usuario != null ? usuario.Id:null,
                              Facturado = listaPreFacturarada.Facturado,
-
+                             FechaFacturado = listaPreFacturarada.FechaFacturado,
                          }).ToList();
 
             return query;
