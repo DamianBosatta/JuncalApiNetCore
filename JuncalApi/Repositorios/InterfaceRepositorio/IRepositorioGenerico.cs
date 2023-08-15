@@ -12,6 +12,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
         T GetById(int id);
         bool Insert(T model);
+        public bool InsertRange(IEnumerable<T> model);
         bool Update(T model);
         bool Delete(T model);
         bool Save();

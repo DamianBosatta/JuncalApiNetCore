@@ -96,11 +96,14 @@ namespace JuncalApi.Servicios.Facturar
                         // all facturas
                         List<Factura> facturas = listPreFacturar.SelectMany(p => p.factura).ToList();
 
-                        // Creación e inserción de una nueva factura
+                        List<JuncalFactura> facturasToInsert = new List<JuncalFactura>();
+                        List<JuncalFacturaMateriale> materialesToInsert = new List<JuncalFacturaMateriale>();
 
-                        foreach(var objFactura in facturas)
+                        // Recorre todas las facturas a pre-facturar
+                        foreach (var objFactura in facturas)
                         {
-                            JuncalFactura facturaInsert = new JuncalFactura // foreach para cargar el objeto factura 
+                            // Crea un objeto JuncalFactura con los datos de la factura actual
+                            JuncalFactura facturaInsert = new JuncalFactura
                             {
                                 Destinatario = objFactura.Destinatario,
                                 Direccion = objFactura.Direccion,
@@ -108,39 +111,63 @@ namespace JuncalApi.Servicios.Facturar
                                 ContratoNumero = objFactura.ContratoNumero,
                                 ContratoNombre = objFactura.ContratoNombre,
                                 NumeroFactura = objFactura.NumeroFactura,
-                                Fecha = objFactura.Fecha,  // Asigna el valor correcto de la fecha
+                                Fecha = objFactura.Fecha,
                                 NombreUsuario = objFactura.NombreUsuario
                             };
 
-                            bool ResultInsertFactura = _uow.RepositorioJuncalFactura.Insert(facturaInsert);
+                            // Agrega la factura a la lista para la inserción en lote
+                            facturasToInsert.Add(facturaInsert);
 
-
-                            if (ResultInsertFactura)
+                            // Recorre todos los materiales de la factura actual
+                            foreach (var obj in objFactura.listaMateriales)
                             {
-                                // Búsqueda de la factura recién insertada 
-                                var facturaId = _uow.RepositorioJuncalFactura.GetByCondition(a => a.NumeroFactura == facturaInsert.NumeroFactura);
-
-                                foreach(var obj in objFactura.listaMateriales)
+                                // Crea un objeto JuncalFacturaMateriale con los datos del material actual
+                                JuncalFacturaMateriale insertMaterial = new JuncalFacturaMateriale
                                 {
-                                   
-                                    JuncalFacturaMateriale insertMaterial = new JuncalFacturaMateriale();
-                                    insertMaterial.NombreMaterial = obj.NombreMaterial;
-                                    insertMaterial.Peso = obj.Peso;
-                                    insertMaterial.SubTota= obj.SubTotal;
-                                    insertMaterial.IdFactura = facturaId.Id;
-                                    _uow.RepositorioJuncalFacturaMateriale.Insert(insertMaterial);
+                                    NombreMaterial = obj.NombreMaterial,
+                                    Peso = obj.Peso,
+                                    SubTota = obj.SubTotal
+                                };
 
+                                // Agrega el material a la lista para la inserción en lote
+                                materialesToInsert.Add(insertMaterial);
+                            }
+                        }
 
+                        // Inserta las facturas en la base de datos y verifica si la operación fue exitosa
+                        bool resultInsertFacturas = _uow.RepositorioJuncalFactura.InsertRange(facturasToInsert);
+
+                        // Si las facturas se insertaron correctamente
+                        if (resultInsertFacturas)
+                        {
+                            // Para cada factura insertada, busca la factura en la base de datos para obtener su ID
+                            foreach (var factura in facturasToInsert)
+                            {
+                                var insertedFactura = _uow.RepositorioJuncalFactura.GetByCondition(f => f.NumeroFactura == factura.NumeroFactura);
+
+                                // Si se encontró la factura recién insertada
+                                if (insertedFactura != null)
+                                {
+                                    var facturaId = insertedFactura.Id;
+
+                                    // Asigna el ID de la factura a todos los materiales asociados
+                                    foreach (var material in materialesToInsert)
+                                    {
+                                        material.IdFactura = facturaId;
+                                    }
                                 }
                             }
 
+                            // Inserta los materiales en la base de datos
+                            _uow.RepositorioJuncalFacturaMateriale.InsertRange(materialesToInsert);
                         }
 
-                   
-                                                                               
-                           
+
+
+
+
                         // Búsqueda y procesamiento de referencias encontradas en pre-facturas
-                            foreach (var referenciaEncontrada in referenciasEncontradas)
+                        foreach (var referenciaEncontrada in referenciasEncontradas)
                             {
                                 var referencia = referenciaEncontrada.Referencia;
                                 var idUsuario = referenciaEncontrada.IdUsuario;

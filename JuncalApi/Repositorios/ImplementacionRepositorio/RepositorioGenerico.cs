@@ -62,6 +62,13 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return Save();
         }
 
+        public bool InsertRange(IEnumerable<T> model)
+        {
+            _db.AddRange(model);
+            return Save();
+        }
+
+
         public bool Save()
         {
             return _db.SaveChanges() > 0;
