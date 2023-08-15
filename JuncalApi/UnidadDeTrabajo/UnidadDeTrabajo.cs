@@ -1,4 +1,5 @@
 ﻿using JuncalApi.DataBase;
+using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Repositorios.ImplementacionRepositorio;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
@@ -42,6 +43,12 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalProveedorPresupuesto = new RepositorioJuncalProveedorPresupuesto(context);
             this.RepositorioJuncalProveedorPresupuestoMaterial = new RepositorioJuncalProveedorPresupuestoMaterial(context);
             this.RepositorioJuncalPreFactura = new RepositorioJuncalPreFacturar(context);
+            this.RepositorioJuncalCuentasCorrientes = new RepositorioJuncalCuentasCorrientes(context);
+            this.RepositorioJuncalCuentasCorrientesTipo = new RepositorioJuncalCuentasCorrientesTipo(context);
+            this.RepositorioJuncalEstadosInterno= new RepositorioJuncalEstadosInterno(context);
+            this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context);
+            this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context);
+
 
         } 
 
@@ -118,6 +125,20 @@ namespace JuncalApi.UnidadDeTrabajo
         public IRepositorioJuncalProveedorPresupuestoMaterial RepositorioJuncalProveedorPresupuestoMaterial { get; private set; }
 
         public IRepositorioJuncalPreFactura RepositorioJuncalPreFactura { get; private set; }
+
+        public IRepositorioJuncalFactura RepositorioJuncalFactura { get; private set; }
+
+        public IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; private set; }
+
+        public IRepositorioJuncalCuentasCorrientes RepositorioJuncalCuentasCorrientes { get; private set; }
+
+        public IRepositorioJuncalCuentasCorrientesTipo RepositorioJuncalCuentasCorrientesTipo { get; private set; }
+
+        public IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; private set; }
+
+
+
+
 
         public void Dispose()
         {

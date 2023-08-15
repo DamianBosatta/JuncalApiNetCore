@@ -176,6 +176,11 @@ namespace JuncalApi.Mapper
             CreateMap<PreFacturadoRequerido,JuncalPreFacturar>();
             CreateMap<JuncalPreFacturar, PreFacturadoRespuesta>();
             #endregion
+
+            #region TIPO PRE FACTURADO
+            CreateMap<FacturaRequerida, JuncalFactura>();
+            CreateMap<JuncalFactura, FacturaRespuesta>();
+            #endregion
         }
 
     }

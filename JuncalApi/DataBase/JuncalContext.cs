@@ -44,6 +44,10 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalExcelConfig> JuncalExcelConfigs { get; set; }
 
+    public virtual DbSet<JuncalFactura> JuncalFacturas { get; set; }
+
+    public virtual DbSet<JuncalFacturaMateriale> JuncalFacturaMateriales { get; set; }
+
     public virtual DbSet<JuncalMaterial> JuncalMaterials { get; set; }
 
     public virtual DbSet<JuncalMaterialProveedor> JuncalMaterialProveedors { get; set; }
@@ -523,6 +527,66 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Neto).HasColumnType("int(2)");
             entity.Property(e => e.Remito).HasColumnType("int(2)");
             entity.Property(e => e.Tara).HasColumnType("int(2)");
+        });
+
+        modelBuilder.Entity<JuncalFactura>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.factura");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.ContratoNombre)
+                .HasMaxLength(255)
+                .HasColumnName("Contrato_Nombre");
+            entity.Property(e => e.ContratoNumero)
+                .HasMaxLength(255)
+                .HasColumnName("Contrato_Numero");
+            entity.Property(e => e.Cuit)
+                .HasMaxLength(255)
+                .HasColumnName("cuit");
+            entity.Property(e => e.Destinatario).HasMaxLength(255);
+            entity.Property(e => e.Direccion).HasMaxLength(255);
+            entity.Property(e => e.Fecha).HasMaxLength(255);
+            entity.Property(e => e.NombreUsuario)
+                .HasMaxLength(255)
+                .HasColumnName("Nombre_Usuario");
+            entity.Property(e => e.NumeroFactura)
+                .HasMaxLength(255)
+                .HasColumnName("Numero_Factura");
+            entity.Property(e => e.TotalFactura)
+                .HasPrecision(10)
+                .HasColumnName("Total_Factura");
+        });
+
+        modelBuilder.Entity<JuncalFacturaMateriale>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.Factura_Materiales");
+
+            entity.HasIndex(e => e.IdFactura, "fk_FacturaMateriales_Factura");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.IdFactura)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Factura");
+            entity.Property(e => e.NombreMaterial)
+                .HasMaxLength(255)
+                .HasColumnName("nombre_Material");
+            entity.Property(e => e.Peso).HasPrecision(10);
+            entity.Property(e => e.SubTota)
+                .HasPrecision(10)
+                .HasColumnName("subTota");
+
+            entity.HasOne(d => d.IdFacturaNavigation).WithMany(p => p.JuncalFacturaMateriales)
+                .HasForeignKey(d => d.IdFactura)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_FacturaMateriales_Factura");
         });
 
         modelBuilder.Entity<JuncalMaterial>(entity =>

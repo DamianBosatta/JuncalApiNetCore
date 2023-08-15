@@ -13,5 +13,8 @@
         public List<Agrupacion> agrupacion { get; set; }= new List<Agrupacion>();
 
         public List<Referencia> referencia { get; set; } = new List<Referencia>();
+
+        public List<Factura> factura { get; set; } = new List<Factura>();
+
     }
 }

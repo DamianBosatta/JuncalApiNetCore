@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PreFacturarController : Controller
@@ -41,23 +41,7 @@ namespace JuncalApi.Controllers
 
         }
         
-        [Route("notificacion")]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PreFacturadoRespuesta>>> GetSinFacturar()
-        {
-
-            var cantidadSinFacturar = _uow.RepositorioJuncalPreFactura.GetAll(a => a.Facturado == false).Count();
-
-            if (cantidadSinFacturar > 0)
-            {
-                
-                return Ok(new { success = true, message = "La Cantidad Sin Facturar Es De : " + cantidadSinFacturar, result = cantidadSinFacturar});
-
-            }
-            return Ok(new { success = false, message = "No Hay Pre Facturar", result = 0 });
-
-
-        }
+  
 
         [HttpPost]
         public ActionResult CargarPreFacturado([FromBody] PreFacturadoRequerido preFacturadoReq)

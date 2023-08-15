@@ -33,5 +33,11 @@ namespace JuncalApi.UnidadDeTrabajo
         IRepositorioJuncalProveedorPresupuesto RepositorioJuncalProveedorPresupuesto { get; }
         IRepositorioJuncalProveedorPresupuestoMaterial RepositorioJuncalProveedorPresupuestoMaterial { get; }
         IRepositorioJuncalPreFactura RepositorioJuncalPreFactura { get; }
+        IRepositorioJuncalCuentasCorrientes RepositorioJuncalCuentasCorrientes { get; }
+        IRepositorioJuncalCuentasCorrientesTipo RepositorioJuncalCuentasCorrientesTipo { get; }
+        IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; }
+        IRepositorioJuncalFactura RepositorioJuncalFactura { get; }
+        IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; }
+
     }
 }
