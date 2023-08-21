@@ -27,8 +27,5 @@ public partial class JuncalFactura
 
     public virtual ICollection<JuncalFacturaMateriale> JuncalFacturaMateriales { get; } = new List<JuncalFacturaMateriale>();
 
-    public static implicit operator int(JuncalFactura v)
-    {
-        throw new NotImplementedException();
-    }
+
 }

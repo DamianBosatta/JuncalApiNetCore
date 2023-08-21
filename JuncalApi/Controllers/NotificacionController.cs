@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class NotificacionController : Controller
@@ -21,22 +21,22 @@ namespace JuncalApi.Controllers
             _uow = uow;
         }
 
-        [Route("notificacion")]
         [HttpGet]
-        public async Task<ActionResult<int>>GetSinFacturar()
+        public async Task<ActionResult<int>> GetNotificaciones()
         {
-
             var cantidadSinFacturar = _uow.RepositorioJuncalPreFactura.GetAll(a => a.Facturado == false).Count();
+            var cantidadReclamos = _uow.RepositorioJuncalRemitosReclamado.GetAllByCondition(x => x.IdEstadoReclamo == 1).Count();
 
-            if (cantidadSinFacturar > 0)
+            return Ok(new
             {
-
-                return Ok(new { success = true, message = "La Cantidad Sin Facturar Es De : " + cantidadSinFacturar, result = cantidadSinFacturar });
-
-            }
-            return Ok(new { success = false, message = "No Hay Pre Facturar", result = 0 });
-
-
+                success = true,
+                message = "Notificaciones",
+                sinFacturar= cantidadSinFacturar,
+                reclamos = cantidadReclamos,
+                total = cantidadSinFacturar+ cantidadReclamos
+            });
         }
+
+
     }
 }

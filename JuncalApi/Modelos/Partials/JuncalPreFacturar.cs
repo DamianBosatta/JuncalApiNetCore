@@ -20,7 +20,8 @@ namespace JuncalApi.Modelos
         public decimal PrecioMaterial { get; set; }
         [NotMapped]
         public string? NombreUsuario { get; set; }
-
+        [NotMapped]
+        public string? NumeroFactura { get; set; }
 
         public JuncalPreFacturar() { Facturado = false;}
 

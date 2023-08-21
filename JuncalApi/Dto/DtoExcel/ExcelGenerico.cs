@@ -86,7 +86,7 @@ namespace JuncalApi.Dto.DtoExcel
 
         public bool? DiferenciaMaterial { get { return ExcelAcerbrag?.CodigoMaterial == DataMateriales?.Cod ? false : true; } }
 
-        public bool? DiferenciaPesoBool { get { return DiferenciaPeso >= 400 && DiferenciaMaterial is false ? true : false; } }
+        public bool? DiferenciaPesoBool { get { return DiferenciaPeso >= 400 || DiferenciaPeso <= -400 ? true : false; } }
 
         public bool ? ExisteCodigoMaterial {get { return DataMateriales.ListaCodigoMaterialesACeria.Contains(ExcelAcerbrag.CodigoMaterial) ? true : false;} }
 

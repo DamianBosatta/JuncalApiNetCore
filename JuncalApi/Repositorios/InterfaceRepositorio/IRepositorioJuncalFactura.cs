@@ -7,5 +7,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
     {
 
         public List<FacturaRespuesta> JuncalFacturaList();
+
+        public FacturaRespuesta getByNum(String numeroFactura);
     }
 }

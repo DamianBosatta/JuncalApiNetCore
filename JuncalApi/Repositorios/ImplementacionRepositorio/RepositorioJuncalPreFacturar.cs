@@ -30,6 +30,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          on listaPreFacturarada.IdUsuarioFacturacion equals usuario.Id into usuarioJoin
                          from usuario in usuarioJoin.DefaultIfEmpty() // Left join
                          let contratoItem = _db.JuncalContratoItems.FirstOrDefault(ci => ci.IdContrato == contrato.Id && ci.IdMaterial == listaPreFacturarada.IdMaterialRecibido)
+                         let ordenMaterial = _db.JuncalOrdenMarterials.FirstOrDefault(om => om.IdOrden == listaPreFacturarada.IdOrden)
                          select new JuncalPreFacturar
                          {
                              IdOrden = listaPreFacturarada.IdOrden,
@@ -52,6 +53,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              IdUsuarioFacturacion = usuario != null ? usuario.Id:null,
                              Facturado = listaPreFacturarada.Facturado,
                              FechaFacturado = listaPreFacturarada.FechaFacturado,
+                             NumeroFactura = ordenMaterial.NumFactura
                          }).ToList();
 
             return query;

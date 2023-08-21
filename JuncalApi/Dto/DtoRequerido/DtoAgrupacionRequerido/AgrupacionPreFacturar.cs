@@ -14,7 +14,7 @@
 
         public List<Referencia> referencia { get; set; } = new List<Referencia>();
 
-        public List<Factura> factura { get; set; } = new List<Factura>();
+        public Factura factura { get; set; } = new Factura();
 
     }
 }

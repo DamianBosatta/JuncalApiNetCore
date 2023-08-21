@@ -181,6 +181,8 @@ namespace JuncalApi.Mapper
             CreateMap<FacturaRequerida, JuncalFactura>();
             CreateMap<JuncalFactura, FacturaRespuesta>();
             #endregion
+
+
         }
 
     }

@@ -11,9 +11,9 @@
        
         public decimal PesoBruto { get; set; }
 
-        public decimal PesoNeto { get; set; }   
+        public decimal PesoNeto { get; set; }
 
-
+        public string numFactura { get; set; }
 
     }
 }

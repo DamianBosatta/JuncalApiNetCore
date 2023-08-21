@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class FacturasController : Controller
@@ -42,21 +42,17 @@ namespace JuncalApi.Controllers
         }
 
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> EditFactura(int idFactura, FacturaRequerida facturaEdit)
+        [HttpGet("{numFactura}")]
+        public ActionResult GetFactura(string numFactura)
         {
-            var factura = _uow.RepositorioJuncalFactura.GetById(idFactura);
+            var factura = _uow.RepositorioJuncalFactura.getByNum(numFactura);
 
             if (factura != null)
             {
-                _mapper.Map(facturaEdit, factura);
-                _uow.RepositorioJuncalFactura.Update(factura);
-                FacturaRespuesta facturaRes = new FacturaRespuesta();
-                _mapper.Map(factura, facturaRes);
-                return Ok(new { success = true, message = "La Aceria fue actualizada", result = facturaRes });
+                return Ok(new { success = true, message = "Factura encontrada", result = factura });
             }
 
-            return Ok(new { success = false, message = "La Aceria  no fue encontrada ", result = new FacturaRespuesta() == null });
+            return Ok(new { success = false, message = "La factura no fue encontrada ", result = new FacturaRespuesta() == null });
 
 
         }

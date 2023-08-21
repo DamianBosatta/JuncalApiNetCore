@@ -25,6 +25,6 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public string NombreUsuario { get; set; } = null!;
 
-        public List<JuncalFacturaMateriale> JuncalFacturaMateriales { get; set; } 
+        public List<JuncalFacturaMateriale> listaMateriales { get; set; } 
     }
 }
