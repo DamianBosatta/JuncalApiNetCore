@@ -46,5 +46,7 @@ namespace JuncalApi.Dto.DtoRespuesta
         public string? NombreUsuario { get; set; }
 
         public string? NumeroFactura { get; set; }
+
+        public DateTime? FechaExcel { get; set; }
     }
 }

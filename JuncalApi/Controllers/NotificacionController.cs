@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using JuncalApi.Dto.DtoRespuesta;
+using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Globalization;
+using static Org.BouncyCastle.Bcpg.Attr.ImageAttrib;
 
 namespace JuncalApi.Controllers
 {
@@ -24,19 +28,47 @@ namespace JuncalApi.Controllers
         [HttpGet]
         public async Task<ActionResult<int>> GetNotificaciones()
         {
+            DateOnly Fecha = DateOnly.FromDateTime(DateTime.Now);
             var cantidadSinFacturar = _uow.RepositorioJuncalPreFactura.GetAll(a => a.Facturado == false).Count();
             var cantidadReclamos = _uow.RepositorioJuncalRemitosReclamado.GetAllByCondition(x => x.IdEstadoReclamo == 1).Count();
+            var notificacion = _uow.RepositorioJuncalNotificacion.GetAll().FirstOrDefault();
+            int contratos = notificacion.cantidadContratos;
+            bool contratosComprobados = false;
 
-            return Ok(new
+
+                if (notificacion == null)
+                {
+                    notificacion = new JuncalNotificacione();
+                    notificacion.Fecha = Fecha;
+                    contratos = _uow.RepositorioJuncalContrato.cambiarEstado(Fecha.ToDateTime(new TimeOnly(0, 0, 0)));
+                    notificacion.cantidadContratos = contratos;
+                    _uow.RepositorioJuncalNotificacion.Insert(notificacion);
+                    contratosComprobados = true;
+                }
+                else if (notificacion.Fecha < Fecha)
+                {
+                    notificacion.Fecha = Fecha;
+                    contratos = _uow.RepositorioJuncalContrato.cambiarEstado(Fecha.ToDateTime(new TimeOnly(0, 0, 0)));
+                    notificacion.cantidadContratos = contratos;
+                    _uow.RepositorioJuncalNotificacion.Update(notificacion);
+                    contratosComprobados = true;
+                }
+                
+
+
+            var response = new
             {
                 success = true,
                 message = "Notificaciones",
-                sinFacturar= cantidadSinFacturar,
+                sinFacturar = cantidadSinFacturar,
                 reclamos = cantidadReclamos,
-                total = cantidadSinFacturar+ cantidadReclamos
-            });
+                total = cantidadSinFacturar + cantidadReclamos,
+                fechaComprobacionContratos = notificacion.Fecha,
+                contratosCambiados = contratos,
+                contratoscomprobados = contratosComprobados
+            };
+
+            return Ok(response);
         }
-
-
     }
 }

@@ -1,6 +1,8 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Modelos;
 using JuncalApi.Repositorios.InterfaceRepositorio;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Contracts;
 
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
@@ -42,6 +44,25 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         }
 
         #endregion GetContratos
+
+        #region cambiarEstado
+        public int cambiarEstado(DateTime fecha)
+        {
+            var query = _db.JuncalContratos
+                        .Where(a => a.FechaVencimiento < fecha && !a.Isdeleted && a.Activo)
+                        .ToList();
+
+            int cambiosEstados = 0;
+            foreach (var objQuery in query)
+            {
+                objQuery.Activo = false;
+                _db.Entry(objQuery).State = EntityState.Modified;
+                cambiosEstados++;
+            }
+            _db.SaveChanges();
+            return cambiosEstados;
+        }
+        #endregion cambiarEstado
 
     }
 }

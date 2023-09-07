@@ -4,6 +4,7 @@ using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
 using OfficeOpenXml;
+using System.Globalization;
 
 
 namespace JuncalApi.Servicios.Excel
@@ -90,7 +91,7 @@ namespace JuncalApi.Servicios.Excel
                             var excelData = new ExcelMapper
                             {
                                 Remito = ObtenerSubString(configExcel.ConfigRemitoDesde,configExcel.ConfigRemitoCantidad,worksheet.Cells[row, configExcel.Remito].Value?.ToString()),
-                                Fecha = (worksheet.Cells[row, configExcel.Fecha].Value is double fechaNumero) ? DateTime.FromOADate(fechaNumero).ToString("dd/MM/yyyy") : string.Empty,
+                                Fecha = DateTime.TryParseExact(worksheet.Cells[row, configExcel.Fecha].Value?.ToString(), "d/M/yyyy H:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fecha) ? fecha.ToString("yyyy/MM/dd") : string.Empty,
                                 CodigoMaterial = ObtenerSubString(configExcel.ConfigMaterialCantidad, configExcel.ConfigMaterialHasta, worksheet.Cells[row, configExcel.MaterialCodigo].Value?.ToString()),
                                 NombreMaterial = worksheet.Cells[row, configExcel.MaterialNombre].Value?.ToString(),
                                 Bruto = worksheet.Cells[row, configExcel.Bruto].Value?.ToString(),

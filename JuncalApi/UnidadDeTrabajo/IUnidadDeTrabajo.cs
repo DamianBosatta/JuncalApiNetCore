@@ -38,6 +38,6 @@ namespace JuncalApi.UnidadDeTrabajo
         IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; }
         IRepositorioJuncalFactura RepositorioJuncalFactura { get; }
         IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; }
-
+        IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; }
     }
 }

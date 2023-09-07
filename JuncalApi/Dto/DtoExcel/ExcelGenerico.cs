@@ -22,7 +22,7 @@ namespace JuncalApi.Dto.DtoExcel
 
         public int? IdOrden { get { return DataMateriales is null ? 0 : DataMateriales.IdOrden; } }
 
-        public int IdMaterial { get { return DataMateriales is null ? 0 : DataMateriales.IdMaterial; } }
+        public int IdMaterial { get { return DataMateriales is null ? 0 : DataMateriales.OrdenMaterial.Id; } }
 
         public DateTime? FechaRemitoJuncal
         {

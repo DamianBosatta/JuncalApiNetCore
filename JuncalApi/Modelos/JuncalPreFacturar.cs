@@ -31,6 +31,8 @@ public partial class JuncalPreFacturar
 
     public DateTime? FechaFacturado { get; set; }
 
+    public DateTime FechaExcel { get; set; }
+
     public virtual JuncalOrdenMarterial IdMaterialEnviadoNavigation { get; set; } = null!;
 
     public virtual JuncalAceriaMaterial IdMaterialRecibidoNavigation { get; set; } = null!;

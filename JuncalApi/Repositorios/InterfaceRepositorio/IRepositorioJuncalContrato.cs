@@ -6,6 +6,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
     public interface IRepositorioJuncalContrato:IRepositorioGenerico<JuncalContrato>
     {
         public List<JuncalContrato> GetContratos();
+        public int cambiarEstado(DateTime fecha);
 
     }
 

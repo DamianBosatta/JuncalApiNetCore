@@ -27,6 +27,6 @@
       
         public DateTime? FechaFacturado { get; set; }
 
-
+        public DateTime? FechaExcel { get; set; }
     }
 }

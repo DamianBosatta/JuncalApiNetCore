@@ -48,7 +48,7 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalEstadosInterno= new RepositorioJuncalEstadosInterno(context);
             this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context);
             this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context);
-
+            this.RepositorioJuncalNotificacion = new RepositorioJuncalNotificacione(context);
 
         } 
 
@@ -136,7 +136,7 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; private set; }
 
-
+        public IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; private set; }
 
 
 

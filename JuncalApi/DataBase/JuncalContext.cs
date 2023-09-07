@@ -84,6 +84,8 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalUsuario> JuncalUsuarios { get; set; }
 
+    public virtual DbSet<JuncalNotificacione> JuncalNotificacion { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
@@ -1320,6 +1322,18 @@ public partial class JuncalContext : DbContext
             entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.JuncalUsuarios)
                 .HasForeignKey(d => d.IdRol)
                 .HasConstraintName("fk_usuario_roles");
+        });
+
+        modelBuilder.Entity<JuncalNotificacione>(entity =>
+        {
+            entity.HasKey(e => e.id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.notificaciones");
+
+            entity.Property(e => e.Fecha).HasColumnName("fecha");
+
+            entity.Property(e => e.cantidadContratos).HasColumnName("cantidadContratos");
+            
         });
 
         OnModelCreatingPartial(modelBuilder);

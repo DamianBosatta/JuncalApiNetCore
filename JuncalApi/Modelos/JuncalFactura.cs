@@ -26,6 +26,4 @@ public partial class JuncalFactura
     public string NombreUsuario { get; set; } = null!;
 
     public virtual ICollection<JuncalFacturaMateriale> JuncalFacturaMateriales { get; } = new List<JuncalFacturaMateriale>();
-
-
 }

@@ -42,25 +42,42 @@ namespace JuncalApi.Controllers
 
         }
 
+        
         [HttpPost]
-        public ActionResult CargarContrato (ContratoRequerido contratoRequerido)
+        public ActionResult CargarContrato(ContratoRequerido contratoRequerido)
         {
-            var contrato = _uow.RepositorioJuncalContrato.GetByCondition(c => c.IdAceria==contratoRequerido.IdAceria && c.Isdeleted == false
-            && c.FechaVigencia>= DateTime.Now && c.FechaVencimiento <= DateTime.Now);
+            var contrato = _uow.RepositorioJuncalContrato.GetByCondition(c => 
+            c.IdAceria == contratoRequerido.IdAceria
+            && c.Numero == contratoRequerido.Numero
+            && c.Isdeleted == false
+            );
 
-            if (contrato is null)
+            if(contrato != null )
             {
-                JuncalContrato contratoNuevo = _mapper.Map<JuncalContrato>(contratoRequerido);                              
+                if (contratoRequerido.FechaVigencia <= contrato.FechaVigencia)
+                {
+                    return Ok(new { success = false,
+                        message = "El contrato debe tener una fecha DESDE (" + contratoRequerido.FechaVigencia + "), posterior al del contrato existente con el numero: " + contrato.Numero + " y Fecha: " + contrato.FechaVigencia
+                    });
+                }
+                else
+                {
+                    JuncalContrato contratoNuevo = _mapper.Map<JuncalContrato>(contratoRequerido);
+                    _uow.RepositorioJuncalContrato.Insert(contratoNuevo);
+                    ContratoRespuesta contratoRes = new();
+                    _mapper.Map(contratoNuevo, contratoRes);
+                    return Ok(new { success = true, message = "El Contrato Fue Creado Con Exito ", result = contratoRes });
+                }
+            }
+            else
+            {
+                JuncalContrato contratoNuevo = _mapper.Map<JuncalContrato>(contratoRequerido);
                 _uow.RepositorioJuncalContrato.Insert(contratoNuevo);
                 ContratoRespuesta contratoRes = new();
                 _mapper.Map(contratoNuevo, contratoRes);
                 return Ok(new { success = true, message = "El Contrato Fue Creado Con Exito ", result = contratoRes });
             }
            
-            ContratoRespuesta contratoExiste = new();
-            _mapper.Map(contrato, contratoExiste);
-            return Ok(new { success = false, message = " La Aceria Ya Tiene Un Contrato Vigente ", result = contratoExiste });
-
         }
 
 
@@ -104,7 +121,23 @@ namespace JuncalApi.Controllers
 
         }
 
+        /// enPoint Felix
+        [HttpGet("Comprobar/{idAceria}/{numero}")]
+        public IActionResult CheckContrato(string numero, int idAceria)
+        {
 
+            var ListaContratos = _uow.RepositorioJuncalContrato.GetAllByCondition(contrato => contrato.Numero == numero && contrato.IdAceria == idAceria && contrato.Isdeleted == false);
+
+            if (ListaContratos.Count() > 0)
+            {
+
+                return Ok(new { success = true, message = "Ya existe un contrato con el numero: " + numero });
+
+            }
+            return Ok(new { success = false, message = "No existe contrato con el numero: " + numero });
+
+
+        }
 
 
 
