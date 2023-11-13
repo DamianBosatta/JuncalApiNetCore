@@ -25,7 +25,5 @@ public partial class JuncalAcerium
 
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 
-    public virtual ICollection<JuncalProveedorPresupuesto> JuncalProveedorPresupuestos { get; } = new List<JuncalProveedorPresupuesto>();
-
     public virtual ICollection<JuncalRemitosReclamado> JuncalRemitosReclamados { get; } = new List<JuncalRemitosReclamado>();
 }

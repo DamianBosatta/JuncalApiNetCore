@@ -49,6 +49,13 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context);
             this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context);
             this.RepositorioJuncalNotificacion = new RepositorioJuncalNotificacione(context);
+            this.RepositorioJuncalCcMovimientoAdelanto = new RepositorioJuncalCcMovimientoAdelanto(context);
+            this.RepositorioJuncalCcMovimientoRemito= new RepositorioJuncalCcMovimientoRemito(context);
+            this.RepositorioJuncalCcMovimientoConciliacion= new RepositorioJuncalCcMovimientoConciliacion(context);
+            this.RepositorioJuncalCcTipoMovimiento= new RepositorioJuncalCcTipoMovimiento(context);
+            this.RepositorioJuncalProveedorCcMovimiento = new RepositorioJuncalProveedorCcMovimiento(context);
+            this.RepositorioJuncalProveedorListaPrecio= new RepositorioJuncalProveedorListaPrecio(context); 
+            this.RepositorioJuncalProveedorListaPreciosMateriales= new RepositorioJuncalProveedorListaPreciosMateriales(context);
 
         } 
 
@@ -138,7 +145,19 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; private set; }
 
+        public IRepositorioJuncalCcMovimientoAdelanto RepositorioJuncalCcMovimientoAdelanto { get; private set; }
 
+        public IRepositorioJuncalCcMovimientoConciliacion RepositorioJuncalCcMovimientoConciliacion { get; private set; }
+
+        public IRepositorioJuncalCcMovimientoRemito RepositorioJuncalCcMovimientoRemito { get; private set; }
+
+        public IRepositorioJuncalCcTipoMovimiento RepositorioJuncalCcTipoMovimiento { get; private set; }
+        
+        public IRepositorioJuncalProveedorCcMovimiento RepositorioJuncalProveedorCcMovimiento { get; private set; }
+
+        public IRepositorioJuncalProveedorListaPrecio RepositorioJuncalProveedorListaPrecio { get; private set; }
+
+        public IRepositorioJuncalProveedorListaPreciosMateriales RepositorioJuncalProveedorListaPreciosMateriales { get; private set; }
 
         public void Dispose()
         {

@@ -13,13 +13,11 @@ public partial class JuncalMaterial
 
     public virtual ICollection<JuncalAceriaMaterial> JuncalAceriaMaterials { get; } = new List<JuncalAceriaMaterial>();
 
-    public virtual ICollection<JuncalMaterialProveedor> JuncalMaterialProveedors { get; } = new List<JuncalMaterialProveedor>();
-
     public virtual ICollection<JuncalOrdenMarterial> JuncalOrdenMarterials { get; } = new List<JuncalOrdenMarterial>();
 
     public virtual ICollection<JuncalOrdenMaterialInternoRecibido> JuncalOrdenMaterialInternoRecibidos { get; } = new List<JuncalOrdenMaterialInternoRecibido>();
 
     public virtual ICollection<JuncalOrdenMaterialInternoRecogido> JuncalOrdenMaterialInternoRecogidos { get; } = new List<JuncalOrdenMaterialInternoRecogido>();
 
-    public virtual ICollection<JuncalProveedorPresupuestoMateriale> JuncalProveedorPresupuestoMateriales { get; } = new List<JuncalProveedorPresupuestoMateriale>();
+    public virtual ICollection<JuncalProveedorListapreciosMateriale> JuncalProveedorListapreciosMateriales { get; } = new List<JuncalProveedorListapreciosMateriale>();
 }

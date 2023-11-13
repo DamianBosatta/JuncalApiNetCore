@@ -32,7 +32,7 @@ namespace JuncalApi.Controllers
             var cantidadSinFacturar = _uow.RepositorioJuncalPreFactura.GetAll(a => a.Facturado == false).Count();
             var cantidadReclamos = _uow.RepositorioJuncalRemitosReclamado.GetAllByCondition(x => x.IdEstadoReclamo == 1).Count();
             var notificacion = _uow.RepositorioJuncalNotificacion.GetAll().FirstOrDefault();
-            int contratos = notificacion.cantidadContratos;
+            int contratos = notificacion.CantidadContratos;
             bool contratosComprobados = false;
 
 
@@ -41,7 +41,7 @@ namespace JuncalApi.Controllers
                     notificacion = new JuncalNotificacione();
                     notificacion.Fecha = Fecha;
                     contratos = _uow.RepositorioJuncalContrato.cambiarEstado(Fecha.ToDateTime(new TimeOnly(0, 0, 0)));
-                    notificacion.cantidadContratos = contratos;
+                    notificacion.CantidadContratos = contratos;
                     _uow.RepositorioJuncalNotificacion.Insert(notificacion);
                     contratosComprobados = true;
                 }
@@ -49,7 +49,7 @@ namespace JuncalApi.Controllers
                 {
                     notificacion.Fecha = Fecha;
                     contratos = _uow.RepositorioJuncalContrato.cambiarEstado(Fecha.ToDateTime(new TimeOnly(0, 0, 0)));
-                    notificacion.cantidadContratos = contratos;
+                    notificacion.CantidadContratos = contratos;
                     _uow.RepositorioJuncalNotificacion.Update(notificacion);
                     contratosComprobados = true;
                 }

@@ -15,11 +15,11 @@ public partial class JuncalProveedor
 
     public virtual ICollection<JuncalDireccionProveedor> JuncalDireccionProveedors { get; } = new List<JuncalDireccionProveedor>();
 
-    public virtual ICollection<JuncalMaterialProveedor> JuncalMaterialProveedors { get; } = new List<JuncalMaterialProveedor>();
-
     public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
 
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 
-    public virtual ICollection<JuncalProveedorPresupuesto> JuncalProveedorPresupuestos { get; } = new List<JuncalProveedorPresupuesto>();
+    public virtual ICollection<JuncalProveedorCcMovimiento> JuncalProveedorCcMovimientos { get; } = new List<JuncalProveedorCcMovimiento>();
+
+    public virtual ICollection<JuncalProveedorListaprecio> JuncalProveedorListaprecios { get; } = new List<JuncalProveedorListaprecio>();
 }

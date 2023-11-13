@@ -11,7 +11,7 @@ public partial class JuncalCuentasCorriente
 
     public int IdTipoMoviento { get; set; }
 
-    public DateOnly Fecha { get; set; }
+    public DateTime Fecha { get; set; }
 
     public TimeOnly Hora { get; set; }
 

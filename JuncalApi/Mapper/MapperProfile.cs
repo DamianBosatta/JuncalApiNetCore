@@ -182,6 +182,62 @@ namespace JuncalApi.Mapper
             CreateMap<JuncalFactura, FacturaRespuesta>();
             #endregion
 
+            #region Cc Movimiento Adelanto
+            CreateMap<CcMovimientoAdelantoRequerido, JuncalCcMovimeintoAdelanto>();
+            CreateMap<JuncalCcMovimeintoAdelanto, CcMovimientoConciliacionRespuesta>();
+
+            #endregion
+
+            #region Cc Movimiento Conciliacion
+
+            CreateMap<CcMovimientoConciliacionRequerido, JuncalCcMovimientoConciliacion>();
+            CreateMap<JuncalCcMovimientoConciliacion,CcMovimientoConciliacionRespuesta>();
+
+            #endregion
+
+            #region Cc Movimiento Remito
+
+            CreateMap<CcMovimientoRemitoRequerido, JuncalCcMovimientoRemito>();
+            CreateMap<JuncalCcMovimientoRemito, CcMovimientoRemitoRespuesta>();
+
+            #endregion
+
+            #region Cc Tipo Movimiento
+
+            CreateMap<CcTiposMovimientoRequerido, JuncalCcTiposMovimiento>();
+            CreateMap<JuncalCcTiposMovimiento, CcTiposMovimientoRespuesta>();
+
+            #endregion
+
+            #region Cc Tipo Movimiento
+
+            CreateMap<CcTiposMovimientoRequerido, JuncalCcTiposMovimiento>();
+            CreateMap<JuncalCcTiposMovimiento, CcTiposMovimientoRespuesta>();
+
+            #endregion
+
+            #region Proveedor Cc Movimiento
+
+            CreateMap<ProveedorCcMovimientoRequerido, JuncalProveedorCcMovimiento>();
+            CreateMap<JuncalProveedorCcMovimiento, ProveedorCcMovimientoRespuesta>();
+
+            #endregion
+
+            #region Proveedor Lista Precio
+
+            CreateMap<ProveedorListaPrecioRequerido, JuncalProveedorListaprecio>();
+            CreateMap<JuncalProveedorListaprecio,ProveedorListaPrecioRespuesta>();
+
+            #endregion
+
+            #region Proveedor Lista Precio Material
+
+            CreateMap<ProveedorListaPrecioMaterialRequerido, JuncalProveedorListapreciosMateriale>();
+            CreateMap<JuncalProveedorListapreciosMateriale, ProveedorListaPrecioMaterialRespuesta>();
+
+            #endregion
+
+
 
         }
 

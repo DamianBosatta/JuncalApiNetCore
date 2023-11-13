@@ -1,4 +1,5 @@
-﻿using JuncalApi.Repositorios.InterfaceRepositorio;
+﻿using JuncalApi.Repositorios.ImplementacionRepositorio;
+using JuncalApi.Repositorios.InterfaceRepositorio;
 
 namespace JuncalApi.UnidadDeTrabajo
 {
@@ -39,5 +40,12 @@ namespace JuncalApi.UnidadDeTrabajo
         IRepositorioJuncalFactura RepositorioJuncalFactura { get; }
         IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; }
         IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; }
+        IRepositorioJuncalCcMovimientoAdelanto RepositorioJuncalCcMovimientoAdelanto { get; }
+        IRepositorioJuncalCcMovimientoConciliacion RepositorioJuncalCcMovimientoConciliacion { get; }
+        IRepositorioJuncalCcMovimientoRemito RepositorioJuncalCcMovimientoRemito {  get; }
+        IRepositorioJuncalCcTipoMovimiento RepositorioJuncalCcTipoMovimiento {  get; }
+        IRepositorioJuncalProveedorCcMovimiento RepositorioJuncalProveedorCcMovimiento { get; }
+        IRepositorioJuncalProveedorListaPrecio RepositorioJuncalProveedorListaPrecio {  get; }
+        IRepositorioJuncalProveedorListaPreciosMateriales RepositorioJuncalProveedorListaPreciosMateriales { get; }
     }
 }

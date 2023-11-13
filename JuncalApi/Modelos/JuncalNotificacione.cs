@@ -5,9 +5,9 @@ namespace JuncalApi.Modelos;
 
 public partial class JuncalNotificacione
 {
+    public int Id { get; set; }
+
     public DateOnly Fecha { get; set; }
 
-    public int id { get; set; }
-
-    public int cantidadContratos { get; set; }
+    public int CantidadContratos { get; set; }
 }
