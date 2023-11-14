@@ -5,6 +5,8 @@
        
         public int? IdProveedor { get; set; }
 
+        public string Nombre { get; set; }
+
         public DateTime? FechaVigencia { get; set; }
 
         public DateTime? FechaVencimiento { get; set; }

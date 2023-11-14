@@ -23,13 +23,14 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          select new ProveedorListaPrecioRespuesta
                          {
                              Id= listaPrecio.Id,
+                             Nombre= listaPrecio.Nombre,
                              IdProveedor= listaPrecio.IdProveedor,
                              FechaVigencia=listaPrecio.FechaVigencia,
                              FechaVencimiento=listaPrecio.FechaVencimiento,
                              IdUsuario=listaPrecio.IdUsuario,
                              Activo=listaPrecio.Activo,
-                             NombreProveedor= Proveedor.Nombre,
-                             NombreUsuario=Usuario.Nombre
+                             NombreProveedor = Proveedor != null ? Proveedor.Nombre : "Sin proveedor",
+                             NombreUsuario = Usuario != null ? Usuario.Nombre : "Sin usuario"
 
                          });
 

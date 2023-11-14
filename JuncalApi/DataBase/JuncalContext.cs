@@ -1147,6 +1147,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdUsuario)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_usuario");
+            entity.Property(e => e.Nombre)
+                .HasMaxLength(255)
+                .HasColumnName("nombre");
 
             entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalProveedorListaprecios)
                 .HasForeignKey(d => d.IdProveedor)

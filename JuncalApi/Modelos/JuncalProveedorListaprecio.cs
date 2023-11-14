@@ -7,6 +7,8 @@ public partial class JuncalProveedorListaprecio
 {
     public int Id { get; set; }
 
+    public string Nombre { get; set; } = null!;
+
     public int? IdProveedor { get; set; }
 
     public DateTime? FechaVigencia { get; set; }
