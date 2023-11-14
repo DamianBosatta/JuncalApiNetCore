@@ -1,10 +1,12 @@
-﻿using System.Security.Cryptography;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Cryptography;
 
 namespace JuncalApi.Modelos;
 public partial class JuncalProveedorListaprecio
-{ 
+{
+    [NotMapped]
     public string NombreProveedor {  get; set; }= string.Empty;
-
+    [NotMapped]
     public string NombreUsuario {  get; set; }= string.Empty;   
 
 

@@ -1168,7 +1168,6 @@ public partial class JuncalContext : DbContext
             entity.HasIndex(e => e.IdMaterialJuncal, "fk_juncal.proveedor_listaprecios_materiales_juncal_material");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
             entity.Property(e => e.IdMaterialJuncal)

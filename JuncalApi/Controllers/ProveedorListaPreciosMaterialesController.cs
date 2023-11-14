@@ -75,21 +75,24 @@ namespace JuncalApi.Controllers
             return Ok(new { success = true, message = "Lista de precio de materiales del Proveedor Encontrada", result = ProveedorListaPrecioMaterialRes });
 
         }
-
         [HttpPost]
-        public ActionResult CargarProveedorListaPrecioMaterial([FromBody] ProveedorListaPrecioMaterialRequerido ProveedorListaPrecioMaterialReq)
+        public ActionResult CargarProveedorListaPrecioMaterial([FromBody] List<ProveedorListaPrecioMaterialRequerido> ProveedorListaPrecioMaterialReq)
         {
-
-            var ProveedorListaPrecioMaterial = _mapper.Map<JuncalProveedorListapreciosMateriale>(ProveedorListaPrecioMaterialReq);
-
-            _uow.RepositorioJuncalProveedorListaPreciosMateriales.Insert(ProveedorListaPrecioMaterial);
-
-            var ProveedorListaPrecioMaterialRes = _mapper.Map<ProveedorListaPrecioMaterialRespuesta>(ProveedorListaPrecioMaterial);
-
-            return Ok(new { success = true, message = " La lista de precio de Materiales de Proveedor Fue Creada Con Exito ", result = ProveedorListaPrecioMaterialRes });
+            if (ProveedorListaPrecioMaterialReq.Any())
+            {
 
 
+                var ProveedorListaPrecioMaterial = _mapper.Map<List<JuncalProveedorListapreciosMateriale>>(ProveedorListaPrecioMaterialReq);
+
+                _uow.RepositorioJuncalProveedorListaPreciosMateriales.InsertRange(ProveedorListaPrecioMaterial);
+
+                var ProveedorListaPrecioMaterialRes = _mapper.Map<List<ProveedorListaPrecioMaterialRespuesta>>(ProveedorListaPrecioMaterial);
+
+                return Ok(new { success = true, message = " La lista de precio de Materiales de Proveedor Fue Creada Con Exito ", result = ProveedorListaPrecioMaterialRes });
+            }
+            return Ok(new { success = false, message = "Lista de precio de materiales llego vacia", result = new List<ProveedorListaPrecioMaterialRespuesta>() == null });
         }
+
 
 
         [HttpPut("{id}")]
