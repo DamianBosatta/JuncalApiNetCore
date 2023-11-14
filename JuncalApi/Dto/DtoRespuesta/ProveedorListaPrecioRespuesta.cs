@@ -13,5 +13,9 @@
         public int? IdUsuario { get; set; }
 
         public bool? Activo { get; set; }
+
+        public string? NombreProveedor { get; set; } = string.Empty;
+
+        public string? NombreUsuario { get; set; } = string.Empty;
     }
 }

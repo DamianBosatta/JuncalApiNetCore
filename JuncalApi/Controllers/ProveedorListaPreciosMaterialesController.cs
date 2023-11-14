@@ -40,6 +40,24 @@ namespace JuncalApi.Controllers
 
 
         }
+        [Route("ProveedorListaPrecio/{id?}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProveedorListaPrecioMaterialRespuesta>>> GetProveedorListaPrecioMaterial(int idProveedorListaPrecio)
+        {
+
+            var ListaProveedorListaPrecioMaterial = _uow.RepositorioJuncalProveedorListaPreciosMateriales.GetAllByCondition(a => a.IdProveedorListaprecios == idProveedorListaPrecio);
+
+            if (ListaProveedorListaPrecioMaterial.Any())
+            {
+                List<ProveedorListaPrecioMaterialRespuesta> ListaProveedorListaPrecioMaterialRespuesta = _mapper.Map<List<ProveedorListaPrecioMaterialRespuesta>>(ListaProveedorListaPrecioMaterial);
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecioMaterialRespuesta });
+
+            }
+
+            return Ok(new { success = false, message = "La Lista Esta Vacia ", result = new List<ProveedorListaPrecioMaterialRespuesta>() == null });
+
+
+        }
 
         [Route("Buscar/{id?}")]
         [HttpGet]

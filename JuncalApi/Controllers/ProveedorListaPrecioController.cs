@@ -41,6 +41,24 @@ namespace JuncalApi.Controllers
 
 
         }
+        [Route("Proveedor/{id?}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProveedorListaPrecioRespuesta>>> GetProveedorListaPrecioForId(int idProveedor)
+        {
+
+            var ListaProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.GetListaPrecioForId(idProveedor);
+
+            if (ListaProveedorListaPrecio.Any())
+            {
+               
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecio });
+
+            }
+
+            return Ok(new { success = false, message = "La Lista Esta Vacia ", result = new List<ProveedorListaPrecioRespuesta>() == null });
+
+
+        }
 
         [Route("Buscar/{id?}")]
         [HttpGet]
