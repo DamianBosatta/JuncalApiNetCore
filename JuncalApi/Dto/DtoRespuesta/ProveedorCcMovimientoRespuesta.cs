@@ -13,5 +13,7 @@
         public DateTime? Fecha { get; set; }
 
         public decimal? Importe { get; set; }
+
+        public string? NombreTipo { get; set; } = string.Empty;
     }
 }

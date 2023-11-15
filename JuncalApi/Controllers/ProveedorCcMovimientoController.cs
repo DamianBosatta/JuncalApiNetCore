@@ -28,12 +28,30 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorCcMovimientoRespuesta>>> GetProveedorCcMovimiento()
         {
 
-            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCcMovimiento.GetAll();
+            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCcMovimiento.GetProveedorCcMovimientos(0);
 
             if (ListaProveedorCcMovimiento.Any())
             {
-                List<ProveedorCcMovimientoRespuesta> ListaProveedorCcMovimientoRespuesta = _mapper.Map<List<ProveedorCcMovimientoRespuesta>>(ListaProveedorCcMovimiento);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorCcMovimientoRespuesta });
+               
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorCcMovimiento });
+
+            }
+
+            return Ok(new { success = false, message = "La Lista Esta Vacia ", result = new List<ProveedorCcMovimientoRespuesta>() == null });
+
+
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProveedorCcMovimientoRespuesta>>> GetProveedorCcMovimientoForIdProveedor(int idProveedor)
+        {
+
+            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCcMovimiento.GetProveedorCcMovimientos(idProveedor);
+
+            if (ListaProveedorCcMovimiento.Any())
+            {
+               
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorCcMovimiento });
 
             }
 
