@@ -13,7 +13,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         public List<ProveedorCcMovimientoRespuesta> GetProveedorCcMovimientos(int idProveedor)
         {
-            var query = (from proveedorCcMovimientos in _db.JuncalProveedorCcMovimientos.Where(a => a.Isdeleted == false)
+            var query = from proveedorCcMovimientos in _db.JuncalProveedorCcMovimientos.Where(a => a.Isdeleted == false)
                         join tipoMovimiento in _db.JuncalCcTiposMovimientos
                         on proveedorCcMovimientos.IdTipo equals tipoMovimiento.Id into ProveedorMovimientosJoin
                         from _ProveedorMovimientos in ProveedorMovimientosJoin.DefaultIfEmpty()
@@ -25,20 +25,17 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                             Fecha = proveedorCcMovimientos.Fecha,
                             Importe = proveedorCcMovimientos.Importe,
                             NombreTipo = _ProveedorMovimientos.Descripcion,
-                        
+                            IdProveedor = proveedorCcMovimientos.IdProveedor // Agregar el IdProveedor a la respuesta
+                        };
 
-                          });
+            if (idProveedor != 0)
+            {
+                query = query.Where(a => a.IdProveedor == idProveedor);
+            }
 
-                         
-                       
-                return idProveedor==0? query.ToList():query.Where(a=>a.IdProveedor== idProveedor).ToList();
-           
-            
-              
-            
-
-            
-
+            return query.ToList();
         }
+
+
     }
 }
