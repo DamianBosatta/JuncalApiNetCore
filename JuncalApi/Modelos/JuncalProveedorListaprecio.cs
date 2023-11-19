@@ -19,6 +19,8 @@ public partial class JuncalProveedorListaprecio
 
     public bool? Activo { get; set; }
 
+    public bool IsDeleted { get; set; }
+
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }
 
     public virtual JuncalUsuario? IdUsuarioNavigation { get; set; }

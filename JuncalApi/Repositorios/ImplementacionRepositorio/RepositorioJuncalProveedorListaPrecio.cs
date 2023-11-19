@@ -13,7 +13,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         public List<ProveedorListaPrecioRespuesta> GetListaPrecioForId(int id)
         {
-            var query = (from listaPrecio in _db.JuncalProveedorListaprecios.Where(a => a.Activo== true)
+            var query = (from listaPrecio in _db.JuncalProveedorListaprecios.Where(a => a.IsDeleted==false)
                          join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false && a.Id==id)
                          on listaPrecio.IdProveedor equals proveedor.Id into ProveedorJoin
                          from Proveedor in ProveedorJoin.DefaultIfEmpty()

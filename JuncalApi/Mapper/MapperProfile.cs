@@ -182,19 +182,6 @@ namespace JuncalApi.Mapper
             CreateMap<JuncalFactura, FacturaRespuesta>();
             #endregion
 
-            #region Cc Movimiento Adelanto
-            CreateMap<CcMovimientoAdelantoRequerido, JuncalCcMovimeintoAdelanto>();
-            CreateMap<JuncalCcMovimeintoAdelanto, CcMovimientoConciliacionRespuesta>();
-
-            #endregion
-
-            #region Cc Movimiento Conciliacion
-
-            CreateMap<CcMovimientoConciliacionRequerido, JuncalCcMovimientoConciliacion>();
-            CreateMap<JuncalCcMovimientoConciliacion,CcMovimientoConciliacionRespuesta>();
-
-            #endregion
-
             #region Cc Movimiento Remito
 
             CreateMap<CcMovimientoRemitoRequerido, JuncalCcMovimientoRemito>();
@@ -216,10 +203,10 @@ namespace JuncalApi.Mapper
 
             #endregion
 
-            #region Proveedor Cc Movimiento
+            #region Proveedor Cuenta Corriente
 
-            CreateMap<ProveedorCcMovimientoRequerido, JuncalProveedorCcMovimiento>();
-            CreateMap<JuncalProveedorCcMovimiento, ProveedorCcMovimientoRespuesta>();
+            CreateMap<ProveedorCuentaCorrienteRequerido, JuncalProveedorCuentaCorriente>();
+            CreateMap<JuncalProveedorCuentaCorriente, ProveedorCuentaCorrienteRespuesta>();
 
             #endregion
 

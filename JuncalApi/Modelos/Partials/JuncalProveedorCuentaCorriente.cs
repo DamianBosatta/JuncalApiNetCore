@@ -2,11 +2,11 @@
 
 namespace JuncalApi.Modelos;
 
-public partial class JuncalProveedorCcMovimiento
+public partial class JuncalProveedorCuentaCorriente
 {
     [NotMapped]
     public string NombreTipo { get; set; } = string.Empty;
 
-    public JuncalProveedorCcMovimiento() { }
+    public JuncalProveedorCuentaCorriente() { }
 
 }

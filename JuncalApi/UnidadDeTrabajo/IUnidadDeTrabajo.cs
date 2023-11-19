@@ -34,18 +34,16 @@ namespace JuncalApi.UnidadDeTrabajo
         IRepositorioJuncalProveedorPresupuesto RepositorioJuncalProveedorPresupuesto { get; }
         IRepositorioJuncalProveedorPresupuestoMaterial RepositorioJuncalProveedorPresupuestoMaterial { get; }
         IRepositorioJuncalPreFactura RepositorioJuncalPreFactura { get; }
-        IRepositorioJuncalCuentasCorrientes RepositorioJuncalCuentasCorrientes { get; }
+        IRepositorioJuncalCuentasCorriente RepositorioJuncalCuentasCorriente { get; }
         IRepositorioJuncalCuentasCorrientesTipo RepositorioJuncalCuentasCorrientesTipo { get; }
         IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; }
         IRepositorioJuncalFactura RepositorioJuncalFactura { get; }
         IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; }
         IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; }
-        IRepositorioJuncalCcMovimientoAdelanto RepositorioJuncalCcMovimientoAdelanto { get; }
-        IRepositorioJuncalCcMovimientoConciliacion RepositorioJuncalCcMovimientoConciliacion { get; }
         IRepositorioJuncalCcMovimientoRemito RepositorioJuncalCcMovimientoRemito {  get; }
         IRepositorioJuncalCcTipoMovimiento RepositorioJuncalCcTipoMovimiento {  get; }
-        IRepositorioJuncalProveedorCcMovimiento RepositorioJuncalProveedorCcMovimiento { get; }
         IRepositorioJuncalProveedorListaPrecio RepositorioJuncalProveedorListaPrecio {  get; }
         IRepositorioJuncalProveedorListaPreciosMateriales RepositorioJuncalProveedorListaPreciosMateriales { get; }
+        IRepositorioJuncalProveedorCuentaCorriente RepositorioJuncalProveedorCuentaCorriente {  get; }
     }
 }

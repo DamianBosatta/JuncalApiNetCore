@@ -26,10 +26,6 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalCamion> JuncalCamions { get; set; }
 
-    public virtual DbSet<JuncalCcMovimeintoAdelanto> JuncalCcMovimeintoAdelantos { get; set; }
-
-    public virtual DbSet<JuncalCcMovimientoConciliacion> JuncalCcMovimientoConciliacions { get; set; }
-
     public virtual DbSet<JuncalCcMovimientoRemito> JuncalCcMovimientoRemitos { get; set; }
 
     public virtual DbSet<JuncalCcTiposMovimiento> JuncalCcTiposMovimientos { get; set; }
@@ -72,7 +68,7 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalProveedor> JuncalProveedors { get; set; }
 
-    public virtual DbSet<JuncalProveedorCcMovimiento> JuncalProveedorCcMovimientos { get; set; }
+    public virtual DbSet<JuncalProveedorCuentaCorriente> JuncalProveedorCuentaCorrientes { get; set; }
 
     public virtual DbSet<JuncalProveedorListaprecio> JuncalProveedorListaprecios { get; set; }
 
@@ -281,54 +277,6 @@ public partial class JuncalContext : DbContext
             entity.HasOne(d => d.IdTransportistaNavigation).WithMany(p => p.JuncalCamions)
                 .HasForeignKey(d => d.IdTransportista)
                 .HasConstraintName("fk_camion_transportista");
-        });
-
-        modelBuilder.Entity<JuncalCcMovimeintoAdelanto>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("juncal.cc_movimeinto_adelanto");
-
-            entity.HasIndex(e => e.IdMovimiento, "fk_juncal.cc_movimeinto_adelanto_juncal.proveedor_cc_movimientos");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnType("int(11)")
-                .HasColumnName("id");
-            entity.Property(e => e.IdMovimiento)
-                .HasColumnType("int(11)")
-                .HasColumnName("id_movimiento");
-            entity.Property(e => e.Importe)
-                .HasPrecision(10)
-                .HasColumnName("importe");
-
-            entity.HasOne(d => d.IdMovimientoNavigation).WithMany(p => p.JuncalCcMovimeintoAdelantos)
-                .HasForeignKey(d => d.IdMovimiento)
-                .HasConstraintName("fk_juncal.cc_movimeinto_adelanto_juncal.proveedor_cc_movimientos");
-        });
-
-        modelBuilder.Entity<JuncalCcMovimientoConciliacion>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PRIMARY");
-
-            entity.ToTable("juncal.cc_movimiento_conciliacion");
-
-            entity.HasIndex(e => e.IdMovimiento, "fk_juncal.cc_movimiento_conciliacion_cc_movimientos");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnType("int(11)")
-                .HasColumnName("id");
-            entity.Property(e => e.IdMovimiento)
-                .HasColumnType("int(11)")
-                .HasColumnName("id_movimiento");
-            entity.Property(e => e.Importe)
-                .HasPrecision(10)
-                .HasColumnName("importe");
-
-            entity.HasOne(d => d.IdMovimientoNavigation).WithMany(p => p.JuncalCcMovimientoConciliacions)
-                .HasForeignKey(d => d.IdMovimiento)
-                .HasConstraintName("fk_juncal.cc_movimiento_conciliacion_cc_movimientos");
         });
 
         modelBuilder.Entity<JuncalCcMovimientoRemito>(entity =>
@@ -1075,17 +1023,19 @@ public partial class JuncalContext : DbContext
                 .HasColumnName("origen");
         });
 
-        modelBuilder.Entity<JuncalProveedorCcMovimiento>(entity =>
+        modelBuilder.Entity<JuncalProveedorCuentaCorriente>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("juncal.proveedor_cc_movimientos");
+            entity.ToTable("juncal.proveedor_CuentaCorriente");
 
             entity.HasIndex(e => e.IdProveedor, "fk_juncal.cuenta_corriente_proveedor");
 
-            entity.HasIndex(e => e.IdTipo, "fk_juncal.cuenta_corriente_tipo");
+            entity.HasIndex(e => e.IdTipoMovimiento, "fk_juncal.cuenta_corriente_tipo");
 
             entity.HasIndex(e => e.IdUsuario, "fk_juncal.cuenta_corriente_usuario");
+
+            entity.HasIndex(e => e.IdMaterial, "fk_juncal.proveedor_cuentacorriente_listaprecios_materiales");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -1094,29 +1044,42 @@ public partial class JuncalContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("datetime")
                 .HasColumnName("fecha");
+            entity.Property(e => e.IdMaterial)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_material");
             entity.Property(e => e.IdProveedor)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_proveedor");
-            entity.Property(e => e.IdTipo)
+            entity.Property(e => e.IdTipoMovimiento)
                 .HasColumnType("int(11)")
-                .HasColumnName("id_tipo");
+                .HasColumnName("id_tipo_movimiento");
             entity.Property(e => e.IdUsuario)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_usuario");
             entity.Property(e => e.Importe)
                 .HasPrecision(10)
                 .HasColumnName("importe");
-            entity.Property(e => e.Isdeleted).HasColumnName("isdeleted");
+            entity.Property(e => e.Isdeleted)
+                .HasDefaultValueSql("'0'")
+                .HasColumnName("isdeleted");
+            entity.Property(e => e.Observacion)
+                .HasMaxLength(255)
+                .HasColumnName("observacion");
+            entity.Property(e => e.Peso).HasColumnName("peso");
 
-            entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalProveedorCcMovimientos)
+            entity.HasOne(d => d.IdMaterialNavigation).WithMany(p => p.JuncalProveedorCuentaCorrientes)
+                .HasForeignKey(d => d.IdMaterial)
+                .HasConstraintName("fk_juncal.proveedor_cuentacorriente_listaprecios_materiales");
+
+            entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalProveedorCuentaCorrientes)
                 .HasForeignKey(d => d.IdProveedor)
                 .HasConstraintName("fk_juncal.cuenta_corriente_proveedor");
 
-            entity.HasOne(d => d.IdTipoNavigation).WithMany(p => p.JuncalProveedorCcMovimientos)
-                .HasForeignKey(d => d.IdTipo)
+            entity.HasOne(d => d.IdTipoMovimientoNavigation).WithMany(p => p.JuncalProveedorCuentaCorrientes)
+                .HasForeignKey(d => d.IdTipoMovimiento)
                 .HasConstraintName("fk_juncal.cuenta_corriente_tipo");
 
-            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.JuncalProveedorCcMovimientos)
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.JuncalProveedorCuentaCorrientes)
                 .HasForeignKey(d => d.IdUsuario)
                 .HasConstraintName("fk_juncal.cuenta_corriente_usuario");
         });
@@ -1147,6 +1110,7 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdUsuario)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_usuario");
+            entity.Property(e => e.IsDeleted).HasColumnName("isDeleted");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(255)
                 .HasColumnName("nombre");

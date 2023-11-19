@@ -9,5 +9,5 @@ public partial class JuncalCcTiposMovimiento
 
     public string? Descripcion { get; set; }
 
-    public virtual ICollection<JuncalProveedorCcMovimiento> JuncalProveedorCcMovimientos { get; } = new List<JuncalProveedorCcMovimiento>();
+    public virtual ICollection<JuncalProveedorCuentaCorriente> JuncalProveedorCuentaCorrientes { get; } = new List<JuncalProveedorCuentaCorriente>();
 }

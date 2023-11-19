@@ -19,7 +19,7 @@ public partial class JuncalProveedor
 
     public virtual ICollection<JuncalOrden> JuncalOrdens { get; } = new List<JuncalOrden>();
 
-    public virtual ICollection<JuncalProveedorCcMovimiento> JuncalProveedorCcMovimientos { get; } = new List<JuncalProveedorCcMovimiento>();
+    public virtual ICollection<JuncalProveedorCuentaCorriente> JuncalProveedorCuentaCorrientes { get; } = new List<JuncalProveedorCuentaCorriente>();
 
     public virtual ICollection<JuncalProveedorListaprecio> JuncalProveedorListaprecios { get; } = new List<JuncalProveedorListaprecio>();
 }

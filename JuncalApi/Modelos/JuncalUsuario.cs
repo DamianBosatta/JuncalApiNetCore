@@ -39,7 +39,7 @@ public partial class JuncalUsuario
 
     public virtual ICollection<JuncalPreFacturar> JuncalPreFacturars { get; } = new List<JuncalPreFacturar>();
 
-    public virtual ICollection<JuncalProveedorCcMovimiento> JuncalProveedorCcMovimientos { get; } = new List<JuncalProveedorCcMovimiento>();
+    public virtual ICollection<JuncalProveedorCuentaCorriente> JuncalProveedorCuentaCorrientes { get; } = new List<JuncalProveedorCuentaCorriente>();
 
     public virtual ICollection<JuncalProveedorListaprecio> JuncalProveedorListaprecios { get; } = new List<JuncalProveedorListaprecio>();
 

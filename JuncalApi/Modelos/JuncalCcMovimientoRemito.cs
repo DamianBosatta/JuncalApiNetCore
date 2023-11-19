@@ -19,5 +19,5 @@ public partial class JuncalCcMovimientoRemito
 
     public int? IdRemito { get; set; }
 
-    public virtual JuncalProveedorCcMovimiento? IdMovimientoNavigation { get; set; }
+    public virtual JuncalProveedorCuentaCorriente? IdMovimientoNavigation { get; set; }
 }

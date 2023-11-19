@@ -1,5 +1,4 @@
 ﻿using JuncalApi.DataBase;
-using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Repositorios.ImplementacionRepositorio;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
@@ -43,19 +42,17 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalProveedorPresupuesto = new RepositorioJuncalProveedorPresupuesto(context);
             this.RepositorioJuncalProveedorPresupuestoMaterial = new RepositorioJuncalProveedorPresupuestoMaterial(context);
             this.RepositorioJuncalPreFactura = new RepositorioJuncalPreFacturar(context);
-            this.RepositorioJuncalCuentasCorrientes = new RepositorioJuncalCuentasCorrientes(context);
+            this.RepositorioJuncalCuentasCorriente = new RepositorioJuncalCuentasCorriente(context);
             this.RepositorioJuncalCuentasCorrientesTipo = new RepositorioJuncalCuentasCorrientesTipo(context);
             this.RepositorioJuncalEstadosInterno= new RepositorioJuncalEstadosInterno(context);
             this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context);
             this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context);
             this.RepositorioJuncalNotificacion = new RepositorioJuncalNotificacione(context);
-            this.RepositorioJuncalCcMovimientoAdelanto = new RepositorioJuncalCcMovimientoAdelanto(context);
-            this.RepositorioJuncalCcMovimientoRemito= new RepositorioJuncalCcMovimientoRemito(context);
-            this.RepositorioJuncalCcMovimientoConciliacion= new RepositorioJuncalCcMovimientoConciliacion(context);
+            this.RepositorioJuncalCcMovimientoRemito= new RepositorioJuncalCcMovimientoRemito(context);  
             this.RepositorioJuncalCcTipoMovimiento= new RepositorioJuncalCcTipoMovimiento(context);
-            this.RepositorioJuncalProveedorCcMovimiento = new RepositorioJuncalProveedorCcMovimiento(context);
             this.RepositorioJuncalProveedorListaPrecio= new RepositorioJuncalProveedorListaPrecio(context); 
             this.RepositorioJuncalProveedorListaPreciosMateriales= new RepositorioJuncalProveedorListaPreciosMateriales(context);
+            this.RepositorioJuncalProveedorCuentaCorriente= new RepositorioJuncalProveedorCuentaCorriente(context);
 
         } 
 
@@ -137,7 +134,7 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; private set; }
 
-        public IRepositorioJuncalCuentasCorrientes RepositorioJuncalCuentasCorrientes { get; private set; }
+        public IRepositorioJuncalCuentasCorriente RepositorioJuncalCuentasCorriente { get; private set; }
 
         public IRepositorioJuncalCuentasCorrientesTipo RepositorioJuncalCuentasCorrientesTipo { get; private set; }
 
@@ -145,20 +142,15 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; private set; }
 
-        public IRepositorioJuncalCcMovimientoAdelanto RepositorioJuncalCcMovimientoAdelanto { get; private set; }
-
-        public IRepositorioJuncalCcMovimientoConciliacion RepositorioJuncalCcMovimientoConciliacion { get; private set; }
-
         public IRepositorioJuncalCcMovimientoRemito RepositorioJuncalCcMovimientoRemito { get; private set; }
 
         public IRepositorioJuncalCcTipoMovimiento RepositorioJuncalCcTipoMovimiento { get; private set; }
         
-        public IRepositorioJuncalProveedorCcMovimiento RepositorioJuncalProveedorCcMovimiento { get; private set; }
-
         public IRepositorioJuncalProveedorListaPrecio RepositorioJuncalProveedorListaPrecio { get; private set; }
 
         public IRepositorioJuncalProveedorListaPreciosMateriales RepositorioJuncalProveedorListaPreciosMateriales { get; private set; }
 
+        public IRepositorioJuncalProveedorCuentaCorriente RepositorioJuncalProveedorCuentaCorriente { get; private set; }
         public void Dispose()
         {
             _context.Dispose();

@@ -28,7 +28,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorListaPrecioRespuesta>>> GetProveedorListaPrecio()
         {
 
-            var ListaProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.GetAll();
+            var ListaProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.GetAllByCondition(a => a.IsDeleted == false);
 
             if (ListaProveedorListaPrecio.Any())
             {
