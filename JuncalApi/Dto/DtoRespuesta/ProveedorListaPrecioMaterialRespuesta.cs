@@ -10,6 +10,9 @@
         public string? Nombre { get; set; }
 
         public decimal? Precio { get; set; }
-        
+
+        public string? NombreMaterial { get; set; } = string.Empty;
+
+        public string? NombreListaPrecio { get; set; } = string.Empty;
     }
 }

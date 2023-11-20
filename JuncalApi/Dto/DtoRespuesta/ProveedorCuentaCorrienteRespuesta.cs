@@ -12,7 +12,6 @@
 
         public DateTime? Fecha { get; set; }
 
-
         public decimal? Importe { get; set; }
 
         public double? Peso { get; set; }
@@ -21,6 +20,10 @@
 
         public string Observacion { get; set; } = null!;
 
-        public string? NombreTipo { get; set; } = string.Empty;
+        public string? NombreTipoMovimiento { get; set; } = string.Empty;
+
+        public string? NombreMaterial { get; set; }= string.Empty;
+
+        public string NombreUsuario { get; set; }= string.Empty;
     }
 }

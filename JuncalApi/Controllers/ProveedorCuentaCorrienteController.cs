@@ -28,7 +28,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimiento()
         {
 
-            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCcMovimientos(0);
+            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(0);
 
             if (ListaProveedorCcMovimiento.Any())
             {
@@ -46,7 +46,7 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimientoForIdProveedor(int idProveedor)
         {
 
-            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCcMovimientos(idProveedor);
+            var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(idProveedor);
 
             if (ListaProveedorCcMovimiento.Any())
             {

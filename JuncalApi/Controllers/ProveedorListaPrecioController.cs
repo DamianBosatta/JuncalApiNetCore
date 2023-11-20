@@ -112,5 +112,25 @@ namespace JuncalApi.Controllers
 
 
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> DeleteProveedorListaPrecio(int id)
+        {
+            var ProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.GetById(id);
+
+            if (ProveedorListaPrecio != null)
+            {
+                ProveedorListaPrecio.IsDeleted = true;
+                _uow.RepositorioJuncalProveedorListaPrecio.Update(ProveedorListaPrecio);
+
+                var ProveedorListaPrecioRes = _mapper.Map<ProveedorListaPrecioRespuesta>(ProveedorListaPrecio);
+
+                return Ok(new { success = true, message = " La Lista de precio Fue Eliminada ", result = ProveedorListaPrecioRes });
+            }
+
+            return Ok(new { success = false, message = "No Se Encontro la lista de precio Del Proveedor  ", result = new ProveedorListaPrecioRespuesta() == null });
+
+
+        }
     }
 }

@@ -27,12 +27,12 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorListaPrecioMaterialRespuesta>>> GetProveedorListaPrecioMaterial()
         {
 
-            var ListaProveedorListaPrecioMaterial = _uow.RepositorioJuncalProveedorListaPreciosMateriales.GetAll();
+            var ListaProveedorListaPrecioMaterial = _uow.RepositorioJuncalProveedorListaPreciosMateriales.GetListaPreciosMateriales();
             
             if (ListaProveedorListaPrecioMaterial.Any())
             {
-                List<ProveedorListaPrecioMaterialRespuesta> ListaProveedorListaPrecioMaterialRespuesta = _mapper.Map<List<ProveedorListaPrecioMaterialRespuesta>>(ListaProveedorListaPrecioMaterial);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecioMaterialRespuesta });
+                
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecioMaterial });
 
             }
 
@@ -45,12 +45,13 @@ namespace JuncalApi.Controllers
         public async Task<ActionResult<IEnumerable<ProveedorListaPrecioMaterialRespuesta>>> GetProveedorListaPrecioMaterial(int idProveedorListaPrecio)
         {
 
-            var ListaProveedorListaPrecioMaterial = _uow.RepositorioJuncalProveedorListaPreciosMateriales.GetAllByCondition(a => a.IdProveedorListaprecios == idProveedorListaPrecio);
+            var ListaProveedorListaPrecioMaterial = _uow.RepositorioJuncalProveedorListaPreciosMateriales.GetListaPreciosMateriales().Where
+            (a => a.IdProveedorListaprecios == idProveedorListaPrecio);
 
             if (ListaProveedorListaPrecioMaterial.Any())
             {
-                List<ProveedorListaPrecioMaterialRespuesta> ListaProveedorListaPrecioMaterialRespuesta = _mapper.Map<List<ProveedorListaPrecioMaterialRespuesta>>(ListaProveedorListaPrecioMaterial);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecioMaterialRespuesta });
+                
+                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada ", result = ListaProveedorListaPrecioMaterial });
 
             }
 
