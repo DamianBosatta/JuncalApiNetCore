@@ -23,7 +23,7 @@ public partial class JuncalProveedorCuentaCorriente
 
     public int? IdMaterial { get; set; }
 
-    public string Observacion { get; set; } = null!;
+    public string? Observacion { get; set; }
 
     public virtual JuncalProveedorListapreciosMateriale? IdMaterialNavigation { get; set; }
 
