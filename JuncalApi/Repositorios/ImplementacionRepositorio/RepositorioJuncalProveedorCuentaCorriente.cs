@@ -23,6 +23,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         join usuario in _db.JuncalUsuarios.Where(a => a.Isdeleted == false)
                         on proveedorCc.IdUsuario equals usuario.Id into UsuarioJoin
                         from _Usuario in UsuarioJoin.DefaultIfEmpty()
+                        
+
                         select new ProveedorCuentaCorrienteRespuesta
                         {
                             Id = proveedorCc.Id,
@@ -36,7 +38,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                             IdProveedor = proveedorCc.IdProveedor ,
                             NombreTipoMovimiento = _ProveedorMovimientos.Descripcion,
                             NombreMaterial= _Materiales.Nombre,
-                            NombreUsuario=_Usuario.Nombre+" "+_Usuario.Apellido
+                            NombreUsuario=_Usuario.Nombre+" "+_Usuario.Apellido,
+                            IdOrden=proveedorCc.IdRemito
 
                         };
 

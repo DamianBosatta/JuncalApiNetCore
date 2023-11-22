@@ -13,5 +13,9 @@ namespace JuncalApi.Dto.DtoRequerido
         public decimal Peso {  get; set; }
 
         public bool Cerrar {  get; set; }
+
+        public int IdUsuario { get; set; }
+
+        public string? Observacion { get; set; }
     }
 }

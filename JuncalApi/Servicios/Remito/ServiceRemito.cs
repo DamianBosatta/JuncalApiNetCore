@@ -37,9 +37,9 @@ namespace JuncalApi.Servicios.Remito
 
         }
 
-        public JuncalCuentasCorriente FacturarRemitoInterno(FacturarRemitoInternoRequerido ordenInternoRequerido)
+        public JuncalProveedorCuentaCorriente FacturarRemitoInterno(FacturarRemitoInternoRequerido ordenInternoRequerido)
         {
-            JuncalCuentasCorriente cuentaCorriente = new JuncalCuentasCorriente();
+            JuncalProveedorCuentaCorriente cuentaCorriente = new JuncalProveedorCuentaCorriente();
             try
             {
                 var listaPrecio = _uow?.RepositorioJuncalProveedorListaPreciosMateriales
@@ -47,22 +47,26 @@ namespace JuncalApi.Servicios.Remito
 
                 if (listaPrecio != null && listaPrecio.Any())
                 {
-                    var precioMaterial = listaPrecio.FirstOrDefault(a => a.IdMaterialJuncal == ordenInternoRequerido.IdMaterial);
+                    var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenInternoRequerido.IdMaterial);
 
                     if (precioMaterial != null)
                     {
                         decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenInternoRequerido.Peso);
 
                         DateTime fechaActual = DateTime.Now;
-                        TimeOnly horaActual = TimeOnly.FromDateTime(DateTime.Now);
+                        
 
-                        cuentaCorriente = new JuncalCuentasCorriente
+                        cuentaCorriente = new JuncalProveedorCuentaCorriente
                         {
-                            IdProvedoor = (int)ordenInternoRequerido.OrdenInterno.IdProveedor,
-                            IdTipoMoviento = 3,
+                            IdProveedor = (int)ordenInternoRequerido.OrdenInterno.IdProveedor,
+                            IdTipoMovimiento = 3,
                             Fecha = fechaActual,
-                            Hora = horaActual,
+                            Observacion= ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
                             Importe = dineroFacturado,
+                            Peso= (double?)ordenInternoRequerido.Peso,
+                            IdMaterial= ordenInternoRequerido.IdMaterial,
+                            IdRemito=ordenInternoRequerido.OrdenInterno.Id,
+                            IdUsuario=ordenInternoRequerido.IdUsuario
                         };
 
                         return cuentaCorriente;

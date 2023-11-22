@@ -18,6 +18,8 @@
 
         public int? IdMaterial { get; set; }
 
+        public int? IdOrden { get; set; }
+
         public string Observacion { get; set; } = null!;
 
         public string? NombreTipoMovimiento { get; set; } = string.Empty;

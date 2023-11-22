@@ -87,20 +87,20 @@ namespace JuncalApi.Controllers
 
         [Route("Facturar/")]
         [HttpPost]
-        public ActionResult FacturarOrdenes([FromBody] FacturarRemitoInternoRequerido facturarRequerido)
+        public ActionResult FacturarOrdenesInternas([FromBody] FacturarRemitoInternoRequerido facturarRequerido)
         {
-            if (facturarRequerido == null)
-            {
-                return Ok(new { success = false, message = "El Objeto Requerido Ingresó Nulo", result = 204 });
-            }
-
             try
             {
+                if (facturarRequerido is null)
+                {
+                    return Ok(new { success = false, message = "El Objeto Requerido Ingresó Nulo", result = 204 });
+                }
+
                 if (facturarRequerido.Cerrar)
                 {
                     var ordenInterna = _uow.RepositorioJuncalOrdenInterno.GetById(facturarRequerido.OrdenInterno.Id);
 
-                    if (ordenInterna != null)
+                    if (ordenInterna is not null)
                     {
                         ordenInterna.IdEstadoInterno = 2;
                         _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
@@ -111,9 +111,20 @@ namespace JuncalApi.Controllers
                 {
                     var cuentaCorriente = _serviceRemito.FacturarRemitoInterno(facturarRequerido);
 
-                    if (cuentaCorriente != null)
+                    if (cuentaCorriente is not null)
                     {
-                        _uow.RepositorioJuncalCuentasCorriente.Insert(cuentaCorriente);
+                        var confirmacionInsertCc = _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
+
+                        if (confirmacionInsertCc)
+                        {
+                            var ordenInterna = _uow.RepositorioJuncalOrdenInterno.GetById(facturarRequerido.OrdenInterno.Id);
+                            if (ordenInterna is not null)
+                            {
+                                ordenInterna.IdEstadoInterno = 2;
+                                _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
+                            }
+                        }
+
                         return Ok(new { success = true, message = $"El remito fue facturado por un total de: ${cuentaCorriente.Importe}", result = 200 });
                     }
                 }
