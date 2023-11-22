@@ -25,6 +25,8 @@ public partial class JuncalProveedorCuentaCorriente
 
     public string? Observacion { get; set; }
 
+    public int? IdRemito { get; set; }
+
     public virtual JuncalProveedorListapreciosMateriale? IdMaterialNavigation { get; set; }
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }
