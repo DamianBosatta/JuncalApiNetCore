@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalTransportistum:RepositorioGenerico<JuncalTransportistum>,IRepositorioJuncalTransportistum
     {
-        public RepositorioJuncalTransportistum(JuncalContext db) : base(db)
+        public RepositorioJuncalTransportistum(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

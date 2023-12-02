@@ -6,10 +6,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalRemitosReclamado:RepositorioGenerico<JuncalRemitosReclamado>,IRepositorioJuncalRemitosReclamado
     {
-        public RepositorioJuncalRemitosReclamado(JuncalContext db) : base(db)
+        public RepositorioJuncalRemitosReclamado(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
+        #region GET RECLAMOS
         public List<JuncalRemitosReclamado> GetReclamos()
         {
             var query = from reclamos in _db.JuncalRemitosReclamados.Where(a=>a.IsDeleted==0 )
@@ -78,8 +79,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         }
 
-
-
+        #endregion
 
     }
 }

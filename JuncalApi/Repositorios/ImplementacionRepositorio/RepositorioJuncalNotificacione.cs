@@ -8,7 +8,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalNotificacione : RepositorioGenerico<JuncalNotificacione>, IRepositorioJuncalNotificacion
     {
-        public RepositorioJuncalNotificacione(JuncalContext db) : base(db)
+        public RepositorioJuncalNotificacione(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 

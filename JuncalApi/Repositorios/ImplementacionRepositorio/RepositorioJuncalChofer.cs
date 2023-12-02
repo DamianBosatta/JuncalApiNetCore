@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalChofer: RepositorioGenerico<JuncalChofer>,IRepositorioJuncalChofer
     {
-        public RepositorioJuncalChofer(JuncalContext db) : base(db)
+        public RepositorioJuncalChofer(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

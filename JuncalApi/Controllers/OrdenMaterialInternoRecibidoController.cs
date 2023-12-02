@@ -5,6 +5,11 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace JuncalApi.Controllers
 {
@@ -15,115 +20,125 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<OrdenMaterialInternoRecibidoController> _logger;
 
-        public OrdenMaterialInternoRecibidoController(IUnidadDeTrabajo uow, IMapper mapper)
+        public OrdenMaterialInternoRecibidoController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<OrdenMaterialInternoRecibidoController> logger)
         {
-
             _mapper = mapper;
             _uow = uow;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrdenMaterialInternoRecibidoRespuesta>>> GetOrdenMateriales(int idOrdenInterno)
         {
-
-            var ListaOrdenMateriales = _uow.RepositorioJuncalOrdenMaterialInternoRecibido.GetAllByCondition(c => c.IdOrdenInterno == idOrdenInterno && c.Isdeleted == false).ToList();
-
-            if (ListaOrdenMateriales.Count() > 0)
+            try
             {
-                List<OrdenMaterialInternoRecibidoRespuesta> listaOrdenMaterialRespuesta = _mapper.Map<List<OrdenMaterialInternoRecibidoRespuesta>>(ListaOrdenMateriales);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaOrdenMaterialRespuesta });
+                var ListaOrdenMateriales = _uow.RepositorioJuncalOrdenMaterialInternoRecibido
+                    .GetAllByCondition(c => c.IdOrdenInterno == idOrdenInterno && c.Isdeleted == false)
+                    .ToList();
 
+                if (ListaOrdenMateriales.Count() > 0)
+                {
+                    List<OrdenMaterialInternoRecibidoRespuesta> listaOrdenMaterialRespuesta =
+                        _mapper.Map<List<OrdenMaterialInternoRecibidoRespuesta>>(ListaOrdenMateriales);
+
+                    return Ok(new { success = true, message = "La Lista Está Lista Para Ser Utilizada", result = listaOrdenMaterialRespuesta });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<OrdenMaterialInternoRecibidoRespuesta>() });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<OrdenMaterialInternoRecibidoRespuesta>() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de órdenes de materiales internos");
+                return StatusCode(500, "Ocurrió un error al obtener la lista de órdenes de materiales internos");
+            }
         }
-
 
         [HttpPost]
         public ActionResult CargarOrdenMaterial([FromBody] List<OrdenMaterialInternoRecibidoRequerido> listOrdenMaterialReq)
         {
-            
-            foreach (var item in listOrdenMaterialReq)
+            try
             {
-                JuncalOrdenMaterialInternoRecibido ordenMaterialNuevo = new();
-                ordenMaterialNuevo = _mapper.Map<JuncalOrdenMaterialInternoRecibido>(item);
-                _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Insert(ordenMaterialNuevo);
+                foreach (var item in listOrdenMaterialReq)
+                {
+                    JuncalOrdenMaterialInternoRecibido ordenMaterialNuevo = _mapper.Map<JuncalOrdenMaterialInternoRecibido>(item);
+                    _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Insert(ordenMaterialNuevo);
+                }
 
+                if (listOrdenMaterialReq.Count() > 0)
+                {
+                    return Ok(new { success = true, message = "La Lista de Orden Material fue creada con éxito" });
+                }
+
+                return Ok(new { success = false, message = "Ocurrió un error en la carga", result = new List<OrdenMaterialInternoRecibidoRespuesta>() });
             }
-
-            if (listOrdenMaterialReq.Count() > 0)
+            catch (Exception ex)
             {
-                return Ok(new { success = true, message = "La Lista Orden Material Fue Creado Con Exito", result = Ok() });
+                _logger.LogError(ex, "Error al cargar la lista de órdenes de materiales internos");
+                return StatusCode(500, "Ocurrió un error al cargar la lista de órdenes de materiales internos");
             }
-
-
-            return Ok(new { success = false, message = " Ocurrio Un Error En La Carga ", result = new List<OrdenMaterialInternoRecibidoRespuesta>() == null });
-
-
         }
-
-
-
 
         [Route("Borrar/{id?}")]
         [HttpPut]
         public IActionResult IsDeletedOrdenMaterial(int id)
         {
-
-            var ordenMaterial = _uow.RepositorioJuncalOrdenMaterialInternoRecibido.GetById(id);
-            if (ordenMaterial != null && ordenMaterial.Isdeleted == false)
+            try
             {
-                ordenMaterial.Isdeleted = true;
-                _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Update(ordenMaterial);
-                OrdenMaterialInternoRecibidoRespuesta ordenMaterialRes = new();
-                _mapper.Map(ordenMaterial, ordenMaterialRes);
+                var ordenMaterial = _uow.RepositorioJuncalOrdenMaterialInternoRecibido.GetById(id);
+                if (ordenMaterial != null && ordenMaterial.Isdeleted == false)
+                {
+                    ordenMaterial.Isdeleted = true;
+                    _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Update(ordenMaterial);
+                    OrdenMaterialInternoRecibidoRespuesta ordenMaterialRes = new();
+                    _mapper.Map(ordenMaterial, ordenMaterialRes);
 
-                return Ok(new { success = true, message = "La Orden Material Fue Eliminada ", result = ordenMaterialRes });
+                    return Ok(new { success = true, message = "La Orden Material fue eliminada", result = ordenMaterialRes });
+                }
 
+                return Ok(new { success = false, message = "La Orden Material no fue encontrada", result = new OrdenMaterialInternoRecibidoRespuesta() });
             }
-            return Ok(new { success = false, message = "La Orden Material  No Fue Encontrada", result = new OrdenMaterialInternoRecibidoRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar la orden de material interno");
+                return StatusCode(500, "Ocurrió un error al eliminar la orden de material interno");
+            }
         }
 
         [HttpPut]
         public async Task<IActionResult> EditOrdenMaterial(List<OrdenMaterialInternoRecibidoRequerido> listOrdenMaterialEdits)
         {
-            if (listOrdenMaterialEdits.Count > 0)
+            try
             {
-                foreach (var material in listOrdenMaterialEdits)
+                if (listOrdenMaterialEdits.Count > 0)
                 {
-                    if (material.IdMaterial == 0)
+                    foreach (var material in listOrdenMaterialEdits)
                     {
-                        var materialNuevo = new JuncalOrdenMaterialInternoRecibido();
-                        _mapper.Map(material, materialNuevo);
-                        _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Insert(materialNuevo);
-
+                        if (material.IdMaterial == 0)
+                        {
+                            var materialNuevo = new JuncalOrdenMaterialInternoRecibido();
+                            _mapper.Map(material, materialNuevo);
+                            _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Insert(materialNuevo);
+                        }
+                        else
+                        {
+                            var materialEdit = new JuncalOrdenMaterialInternoRecibido();
+                            _mapper.Map(material, materialEdit);
+                            _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Update(materialEdit);
+                        }
                     }
-                    else
-                    {
-                        var materialEdit = new JuncalOrdenMaterialInternoRecibido();
-                        _mapper.Map(material, materialEdit);
-                        _uow.RepositorioJuncalOrdenMaterialInternoRecibido.Update(materialEdit);
 
-                    }
-
-
+                    return Ok(new { success = true, message = "La Orden Material fue actualizada" });
                 }
 
-                return Ok(new { success = true, message = "La Orden Material Fue Actualizada" });
-
-
+                return Ok(new { success = false, message = "La lista a actualizar no contiene datos" });
             }
-
-
-            return Ok(new { success = false, message = "La Lista a Actualizar No Contiene Datos ", result = new OrdenMaterialInternoRecibidoRespuesta() == null });
-
-
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al editar la lista de órdenes de materiales internos");
+                return StatusCode(500, "Ocurrió un error al editar la lista de órdenes de materiales internos");
+            }
         }
     }
 }
-

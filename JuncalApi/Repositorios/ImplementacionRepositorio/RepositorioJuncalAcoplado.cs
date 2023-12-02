@@ -6,11 +6,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalAcoplado:RepositorioGenerico<JuncalAcoplado>,IRepositorioJuncalAcoplado
     {
-        public RepositorioJuncalAcoplado(JuncalContext db) : base(db)
+        public RepositorioJuncalAcoplado(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetAcoplados
+        #region GET ACOPLADOS
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalAcoplado que representan los acoplados.

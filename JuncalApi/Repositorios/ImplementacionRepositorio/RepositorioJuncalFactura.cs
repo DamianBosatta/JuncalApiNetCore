@@ -7,10 +7,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalFactura : RepositorioGenerico<JuncalFactura>, IRepositorioJuncalFactura
     {
-        public RepositorioJuncalFactura(JuncalContext db) : base(db)
+        public RepositorioJuncalFactura(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
-
+       
+        #region JUNCAL FACTURA LIST
         public List<FacturaRespuesta> JuncalFacturaList()
         {
             var query = from facturas in _db.JuncalFacturas
@@ -43,8 +44,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return result;
         }
+        #endregion
 
-        public FacturaRespuesta getByNum(string numeroFactura)
+        #region GET BY NUMERO FACTURA
+        public FacturaRespuesta GetByNumeroFactura(string numeroFactura)
         {
             var query = from facturas in _db.JuncalFacturas
                         join facturaMaterial in _db.JuncalFacturaMateriales
@@ -76,6 +79,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return result;
         }
-
+        #endregion
     }
 }

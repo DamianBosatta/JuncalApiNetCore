@@ -15,30 +15,38 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<AcopladoController> _logger;
 
-        public AcopladoController(IUnidadDeTrabajo uow, IMapper mapper)
+        public AcopladoController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<AcopladoController> logger)
         {
 
             _mapper = mapper;
             _uow = uow;
+            _logger = logger;
         }
+
 
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AcopladoRespuesta>>> GetAllAcoplados()
         {
-
-            var ListaAcoplados = _uow.RepositorioJuncalAcoplado.GetAcoplados();
-
-            if (ListaAcoplados.Count() > 0)
+            try
             {
-                List<AcopladoRespuesta> listaAcopladosRespuesta = _mapper.Map<List<AcopladoRespuesta>>(ListaAcoplados);
-                return Ok(new { success = true, message = "La Lista Puede Ser Utilizada", result = listaAcopladosRespuesta });
+                var listaAcoplados = _uow.RepositorioJuncalAcoplado.GetAcoplados();
 
+                if (listaAcoplados.Count() > 0)
+                {
+                    List<AcopladoRespuesta> listaAcopladosRespuesta = _mapper.Map<List<AcopladoRespuesta>>(listaAcoplados);
+                    return Ok(new { success = true, message = "La Lista Puede Ser Utilizada", result = listaAcopladosRespuesta });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AcopladoRespuesta>() });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AcopladoRespuesta>() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de Acoplados");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
 
@@ -46,69 +54,82 @@ namespace JuncalApi.Controllers
         [HttpPost]
         public ActionResult CargarAcoplado([FromBody] AcopladoRequerido acopladoRequerido)
         {
-            var acoplado = _uow.RepositorioJuncalAcoplado.GetByCondition(c => c.Patente == acopladoRequerido.Patente);
-            
-            if(acoplado is null)
+            try
             {
-                var acopladoNuevo = _mapper.Map<JuncalAcoplado>(acopladoRequerido);
-                _uow.RepositorioJuncalAcoplado.Insert(acopladoNuevo);
-                AcopladoRespuesta acopladoRes = new();
-                _mapper.Map(acopladoNuevo, acopladoRes);
-                return Ok(new { success = true, message = "El Acoplado Fue Creado Con Exito ", result = acopladoRes });
+                var acoplado = _uow.RepositorioJuncalAcoplado.GetByCondition(c => c.Patente == acopladoRequerido.Patente);
 
+                if (acoplado is null)
+                {
+                    var acopladoNuevo = _mapper.Map<JuncalAcoplado>(acopladoRequerido);
+                    _uow.RepositorioJuncalAcoplado.Insert(acopladoNuevo);
+                    AcopladoRespuesta acopladoRes = _mapper.Map<AcopladoRespuesta>(acopladoNuevo);
+                    return Ok(new { success = true, message = "El Acoplado Fue Creado Con Éxito", result = acopladoRes });
+                }
+
+                AcopladoRespuesta acopladoExiste = _mapper.Map<AcopladoRespuesta>(acoplado);
+                return Ok(new { success = false, message = "Ya Tenemos Un Acoplado Con Esa Patente", result = acopladoExiste });
             }
-            AcopladoRespuesta acopladoExiste = new();
-            _mapper.Map(acoplado, acopladoExiste);
-            return Ok(new { success = false, message = " Ya Tenemos Un Acoplado Con Esa Patente ", result = acopladoExiste });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar cargar el Acoplado");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
+
 
 
         [Route("Borrar/{id?}")]
         [HttpPut]
         public IActionResult IsDeletedAcoplado(int id)
         {
-
-            var acoplado = _uow.RepositorioJuncalAcoplado.GetById(id);
-            if (acoplado != null)
+            try
             {
-                acoplado.Isdeleted = true;
-                _uow.RepositorioJuncalAcoplado.Update(acoplado);
-                AcopladoRespuesta acopladoRes = new();
-                _mapper.Map(acoplado, acopladoRes);
+                var acoplado = _uow.RepositorioJuncalAcoplado.GetById(id);
 
-                return Ok(new { success = true, message = "El Acoplado Fue Eliminado ", result = acopladoRes });
+                if (acoplado != null)
+                {
+                    acoplado.Isdeleted = true;
+                    _uow.RepositorioJuncalAcoplado.Update(acoplado);
 
+                    AcopladoRespuesta acopladoRes = _mapper.Map<AcopladoRespuesta>(acoplado);
+
+                    return Ok(new { success = true, message = "El Acoplado Fue Eliminado", result = acopladoRes });
+                }
+
+                return Ok(new { success = false, message = "No Se Encontró El Acoplado", result = new AcopladoRespuesta() });
             }
-
-            return Ok(new { success = false, message = " No Se Encontro El Acoplado ", result = new AcopladoRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar eliminar el Acoplado");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditAcoplado(int id, AcopladoRequerido acopladoEdit)
         {
-            var acoplado = _uow.RepositorioJuncalAcoplado.GetById(id);
-
-            if (acoplado != null)
+            try
             {
-                _mapper.Map(acopladoEdit, acoplado);
-                _uow.RepositorioJuncalAcoplado.Update(acoplado);
-                AcopladoRespuesta acopladoRes = new();
-                _mapper.Map(acoplado, acopladoRes);
-                return Ok(new { success = true, message = "El Acoplado  fue Actualizado ", result = acopladoRes });
+                var acoplado = _uow.RepositorioJuncalAcoplado.GetById(id);
+
+                if (acoplado != null)
+                {
+                    _mapper.Map(acopladoEdit, acoplado);
+                    _uow.RepositorioJuncalAcoplado.Update(acoplado);
+
+                    AcopladoRespuesta acopladoRes = _mapper.Map<AcopladoRespuesta>(acoplado);
+
+                    return Ok(new { success = true, message = "El Acoplado fue Actualizado", result = acopladoRes });
+                }
+
+                return Ok(new { success = false, message = "El Acoplado No Fue Encontrado", result = new AcopladoRespuesta() });
             }
-
-            return Ok(new { success = false, message = "El Acoplado No Fue Encontrado ", result = new AcopladoRespuesta() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar editar el Acoplado");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
-
-
-
-
-
-
 
     }
 }

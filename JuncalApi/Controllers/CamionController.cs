@@ -18,95 +18,118 @@ namespace JuncalApi.Controllers
     [ApiController]
     public class CamionController : Controller
     {
-        
+
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<CamionController> _logger;
 
-        public CamionController(IUnidadDeTrabajo uow,IMapper mapper)
+        public CamionController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<CamionController> logger)
         {
 
             _mapper = mapper;
             _uow = uow;
+            _logger = logger;
         }
-        
-        [HttpGet]
+
+
+   [HttpGet]
         public async Task<ActionResult<IEnumerable<CamionRespuesta>>> GetCamiones()
         {
-
-            var ListaCamiones = _uow.RepositorioJuncalCamion.GetCamiones().ToList(); 
-
-            if (ListaCamiones.Count() > 0)
+            try
             {
-                List<CamionRespuesta> listaCamionesRespuesta = _mapper.Map<List<CamionRespuesta>>(ListaCamiones);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaCamionesRespuesta.ToList() });
+                var listaCamiones = _uow.RepositorioJuncalCamion.GetCamiones().ToList();
 
+                if (listaCamiones.Count() > 0)
+                {
+                    List<CamionRespuesta> listaCamionesRespuesta = _mapper.Map<List<CamionRespuesta>>(listaCamiones);
+                  
+                    return Ok(new { success = true, message = "La Lista Está Lista Para Ser Utilizada", result = listaCamionesRespuesta });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<CamionRespuesta>() });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<CamionRespuesta>()==null });
-          
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de Camiones");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
         [HttpPost]
-        public ActionResult CargarCamion([FromBody] CamionRequerido camionReq) 
+        public ActionResult CargarCamion([FromBody] CamionRequerido camionReq)
         {
-            var camion = _uow.RepositorioJuncalCamion.GetByCondition(c => c.Patente.Equals(camionReq.Patente) && c.Isdeleted == false);       
-
-            if (camion is null)
+            try
             {
-                JuncalCamion camionNuevo = _mapper.Map<JuncalCamion>(camionReq);
-                _uow.RepositorioJuncalCamion.Insert(camionNuevo);
-                CamionRespuesta camionRes = new();
-                _mapper.Map(camionNuevo, camionRes);
-                return Ok(new { success = true, message = "El transportista fue Creado Con Exito", result = camionRes });
+                var camion = _uow.RepositorioJuncalCamion.GetByCondition(c => c.Patente.Equals(camionReq.Patente) && c.Isdeleted == false);
+
+                if (camion is null)
+                {
+                    JuncalCamion camionNuevo = _mapper.Map<JuncalCamion>(camionReq);
+                    _uow.RepositorioJuncalCamion.Insert(camionNuevo);
+
+                    CamionRespuesta camionRes = _mapper.Map<CamionRespuesta>(camionNuevo);
+
+                    return Ok(new { success = true, message = "El transportista fue Creado Con Éxito", result = camionRes });
+                }
+
+                CamionRespuesta camionExiste = _mapper.Map<CamionRespuesta>(camion);
+                return Ok(new { success = false, message = "El Camion Ya Está Registrado", result = camionExiste });
             }
-
-            CamionRespuesta camionExiste = new();
-            _mapper.Map(camion, camionExiste);
-            return Ok(new { success = false, message = " El Camion Ya Esta Registrado ", result = camionExiste });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar cargar el Camion");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
-
 
         [Route("Borrar/{id?}")]
         [HttpPut]
         public IActionResult IsDeletedCamion(int id)
         {
-
-            var camion = _uow.RepositorioJuncalCamion.GetById(id);
-            if (camion != null && camion.Isdeleted == false)
+            try
             {
-                camion.Isdeleted = true;
-                _uow.RepositorioJuncalCamion.Update(camion);
-                CamionRespuesta camionRes = new();
-                _mapper.Map(camion, camionRes);
+                var camion = _uow.RepositorioJuncalCamion.GetById(id);
+                if (camion != null && camion.Isdeleted == false)
+                {
+                    camion.Isdeleted = true;
+                    _uow.RepositorioJuncalCamion.Update(camion);
+                    CamionRespuesta camionRes = _mapper.Map<CamionRespuesta>(camion);
+                    return Ok(new { success = true, message = "El Camion fue Eliminado", result = camionRes });
+                }
 
-                return Ok(new { success = true, message = "El Camion fue Eliminado", result = camionRes });
-
-
+                return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta() });
             }
-       
-
-            return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar eliminar el Camion");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditCamion(int id, CamionRequerido camionEdit)
-        { 
-            var camion = _uow.RepositorioJuncalCamion.GetById(id);
-
-            if (camion != null && camion.Isdeleted == false)
+        {
+            try
             {
-                camion = _mapper.Map(camionEdit,camion);
-                _uow.RepositorioJuncalCamion.Update(camion);
-                CamionRespuesta camionRes = new();
-                _mapper.Map(camion, camionRes);
-                return Ok(new { success = true, message = "El Camion fue actualizado", result = camionRes});
+                var camion = _uow.RepositorioJuncalCamion.GetById(id);
+
+                if (camion != null && camion.Isdeleted == false)
+                {
+                    _mapper.Map(camionEdit, camion);
+                    _uow.RepositorioJuncalCamion.Update(camion);
+
+                    CamionRespuesta camionRes = _mapper.Map<CamionRespuesta>(camion);
+
+                    return Ok(new { success = true, message = "El Camion fue actualizado", result = camionRes });
+                }
+
+                return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta() });
             }
-
-            return Ok(new { success = false, message = "El Camion no fue encontrado", result = new CamionRespuesta()==null }) ;
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar editar el Camion");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
     }
 }

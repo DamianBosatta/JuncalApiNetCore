@@ -9,11 +9,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalContrato: RepositorioGenerico<JuncalContrato>, IRepositorioJuncalContrato
     {
-        public RepositorioJuncalContrato(JuncalContext db) : base(db)
+        public RepositorioJuncalContrato(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetContratos
+        #region GET CONTRATOS
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalContrato que representan los contratos.
@@ -45,7 +45,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         #endregion GetContratos
 
-        #region cambiarEstado
+        #region CAMBIAR ESTADOS
         public int cambiarEstado(DateTime fecha)
         {
             var query = _db.JuncalContratos

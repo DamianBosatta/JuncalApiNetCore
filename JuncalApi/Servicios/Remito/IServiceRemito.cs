@@ -1,4 +1,4 @@
-﻿using JuncalApi.Dto.DtoRequerido;
+﻿using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 
@@ -8,7 +8,7 @@ namespace JuncalApi.Servicios.Remito
     {
         public List<RemitoRespuesta> GetRemitos(int idOrden);
 
-        public JuncalProveedorCuentaCorriente FacturarRemitoInterno(FacturarRemitoInternoRequerido ordenInternoRequerido);
+  
 
     }
 }

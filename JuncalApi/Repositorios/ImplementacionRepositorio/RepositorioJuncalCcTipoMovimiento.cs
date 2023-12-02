@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalCcTipoMovimiento:RepositorioGenerico<JuncalCcTiposMovimiento>, IRepositorioJuncalCcTipoMovimiento
     {
-        public RepositorioJuncalCcTipoMovimiento(JuncalContext db) : base(db)
+        public RepositorioJuncalCcTipoMovimiento(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

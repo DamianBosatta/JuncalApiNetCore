@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalTipoCamion:RepositorioGenerico<JuncalTipoCamion>,IRepositorioJuncalTipoCamion
     {
-        public RepositorioJuncalTipoCamion(JuncalContext db) : base(db)
+        public RepositorioJuncalTipoCamion(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

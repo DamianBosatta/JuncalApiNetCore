@@ -8,11 +8,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
     {
       
 
-        public RepositorioJuncalCamion(JuncalContext db) : base(db)
+        public RepositorioJuncalCamion(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetCamiones
+        #region GET CAMIONES
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalCamion que representan los camiones.

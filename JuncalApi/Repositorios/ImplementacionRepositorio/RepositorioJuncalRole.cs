@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalRole:RepositorioGenerico<JuncalRole>,IRepositorioJuncalRole
     {
-        public RepositorioJuncalRole(JuncalContext db) : base(db)
+        public RepositorioJuncalRole(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

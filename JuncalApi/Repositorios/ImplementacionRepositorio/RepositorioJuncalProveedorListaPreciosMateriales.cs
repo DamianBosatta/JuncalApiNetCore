@@ -7,10 +7,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalProveedorListaPreciosMateriales:RepositorioGenerico<JuncalProveedorListapreciosMateriale>, IRepositorioJuncalProveedorListaPreciosMateriales
     {
-        public RepositorioJuncalProveedorListaPreciosMateriales(JuncalContext db) : base(db)
+        public RepositorioJuncalProveedorListaPreciosMateriales(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
+        #region GET LISTA PRECIOS MATERIALES
         public List<ProveedorListaPrecioMaterialRespuesta> GetListaPreciosMateriales()
         {
             var query = (from listaprecMaterial in _db.JuncalProveedorListapreciosMateriales
@@ -36,5 +37,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
 
         }
+        #endregion
     }
 }

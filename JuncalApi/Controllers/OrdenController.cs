@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using JuncalApi.Dto.DtoRequerido;
+using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Modelos.Item;
+using JuncalApi.Servicios.Facturar;
 using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace JuncalApi.Controllers
 {
@@ -18,131 +20,228 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
-        private readonly IServiceRemito _serviceRemito; 
+        private readonly IFacturarServicio _serviceFacturar;
+        private readonly IServiceRemito _serviceRemito;
+        private readonly ILogger<OrdenController> _logger;
 
-        public OrdenController(IUnidadDeTrabajo uow, IMapper mapper,IServiceRemito serviceRemito)
+        public OrdenController(IUnidadDeTrabajo uow, IMapper mapper, IFacturarServicio serviceFacturar, IServiceRemito serviceRemito, ILogger<OrdenController> logger)
         {
-
             _mapper = mapper;
             _uow = uow;
-            _serviceRemito = serviceRemito; 
+            _serviceFacturar = serviceFacturar;
+            _serviceRemito = serviceRemito;
+            _logger = logger;
         }
-
-
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenes()
         {
-
-            var ListaOrdenes = _uow.RepositorioJuncalOrden.GetRemito(0);
-
-            if (ListaOrdenes.Count() > 0)
+            try
             {
-               
-                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenes });
+                var ListaOrdenes = _uow.RepositorioJuncalOrden.GetRemito(0);
 
+                if (ListaOrdenes.Count() > 0)
+                {
+                    return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenes });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoRespuesta>() });
             }
-           
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenes= new List<RemitoRespuesta>()});
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener las órdenes");
+                return StatusCode(500, "Ocurrió un error al obtener las órdenes");
+            }
         }
 
-
-
-        
-        [HttpGet]
-        [Route("api/pendientes")]
+        [HttpGet("api/pendientes")]
         public async Task<ActionResult<IEnumerable<RemitosPendientesRespuesta>>> GetPendientes()
         {
-
-            var ListaOrdenesPendientes = _uow.RepositorioJuncalOrden.GetRemitosPendientes();
-
-            if (ListaOrdenesPendientes.Count() > 0)
+            try
             {
+                var ListaOrdenesPendientes = _uow.RepositorioJuncalOrden.GetRemitosPendientes();
 
-                return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenesPendientes });
+                if (ListaOrdenesPendientes.Count() > 0)
+                {
+                    return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenesPendientes });
+                }
 
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitosPendientesRespuesta>() });
             }
-
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = ListaOrdenesPendientes = new List<RemitosPendientesRespuesta>() });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener las órdenes pendientes");
+                return StatusCode(500, "Ocurrió un error al obtener las órdenes pendientes");
+            }
         }
-
 
         [HttpPost]
         public ActionResult CargarOrdenes([FromBody] OrdenRequerido ordenReq)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.Remito==ordenReq.Remito);
-
-            if (orden is null)
+            try
             {
-                JuncalOrden ordenNuevo = _mapper.Map<JuncalOrden>(ordenReq);
-                _uow.RepositorioJuncalOrden.Insert(ordenNuevo);
-                OrdenRespuesta ordenRes = new();
-                _mapper.Map(ordenNuevo, ordenRes);
-                return Ok(new { success = true, message = "La Orden Fue Creada Con Exito", result = ordenRes });
-            }
-            OrdenRespuesta ordenExiste = new();
-            _mapper.Map(orden, ordenExiste);
-            return Ok(new { success = false, message = " Ya esta Cargado Ese Numero De Remito ", result = ordenExiste });
+                var orden = _uow.RepositorioJuncalOrden.GetByCondition(c => c.Remito == ordenReq.Remito);
 
+                if (orden is null)
+                {
+                    JuncalOrden ordenNuevo = _mapper.Map<JuncalOrden>(ordenReq);
+                    _uow.RepositorioJuncalOrden.Insert(ordenNuevo);
+                    OrdenRespuesta ordenRes = new();
+                    _mapper.Map(ordenNuevo, ordenRes);
+                    return Ok(new { success = true, message = "La Orden Fue Creada Con Exito", result = ordenRes });
+                }
+
+                OrdenRespuesta ordenExiste = new();
+                _mapper.Map(orden, ordenExiste);
+                return Ok(new { success = false, message = " Ya esta Cargado Ese Numero De Remito ", result = ordenExiste });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al cargar las órdenes");
+                return StatusCode(500, "Ocurrió un error al cargar las órdenes");
+            }
         }
 
+        #region  FACTURAR ORDEN
+
+        [Route("Facturar/")]
+        [HttpPost]
+        public ActionResult FacturarOrdenes([FromBody] List<FacturarOrdenRequerido> listFacturarRequerido)
+        {
+            try
+            {
+                if (!ModelState.IsValid || listFacturarRequerido is null || listFacturarRequerido.Count == 0)
+                {
+                    return BadRequest(new { success = false, message = "Datos de entrada inválidos", result = 400 });
+                }
+
+                var cuentasCorrientes = _serviceFacturar.FacturarRemitoExterno(listFacturarRequerido);
+
+                if (cuentasCorrientes == null || cuentasCorrientes.Count == 0)
+                {
+                    return NotFound(new { success = false, message = "No se encontraron cuentas corrientes", result = 404 });
+                }
+
+                List<int> NumeroRemitosFacturados = new List<int>();
+              
+                foreach (var cuentaCorriente in cuentasCorrientes)
+                {
+                    var confirmacionInsertCc = InsertarCuentaCorriente(cuentaCorriente);
+
+                    if (!confirmacionInsertCc)
+                    {
+                        _logger.LogError("Error al procesar la solicitud de facturación de órdenes externas , remito nro : " 
+                        + cuentaCorriente.IdRemitoExterno); // permite ante un error de carga saber que fallo en la carpeta logs
+                         return StatusCode(500, "Error al insertar en la base de datos");
+                        
+                    }
+
+                    ActualizarEstadoOrdenInterna((int)cuentaCorriente.IdRemitoExterno);
+                    NumeroRemitosFacturados.Add((int)cuentaCorriente.IdRemitoExterno);
+                }
+
+                decimal totalImporte = (decimal)cuentasCorrientes.Sum(cc => cc.Importe);
+
+                return Ok(new { success = true, message = $"Los Remitos fueron facturados por un total de: ${totalImporte} , Los Remitos Facturados fueron " +
+                    $" los numero : ${NumeroRemitosFacturados}", result = 200 });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al procesar la solicitud de facturación de órdenes externas");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud de facturación de órdenes externas");
+            }
+        }
+
+
+        private bool InsertarCuentaCorriente(JuncalProveedorCuentaCorriente cuentaCorriente)
+        {
+            return _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
+        }
+
+        private void ActualizarEstadoOrdenInterna(int idRemito)
+        {
+            var orden = _uow.RepositorioJuncalOrden.GetById(idRemito);
+            if (orden is not null)
+            {
+                orden.IdEstado = CodigosUtiles.Facturado;
+                _uow.RepositorioJuncalOrden.Update(orden);
+            }
+        }
+        
+        #endregion
 
         [Route("Borrar/{id?}")]
         [HttpPut]
         public IActionResult IsDeletedOrden(int id)
         {
-
-            var orden = _uow.RepositorioJuncalOrden.GetById(id);
-            if (orden != null && orden.Isdeleted == false)
+            try
             {
-                orden.Isdeleted = true;
-                _uow.RepositorioJuncalOrden.Update(orden);
-                OrdenRespuesta ordenRes = new();
-                _mapper.Map(orden, ordenRes);
+                var orden = _uow.RepositorioJuncalOrden.GetById(id);
 
-                return Ok(new { success = true, message = "La Orden Fue Eliminada ", result = ordenRes });
+                if (orden != null && orden.Isdeleted == false)
+                {
+                    orden.Isdeleted = true;
+                    _uow.RepositorioJuncalOrden.Update(orden);
+                    OrdenRespuesta ordenRes = new();
+                    _mapper.Map(orden, ordenRes);
 
+                    return Ok(new { success = true, message = "La Orden Fue Eliminada ", result = ordenRes });
+                }
+
+                return Ok(new { success = false, message = "La Orden No Fue Encontrada", result = new OrdenRespuesta() == null });
             }
-            return Ok(new { success = false, message = "La Orden No Fue Encontrado", result = new OrdenRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar la orden");
+                return StatusCode(500, "Ocurrió un error al eliminar la orden");
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditOrden(int id, OrdenRequerido ordenEdit)
         {
-            var orden = _uow.RepositorioJuncalOrden.GetById(id);
-
-            if (orden != null && orden.Isdeleted == false)
+            try
             {
-                _mapper.Map(ordenEdit, orden);
-                _uow.RepositorioJuncalOrden.Update(orden);
-                OrdenRespuesta ordenRes = new();
-                _mapper.Map(orden, ordenRes);
-                return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
+                var orden = _uow.RepositorioJuncalOrden.GetById(id);
+
+                if (orden != null && orden.Isdeleted == false)
+                {
+                    _mapper.Map(ordenEdit, orden);
+                    _uow.RepositorioJuncalOrden.Update(orden);
+                    OrdenRespuesta ordenRes = new();
+                    _mapper.Map(orden, ordenRes);
+                    return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
+                }
+
+                return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenRespuesta() == null });
             }
-
-            return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenRespuesta() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al editar la orden");
+                return StatusCode(500, "Ocurrió un error al editar la orden");
+            }
         }
-     
+
         [HttpGet("remitos/{idOrden}")]
         public async Task<IActionResult> GetRemitoById(int idOrden)
         {
-            var orden = await Task.Run(() => _serviceRemito.GetRemitos(idOrden));
-
-            if (orden != null)
+            try
             {
-                return Ok(new { success = true, message = "Response Confirmado", result = orden });
+                var orden = await Task.Run(() => _serviceRemito.GetRemitos(idOrden));
+
+                if (orden != null)
+                {
+                    return Ok(new { success = true, message = "Response Confirmado", result = orden });
+                }
+
+                return Ok(new { success = false, message = "No Se Encontro Remito", result = orden });
             }
-
-            return Ok(new { success = false, message = "No Se Encontro Remito", result = orden });
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener el remito por ID");
+                return StatusCode(500, "Ocurrió un error al obtener el remito por ID");
+            }
         }
-
-
     }
 }
+

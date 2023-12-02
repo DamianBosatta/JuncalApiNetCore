@@ -23,7 +23,14 @@ namespace JuncalApi.Modelos
         [NotMapped]
         public string? NumeroFactura { get; set; }
 
+        [NotMapped]
+        public JuncalProveedor? Proveedor { get; set; }
+
+
         public JuncalPreFacturar() { Facturado = false;}
+
+       
+
 
         public JuncalPreFacturar(int pIdOrden,int pIdMaterialEnviado,int pIdMaterialRecibido,decimal pPeso,
             decimal pPesoTara,decimal pPesoBruto,decimal pPesoNeto,string pRemito) :this()

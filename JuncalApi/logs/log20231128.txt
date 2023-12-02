@@ -1,0 +1,1 @@
+2023-11-28 00:40:47.081 -03:00 [ERR] Error al obtener la lista de Camiones

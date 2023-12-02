@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalFacturaMateriale : RepositorioGenerico<JuncalFacturaMateriale>, IRepositorioJuncalFacturaMateriale
     {
-        public RepositorioJuncalFacturaMateriale(JuncalContext db) : base(db)
+        public RepositorioJuncalFacturaMateriale(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     

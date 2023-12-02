@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalOrdenMaterialInternoRecibido : RepositorioGenerico<JuncalOrdenMaterialInternoRecibido>, IRepositorioJuncalOrdenMaterialInternoRecibido
     {
-        public RepositorioJuncalOrdenMaterialInternoRecibido(JuncalContext db) : base(db)
+        public RepositorioJuncalOrdenMaterialInternoRecibido(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalProveedor:RepositorioGenerico<JuncalProveedor>,IRepositorioJuncalProveedor
     {
-        public RepositorioJuncalProveedor(JuncalContext db) : base(db)
+        public RepositorioJuncalProveedor(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

@@ -1,58 +1,61 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Repositorios.ImplementacionRepositorio;
 using JuncalApi.Repositorios.InterfaceRepositorio;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.Entity;
 
 namespace JuncalApi.UnidadDeTrabajo
 {
     public class UnidadDeTrabajo : IUnidadDeTrabajo
     {
         private readonly JuncalContext _context;
+        private readonly ILogger<UnidadDeTrabajo> _logger;
+     
 
-
-        public UnidadDeTrabajo(JuncalContext context)
+        public UnidadDeTrabajo(JuncalContext context, ILogger<UnidadDeTrabajo> logger)
         {
             _context = context;
+            _logger = logger;
 
-            this.RepositorioJuncalAceriaMaterial = new RepositorioJuncalAceriaMaterial(context);
-            this.RepositorioJuncalAcerium= new RepositorioJuncalAcerium(context);
-            this.RepositorioJuncalCamion= new RepositorioJuncalCamion(context);
-            this.RepositorioJuncalChofer=new RepositorioJuncalChofer(context);
-            this.RepositorioJuncalContrato= new RepositorioJuncalContrato(context);
-            this.RepositorioJuncalContratoItem= new RepositorioJuncalContratoItem(context);
-            this.RepositorioJuncalAcoplado=new RepositorioJuncalAcoplado(context);
-            this.RepositorioJuncalEstado=new RepositorioJuncalEstado(context);
-            this.RepositorioJuncalMaterial=new RepositorioJuncalMaterial(context);
-            this.RepositorioJuncalMaterialProveedor=new RepositorioJuncalMaterialProveedor(context);
-            this.RepositorioJuncalOrden = new RepositorioJuncalOrden(context);
-            this.RepositorioJuncalOrdenMarterial=new RepositorioJuncalOrdenMarterial(context);
-            this.RepositorioJuncalProveedor= new RepositorioJuncalProveedor(context);
-            this.RepositorioJuncalRole=new RepositorioJuncalRole(context);
-            this.RepositorioJuncalTransportistum=new RepositorioJuncalTransportistum(context);
-            this.RepositorioJuncalUsuario=new RepositorioJuncalUsuario(context); 
-            this.RepositorioJuncalTipoCamion= new RepositorioJuncalTipoCamion(context);
-            this.RepositorioJuncalSucursal=new RepositorioJuncalSucursal(context);
-            this.RepositorioJuncalDireccionProveedor = new RepositorioJuncalDireccionProveedores(context);           
-            this.RepositorioJuncalTipoAcoplado = new RepositorioJuncalTipoAcoplado(context);
-            this.RepositorioJuncalOrdenInterno=new RepositorioJuncalOrdenInterno(context);
-            this.RepositorioJuncalOrdenMaterialInternoRecibido=new RepositorioJuncalOrdenMaterialInternoRecibido(context);
-            this.RepositorioJuncalOrdenMaterialInternoRecogido= new RepositorioJuncalOrdenMaterialInternoRecogido(context);
-            this.RepositorioJuncalExcelConfig=new RepositorioJuncalExcelConfig(context);
-            this.RepositorioJuncalRemitosReclamado = new RepositorioJuncalRemitosReclamado(context);
-            this.RepositorioJuncalEstadosReclamo = new RepositorioJuncalEstadosReclamo(context);
-            this.RepositorioJuncalProveedorPresupuesto = new RepositorioJuncalProveedorPresupuesto(context);
-            this.RepositorioJuncalProveedorPresupuestoMaterial = new RepositorioJuncalProveedorPresupuestoMaterial(context);
-            this.RepositorioJuncalPreFactura = new RepositorioJuncalPreFacturar(context);
-            this.RepositorioJuncalCuentasCorriente = new RepositorioJuncalCuentasCorriente(context);
-            this.RepositorioJuncalCuentasCorrientesTipo = new RepositorioJuncalCuentasCorrientesTipo(context);
-            this.RepositorioJuncalEstadosInterno= new RepositorioJuncalEstadosInterno(context);
-            this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context);
-            this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context);
-            this.RepositorioJuncalNotificacion = new RepositorioJuncalNotificacione(context);
-            this.RepositorioJuncalCcMovimientoRemito= new RepositorioJuncalCcMovimientoRemito(context);  
-            this.RepositorioJuncalCcTipoMovimiento= new RepositorioJuncalCcTipoMovimiento(context);
-            this.RepositorioJuncalProveedorListaPrecio= new RepositorioJuncalProveedorListaPrecio(context); 
-            this.RepositorioJuncalProveedorListaPreciosMateriales= new RepositorioJuncalProveedorListaPreciosMateriales(context);
-            this.RepositorioJuncalProveedorCuentaCorriente= new RepositorioJuncalProveedorCuentaCorriente(context);
+            this.RepositorioJuncalAceriaMaterial = new RepositorioJuncalAceriaMaterial(context, _logger);
+            this.RepositorioJuncalAcerium= new RepositorioJuncalAcerium(context, _logger);
+            this.RepositorioJuncalCamion= new RepositorioJuncalCamion(context, _logger);
+            this.RepositorioJuncalChofer=new RepositorioJuncalChofer(context, _logger);
+            this.RepositorioJuncalContrato= new RepositorioJuncalContrato(context, _logger);
+            this.RepositorioJuncalContratoItem= new RepositorioJuncalContratoItem(context, _logger);
+            this.RepositorioJuncalAcoplado=new RepositorioJuncalAcoplado(context, _logger);
+            this.RepositorioJuncalEstado=new RepositorioJuncalEstado(context, _logger);
+            this.RepositorioJuncalMaterial=new RepositorioJuncalMaterial(context, _logger);
+            this.RepositorioJuncalMaterialProveedor=new RepositorioJuncalMaterialProveedor(context, _logger);
+            this.RepositorioJuncalOrden = new RepositorioJuncalOrden(context, _logger);
+            this.RepositorioJuncalOrdenMarterial=new RepositorioJuncalOrdenMarterial(context, _logger);
+            this.RepositorioJuncalProveedor= new RepositorioJuncalProveedor(context, _logger);
+            this.RepositorioJuncalRole=new RepositorioJuncalRole(context, _logger);
+            this.RepositorioJuncalTransportistum=new RepositorioJuncalTransportistum(context, _logger);
+            this.RepositorioJuncalUsuario=new RepositorioJuncalUsuario(context, _logger); 
+            this.RepositorioJuncalTipoCamion= new RepositorioJuncalTipoCamion(context, _logger);
+            this.RepositorioJuncalSucursal=new RepositorioJuncalSucursal(context, _logger);
+            this.RepositorioJuncalDireccionProveedor = new RepositorioJuncalDireccionProveedores(context, _logger);           
+            this.RepositorioJuncalTipoAcoplado = new RepositorioJuncalTipoAcoplado(context, _logger);
+            this.RepositorioJuncalOrdenInterno=new RepositorioJuncalOrdenInterno(context, _logger);
+            this.RepositorioJuncalOrdenMaterialInternoRecibido=new RepositorioJuncalOrdenMaterialInternoRecibido(context, _logger);
+            this.RepositorioJuncalOrdenMaterialInternoRecogido= new RepositorioJuncalOrdenMaterialInternoRecogido(context, _logger);
+            this.RepositorioJuncalExcelConfig=new RepositorioJuncalExcelConfig(context, _logger);
+            this.RepositorioJuncalRemitosReclamado = new RepositorioJuncalRemitosReclamado(context, _logger);
+            this.RepositorioJuncalEstadosReclamo = new RepositorioJuncalEstadosReclamo(context, _logger);
+            this.RepositorioJuncalProveedorPresupuesto = new RepositorioJuncalProveedorPresupuesto(context, _logger);
+            this.RepositorioJuncalProveedorPresupuestoMaterial = new RepositorioJuncalProveedorPresupuestoMaterial(context, _logger);
+            this.RepositorioJuncalPreFactura = new RepositorioJuncalPreFacturar(context, _logger);         
+            this.RepositorioJuncalEstadosInterno= new RepositorioJuncalEstadosInterno(context, _logger);
+            this.RepositorioJuncalFactura= new RepositorioJuncalFactura(context, _logger);
+            this.RepositorioJuncalFacturaMateriale = new RepositorioJuncalFacturaMateriale(context, _logger);
+            this.RepositorioJuncalNotificacion = new RepositorioJuncalNotificacione(context, _logger);
+            this.RepositorioJuncalCcMovimientoRemito= new RepositorioJuncalCcMovimientoRemito(context, _logger);  
+            this.RepositorioJuncalCcTipoMovimiento= new RepositorioJuncalCcTipoMovimiento(context, _logger);
+            this.RepositorioJuncalProveedorListaPrecio= new RepositorioJuncalProveedorListaPrecio(context, _logger); 
+            this.RepositorioJuncalProveedorListaPreciosMateriales= new RepositorioJuncalProveedorListaPreciosMateriales(context, _logger);
+            this.RepositorioJuncalProveedorCuentaCorriente= new RepositorioJuncalProveedorCuentaCorriente(context, _logger);
 
         } 
 
@@ -134,10 +137,6 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalFacturaMateriale RepositorioJuncalFacturaMateriale { get; private set; }
 
-        public IRepositorioJuncalCuentasCorriente RepositorioJuncalCuentasCorriente { get; private set; }
-
-        public IRepositorioJuncalCuentasCorrientesTipo RepositorioJuncalCuentasCorrientesTipo { get; private set; }
-
         public IRepositorioJuncalEstadosInterno RepositorioJuncalEstadosInterno { get; private set; }
 
         public IRepositorioJuncalNotificacion RepositorioJuncalNotificacion { get; private set; }
@@ -151,8 +150,12 @@ namespace JuncalApi.UnidadDeTrabajo
         public IRepositorioJuncalProveedorListaPreciosMateriales RepositorioJuncalProveedorListaPreciosMateriales { get; private set; }
 
         public IRepositorioJuncalProveedorCuentaCorriente RepositorioJuncalProveedorCuentaCorriente { get; private set; }
+
+      
+
         public void Dispose()
         {
+           
             _context.Dispose();
         }
     }

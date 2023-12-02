@@ -1,18 +1,17 @@
 ﻿using JuncalApi.DataBase;
-using JuncalApi.Dto.DtoRequerido;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
-using System.Diagnostics.Contracts;
+
 
 namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalPreFacturar : RepositorioGenerico<JuncalPreFacturar>, IRepositorioJuncalPreFactura
     {
-        public RepositorioJuncalPreFacturar(JuncalContext db) : base(db)
+        public RepositorioJuncalPreFacturar(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
+        #region GET ALL PRE FACTURAR
         public List<JuncalPreFacturar> GetAllPreFacturar()
         {
 
@@ -30,6 +29,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          join usuario in _db.JuncalUsuarios
                          on listaPreFacturarada.IdUsuarioFacturacion equals usuario.Id into usuarioJoin
                          from usuario in usuarioJoin.DefaultIfEmpty() // Left join
+                         join _proveedor in _db.JuncalProveedors
+                         on orden.IdProveedor equals _proveedor.Id into proveedorJoin
+                         from proveedor in proveedorJoin.DefaultIfEmpty()
+
                          let contratoVigente = _db.JuncalContratos
                             .Where(c => c.Numero == contrato.Numero && listaPreFacturarada.FechaExcel <= c.FechaVencimiento && listaPreFacturarada.FechaExcel >= c.FechaVigencia)
                             .OrderBy(c => listaPreFacturarada.FechaExcel-c.FechaVigencia)
@@ -59,16 +62,16 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              Facturado = listaPreFacturarada.Facturado,
                              FechaFacturado = listaPreFacturarada.FechaFacturado,
                              NumeroFactura = ordenMaterial.NumFactura,
-                             FechaExcel = listaPreFacturarada.FechaExcel
+                             FechaExcel = listaPreFacturarada.FechaExcel,
+                             Proveedor= proveedor
                          }).ToList();
 
             return query;
 
         }
-
+        #endregion
 
     }
-
 
 }
 

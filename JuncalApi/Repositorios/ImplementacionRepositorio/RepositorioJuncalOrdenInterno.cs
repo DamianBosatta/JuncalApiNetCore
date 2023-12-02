@@ -7,10 +7,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalOrdenInterno : RepositorioGenerico<JuncalOrdenInterno>, IRepositorioJuncalOrdenInterno
     {
-        public RepositorioJuncalOrdenInterno(JuncalContext db) : base(db)
+        public RepositorioJuncalOrdenInterno(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
+        #region GET REMITO
 
         public ItemRemitoInterno GetRemito(int id)
         {
@@ -54,6 +55,9 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return remitoInterno;
         }
+        #endregion
+
+        #region GET ALL REMITOS
 
         public List<ItemRemitoInterno> GetAllRemitos()
         {
@@ -98,6 +102,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return listaRemitos;
         }
-
+        #endregion
     }
 }

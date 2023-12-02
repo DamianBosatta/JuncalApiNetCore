@@ -5,6 +5,12 @@ using JuncalApi.Modelos;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace JuncalApi.Controllers
 {
@@ -15,94 +21,110 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<SucursalController> _logger;
 
-        public SucursalController(IUnidadDeTrabajo uow, IMapper mapper)
+        public SucursalController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<SucursalController> logger)
         {
-
-            _mapper = mapper;
             _uow = uow;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SucursalRespuesta>>> GetSucursal()
         {
-
-            var ListaSucursales = _uow.RepositorioJuncalSucursal.GetAll().ToList();
-
-            if (ListaSucursales.Count() > 0)
+            try
             {
-                List<SucursalRespuesta> listaSucursalesRespuesta = _mapper.Map<List<SucursalRespuesta>>(ListaSucursales);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaSucursalesRespuesta });
+                var ListaSucursales = _uow.RepositorioJuncalSucursal.GetAll().ToList();
 
+                if (ListaSucursales.Count > 0)
+                {
+                    List<SucursalRespuesta> listaSucursalesRespuesta = _mapper.Map<List<SucursalRespuesta>>(ListaSucursales);
+                    return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaSucursalesRespuesta });
+                }
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<SucursalRespuesta>() });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<SucursalRespuesta>() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocurrió un error al obtener las sucursales");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
-
-
 
         [HttpPost]
         public ActionResult CargarSucursal([FromBody] SucursalRequerida sucursalReq)
         {
-            var sucursal = _uow.RepositorioJuncalSucursal.GetByCondition(c => c.Numero.Equals(sucursalReq.Numero));
-
-            if (sucursal is null)
+            try
             {
-                JuncalSucursal sucursalNueva = _mapper.Map<JuncalSucursal>(sucursalReq);
-               _uow.RepositorioJuncalSucursal.Insert(sucursalNueva);
+                var sucursal = _uow.RepositorioJuncalSucursal.GetByCondition(c => c.Numero.Equals(sucursalReq.Numero));
 
-                SucursalRespuesta sucursalRes = new ();
-                _mapper.Map(sucursalNueva, sucursalRes);
-                return Ok(new { success = true, message = "La Sucursal Fue  Creada Con Exito", result = sucursalRes });
+                if (sucursal is null)
+                {
+                    JuncalSucursal sucursalNueva = _mapper.Map<JuncalSucursal>(sucursalReq);
+                    _uow.RepositorioJuncalSucursal.Insert(sucursalNueva);
+
+                    SucursalRespuesta sucursalRes = _mapper.Map<SucursalRespuesta>(sucursalNueva);
+                    return Ok(new { success = true, message = "La Sucursal Fue Creada Con Exito", result = sucursalRes });
+                }
+
+                SucursalRespuesta sucursalExiste = _mapper.Map<SucursalRespuesta>(sucursal);
+                return Ok(new { success = false, message = "La Sucursal Ya Existe", result = sucursalExiste });
             }
-           
-            SucursalRespuesta sucursalExiste = new();
-            _mapper.Map(sucursal, sucursalExiste);
-            return Ok(new { success = false, message = " La Sucursal Ya Existe ", result = sucursalExiste });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocurrió un error al cargar la sucursal");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
         [Route("Borrar/{id?}")]
         [HttpPut]
         public IActionResult IsDeletedSucursal(int id)
         {
-
-            var sucursal = _uow.RepositorioJuncalEstado.GetById(id);
-            if (sucursal != null && sucursal.Isdeleted == false)
+            try
             {
-                sucursal.Isdeleted = true;
-                _uow.RepositorioJuncalEstado.Update(sucursal);
-                SucursalRespuesta sucursalRes = new();
-                _mapper.Map(sucursal, sucursalRes);
+                var sucursal = _uow.RepositorioJuncalEstado.GetById(id);
+                if (sucursal != null && sucursal.Isdeleted == false)
+                {
+                    sucursal.Isdeleted = true;
+                    _uow.RepositorioJuncalEstado.Update(sucursal);
 
-                return Ok(new { success = true, message = "La Sucursal Fue Eliminada ", result = sucursalRes});
+                    SucursalRespuesta sucursalRes = _mapper.Map<SucursalRespuesta>(sucursal);
+                    return Ok(new { success = true, message = "La Sucursal Fue Eliminada", result = sucursalRes });
+                }
 
+                return Ok(new { success = false, message = "La Sucursal No Se Encontro" });
             }
-
-            return Ok(new { success = false, message = "La Sucursal No Se Encontro ", result = new SucursalRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocurrió un error al eliminar la sucursal");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
-
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditSucursal(int id, SucursalRequerida sucursalEdit)
         {
-            var sucursal = _uow.RepositorioJuncalSucursal.GetById(id);
-
-            if (sucursal != null)
+            try
             {
-                _mapper.Map(sucursalEdit, sucursal);
-                _uow.RepositorioJuncalSucursal.Update(sucursal);
-                SucursalRespuesta sucursalRes = new();
-                _mapper.Map(sucursal, sucursalRes);
-                return Ok(new { success = true, message = "La Sucursal Fue Actualizada ", result = sucursalRes });
+                var sucursal = _uow.RepositorioJuncalSucursal.GetById(id);
+
+                if (sucursal != null)
+                {
+                    _mapper.Map(sucursalEdit, sucursal);
+                    _uow.RepositorioJuncalSucursal.Update(sucursal);
+
+                    SucursalRespuesta sucursalRes = _mapper.Map<SucursalRespuesta>(sucursal);
+                    return Ok(new { success = true, message = "La Sucursal Fue Actualizada", result = sucursalRes });
+                }
+
+                return Ok(new { success = false, message = "La Sucursal No Fue Encontrada" });
             }
-
-            return Ok(new { success = false, message = "La Sucursal No Fue Encontrada ", result = new SucursalRespuesta() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Ocurrió un error al editar la sucursal");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
-
     }
 }

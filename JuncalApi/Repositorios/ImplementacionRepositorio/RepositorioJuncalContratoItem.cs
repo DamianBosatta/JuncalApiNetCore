@@ -6,11 +6,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalContratoItem:RepositorioGenerico<JuncalContratoItem>,IRepositorioJuncalContratoItem
     {
-        public RepositorioJuncalContratoItem(JuncalContext db) : base(db)
+        public RepositorioJuncalContratoItem(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetContratoItemForIdContrato
+        #region GET CONTRATO ITEM FOR ID CONTRATO
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalContratoItem que representan los elementos de un contrato específico.
@@ -42,6 +42,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         #endregion GetContratoItemForIdContrato
 
+        #region GET PRECIO MATERIAL
 
         public decimal GetPrecioMaterial(int idContrato, int idMaterial)
         {
@@ -60,6 +61,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         }
 
-
+        #endregion
     }
 }

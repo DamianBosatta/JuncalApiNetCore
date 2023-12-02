@@ -11,11 +11,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalOrdenMarterial : RepositorioGenerico<JuncalOrdenMarterial>, IRepositorioJuncalOrdenMarterial
     {
-        public RepositorioJuncalOrdenMarterial(JuncalContext db) : base(db)
+        public RepositorioJuncalOrdenMarterial(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetDatosMaterialesAndRemitoExcel
+        #region GET DATOS MATERIALES AND REMITO EXCEL
 
         /// <summary>
         /// Obtiene una lista de objetos ItemDataMateriales que contienen datos de materiales y remitos para una acería y lista de remitos específicos.
@@ -28,7 +28,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             // Obtener las órdenes que cumplen las condiciones específicas
             var ordenes = _db.JuncalOrdens
                 .Where(a => remito.Contains(a.Remito.Trim()) && a.Isdeleted == false &&
-                            a.IdAceria == idAceria && a.IdEstado == Codigos.Enviado)
+                            a.IdAceria == idAceria && a.IdEstado == CodigosUtiles.Enviado)
                 .ToList();
 
             // Obtener los identificadores de las órdenes que cumplen las condiciones
@@ -126,8 +126,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         #endregion
         
-
-        
+       
     }
 }
 

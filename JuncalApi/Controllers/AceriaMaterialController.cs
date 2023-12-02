@@ -8,36 +8,42 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class AceriaMaterialController : Controller
+    public class AceriaMaterialController : ControllerBase
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<AceriaMaterialController> _logger;
 
-        public AceriaMaterialController(IUnidadDeTrabajo uow, IMapper mapper)
+        public AceriaMaterialController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<AceriaMaterialController> logger)
         {
-
-            _mapper = mapper;
             _uow = uow;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AceriaMaterialRespuesta>>> GetAceriasMaterial()
         {
-
-            var ListaAceriasMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAllByCondition(c => c.Isdeleted == false).ToList();
-
-            if (ListaAceriasMaterial.Count() > 0)
+            try
             {
-                List<AceriaMaterialRespuesta> listaAceriasMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(ListaAceriasMaterial);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result = listaAceriasMatRespuesta });
+                var ListaAceriasMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAllByCondition(c => c.Isdeleted == false).ToList();
 
+                if (ListaAceriasMaterial.Count() > 0)
+                {
+                    List<AceriaMaterialRespuesta> listaAceriasMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(ListaAceriasMaterial);
+                    return Ok(new { success = true, message = "La Lista Está Lista Para Ser Utilizada", result = listaAceriasMatRespuesta });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AceriaMaterialRespuesta>() });
             }
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AceriaMaterialRespuesta>() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de Acerias Material");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
 
@@ -45,44 +51,51 @@ namespace JuncalApi.Controllers
         [HttpGet("{idAceria}")]
         public async Task<ActionResult<IEnumerable<AceriaMaterialRespuesta>>> GetAceriaMaterialById(int idAceria)
         {
-
-            var ListaaceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAceriaMaterialesForIdAceria(idAceria);
-
-            if (ListaaceriaMaterial.Count()>0)
+            try
             {
-                var ListaAceriaMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(ListaaceriaMaterial);
-                return Ok(new { success = true, message = "La Lista Esta Lista Para Ser Utilizada", result =ListaAceriaMatRespuesta });
+                var listaAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetAceriaMaterialesForIdAceria(idAceria);
+
+                if (listaAceriaMaterial.Count() > 0)
+                {
+                    var listaAceriaMatRespuesta = _mapper.Map<List<AceriaMaterialRespuesta>>(listaAceriaMaterial);
+                    return Ok(new { success = true, message = "La Lista Está Lista Para Ser Utilizada", result = listaAceriaMatRespuesta });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<AceriaMaterialRespuesta>() });
             }
-           
-            return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new AceriaMaterialRespuesta() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener la lista de AceriaMaterial por ID");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
 
         [HttpPost]
         public ActionResult CargarAceriaMaterial([FromBody] AceriaMaterialRequerido aceriaMatRequerido)
         {
-            var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(m => m.Cod.Equals(aceriaMatRequerido.Cod)&& m.Isdeleted==false);
-
-            if (aceriaMat is null)
+            try
             {
-                JuncalAceriaMaterial aceriaMatNuevo = _mapper.Map<JuncalAceriaMaterial>(aceriaMatRequerido);
+                var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(m => m.Cod.Equals(aceriaMatRequerido.Cod) && m.Isdeleted == false);
 
-                _uow.RepositorioJuncalAceriaMaterial.Insert(aceriaMatNuevo);
+                if (aceriaMat is null)
+                {
+                    JuncalAceriaMaterial aceriaMatNuevo = _mapper.Map<JuncalAceriaMaterial>(aceriaMatRequerido);
 
-                AceriaMaterialRespuesta aceriaMatRes = new AceriaMaterialRespuesta();
+                    _uow.RepositorioJuncalAceriaMaterial.Insert(aceriaMatNuevo);
 
-                _mapper.Map(aceriaMat, aceriaMatRes);
-                return Ok(new { success = true, message = "La Aceria Material fue Creada Con Exito", result = aceriaMatRes });
+                    AceriaMaterialRespuesta aceriaMatRes = _mapper.Map<AceriaMaterialRespuesta>(aceriaMatNuevo);
+                    return Ok(new { success = true, message = "La Aceria Material fue Creada Con Éxito", result = aceriaMatRes });
+                }
+
+                AceriaMaterialRespuesta respuestaExiste = _mapper.Map<AceriaMaterialRespuesta>(aceriaMat);
+                return Ok(new { success = false, message = "La Aceria Ya Está Cargada", result = respuestaExiste });
             }
-
-            AceriaMaterialRespuesta  respuestaExiste = new();
-
-            _mapper.Map(aceriaMat, respuestaExiste);
-            
-            return Ok(new { success = false, message = " La Aceria Ya Esta Cargada ", result = respuestaExiste });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar cargar la Aceria Material");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
 
@@ -90,43 +103,53 @@ namespace JuncalApi.Controllers
         [HttpPut]
         public IActionResult IsDeletedAceriaMaterial(int id)
         {
-
-            var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetById(id);
-            if (aceriaMat != null && aceriaMat.Isdeleted == false)
+            try
             {
-                aceriaMat.Isdeleted = true;
-                _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
-                AceriaMaterialRespuesta aceriaMatRes = new();
-                _mapper.Map(aceriaMat, aceriaMatRes);
+                var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetById(id);
 
-                return Ok(new { success = true, message = "La Aceria Material Fue Eliminada ", result = aceriaMatRes });
+                if (aceriaMat != null && aceriaMat.Isdeleted == false)
+                {
+                    aceriaMat.Isdeleted = true;
+                    _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
 
+                    AceriaMaterialRespuesta aceriaMatRes = _mapper.Map<AceriaMaterialRespuesta>(aceriaMat);
 
+                    return Ok(new { success = true, message = "La Aceria Material Fue Eliminada", result = aceriaMatRes });
+                }
+
+                return Ok(new { success = false, message = "La Aceria Material no fue encontrada", result = new AceriaMaterialRespuesta() });
             }
-
-
-            return Ok(new { success = false, message = "La Aceria Material no fue encontrada", result = new AceriaMaterialRespuesta() == null });
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar eliminar la Aceria Material");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> EditAceriaMaterial(int id, AceriaMaterialRequerido aceriaMatEdit)
         {
-            var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetById(id);
-
-            if (aceriaMat != null && aceriaMat.Isdeleted == false)
+            try
             {
-                aceriaMat = _mapper.Map(aceriaMatEdit,aceriaMat);
-                _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
-                AceriaMaterialRespuesta aceriaMatRes = new AceriaMaterialRespuesta();
-                _mapper.Map(aceriaMat, aceriaMatRes);
+                var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetById(id);
 
-                return Ok(new { success = true, message = "La Aceria Material fue actualizada", result = aceriaMatRes });
+                if (aceriaMat != null && aceriaMat.Isdeleted == false)
+                {
+                    aceriaMat = _mapper.Map(aceriaMatEdit, aceriaMat);
+                    _uow.RepositorioJuncalAceriaMaterial.Update(aceriaMat);
+
+                    AceriaMaterialRespuesta aceriaMatRes = _mapper.Map<AceriaMaterialRespuesta>(aceriaMat);
+
+                    return Ok(new { success = true, message = "La Aceria Material fue actualizada", result = aceriaMatRes });
+                }
+
+                return Ok(new { success = false, message = "La Aceria Material no fue encontrada", result = new AceriaMaterialRespuesta() });
             }
-
-            return Ok(new { success = false, message = "La Aceria Material no fue encontrada ", result = new AceriaMaterialRespuesta() == null });
-
-
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al intentar editar la Aceria Material");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud");
+            }
         }
     }
 }

@@ -9,11 +9,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalAceriaMaterial:RepositorioGenerico<JuncalAceriaMaterial>,IRepositorioJuncalAceriaMaterial
     {
-        public RepositorioJuncalAceriaMaterial(JuncalContext db) : base(db)
+        public RepositorioJuncalAceriaMaterial(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
-        #region GetAceriaMaterialesForIdAceria
+        #region GET ACERIA MATERIALES FOR ID ACERIA
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalAceriaMaterial para el Id de la acería especificado.

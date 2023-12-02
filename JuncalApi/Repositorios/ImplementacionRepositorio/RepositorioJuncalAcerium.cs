@@ -6,7 +6,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalAcerium:RepositorioGenerico<JuncalAcerium>,IRepositorioJuncalAcerium
     {
-        public RepositorioJuncalAcerium(JuncalContext db) : base(db)
+        public RepositorioJuncalAcerium(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
     }

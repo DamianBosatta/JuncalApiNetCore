@@ -17,7 +17,6 @@ public partial class JuncalContext : DbContext
     }
 
 
-
     public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
 
     public virtual DbSet<JuncalAceriaMaterial> JuncalAceriaMaterials { get; set; }
@@ -1052,9 +1051,12 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdProveedor)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_proveedor");
-            entity.Property(e => e.IdRemito)
+            entity.Property(e => e.IdRemitoExterno)
                 .HasColumnType("int(11)")
-                .HasColumnName("idRemito");
+                .HasColumnName("idRemitoExterno");
+            entity.Property(e => e.IdRemitoInterno)
+                .HasColumnType("int(11)")
+                .HasColumnName("idRemitoInterno");
             entity.Property(e => e.IdTipoMovimiento)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_tipo_movimiento");

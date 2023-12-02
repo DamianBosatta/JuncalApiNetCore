@@ -1,7 +1,6 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
-using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 
@@ -9,11 +8,13 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalOrden:RepositorioGenerico<JuncalOrden>,IRepositorioJuncalOrdencs
     {
-        public RepositorioJuncalOrden(JuncalContext db) : base(db)
+        
+        public RepositorioJuncalOrden(JuncalContext db,ILogger logger) : base(db,logger)
         {
+            
         }
     
-        #region GetRemito
+        #region GET REMITO
 
         /// <summary>
         /// Obtiene una lista de objetos JuncalOrden para el Id de la orden especificado.
@@ -23,6 +24,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         /// <returns>Lista de objetos JuncalOrden</returns>
         public List<RemitoRespuesta>? GetRemito(int idOrden)
         {
+            try { 
             var query = (from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
                          join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
                          from jaceria in JoinAceria.DefaultIfEmpty()
@@ -79,12 +81,21 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             return query.ToList();
         }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Ocurrió una excepción en GetRemito(Repositorio Orden)");
+       
+        throw;
+    }
+}
 
         #endregion
 
-
+        #region GET REMITOS PENDIENTES
         public List<RemitosPendientesRespuesta> GetRemitosPendientes()
         {
+            try { 
+            
             var query = (from orden in _db.JuncalOrdens.Where(a => a.IdEstado > 1 && a.IdEstado < 4)
                          join ordenMaterial in _db.JuncalOrdenMarterials
                          on orden.Id equals ordenMaterial.IdOrden into materialJoin
@@ -109,10 +120,16 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              ListaMaterialesOrden = _db.JuncalOrdenMarterials
                                 .Where(om => om.IdOrden == orden.Id).ToList()
                          });
-
+            
             return query.ToList();
         }
-
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Ocurrió una excepción en GetRemitosPendientes(Repositorio Juncal Orden)");       
+        throw;
+    }
+}
+        #endregion
 
     }
 }

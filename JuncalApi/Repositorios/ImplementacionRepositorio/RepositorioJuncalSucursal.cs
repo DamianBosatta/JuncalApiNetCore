@@ -6,14 +6,12 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalSucursal :RepositorioGenerico<JuncalSucursal>, IRepositorioJuncalSucursal
     {
-        public RepositorioJuncalSucursal(JuncalContext db) : base(db)
+        public RepositorioJuncalSucursal(JuncalContext db, ILogger logger) : base(db, logger)
         {
 
         }
 
-
-
     }
 
-    }
+}
 

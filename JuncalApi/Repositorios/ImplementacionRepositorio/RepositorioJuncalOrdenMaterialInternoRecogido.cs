@@ -6,10 +6,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 {
     public class RepositorioJuncalOrdenMaterialInternoRecogido : RepositorioGenerico<JuncalOrdenMaterialInternoRecogido>, IRepositorioJuncalOrdenMaterialInternoRecogido
     {
-        public RepositorioJuncalOrdenMaterialInternoRecogido(JuncalContext db) : base(db)
+        public RepositorioJuncalOrdenMaterialInternoRecogido(JuncalContext db, ILogger logger) : base(db, logger)
         {
         }
 
+        #region LISTA MATERIALES RECOGIDOS
         public List<JuncalOrdenMaterialInternoRecogido> listaMaterialesRecogidos(int idOrdenInterna)
         {
 
@@ -31,5 +32,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return listaOrdenInterna;
 
         }
+        #endregion
+
     }
 }

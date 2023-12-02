@@ -18,7 +18,9 @@
 
         public int? IdMaterial { get; set; }
 
-        public int? IdOrden { get; set; }
+        public int? IdOrdenInterno { get; set; }
+
+        public int? IdOrdenExterno { get; set; }
 
         public string Observacion { get; set; } = null!;
 
@@ -27,5 +29,17 @@
         public string? NombreMaterial { get; set; }= string.Empty;
 
         public string NombreUsuario { get; set; }= string.Empty;
+
+        public decimal SaldoTotal {  get; set; }
+
+        public decimal Debito {  get; set; }
+
+        public decimal Credito { get;set; }
+
+        public decimal PrecioMaterial { get; set; }
+
+        public string NombreLista {  get; set; } = string.Empty;
+
+        public string NumeroRemito {  get; set; } = string.Empty;
     }
 }

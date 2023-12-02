@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using JuncalApi.Dto.DtoExcel;
-using JuncalApi.Modelos;
 using JuncalApi.Modelos.Item;
 using JuncalApi.UnidadDeTrabajo;
 using OfficeOpenXml;
@@ -13,12 +12,13 @@ namespace JuncalApi.Servicios.Excel
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
+        private readonly ILogger<ServicioExcel> _logger;
 
-        public ServicioExcel(IUnidadDeTrabajo uow, IMapper mapper)
+        public ServicioExcel(IUnidadDeTrabajo uow, IMapper mapper, ILogger<ServicioExcel> logger)
         {
             _uow = uow;
             _mapper = mapper;
-
+            _logger = logger;
         }
 
         #region METODO DONDE MAPEAMOS EL EXCEL DE TODAS LAS ACERIAS
@@ -32,10 +32,12 @@ namespace JuncalApi.Servicios.Excel
         public List<ExcelGenerico> GetExcel(IFormFile formFile, int idAceria)
         {
             List<ExcelGenerico> listaExcelGenerico = new List<ExcelGenerico>();
+            try
+            {
 
-            #region LOGICA MAPEO EXCEL
+                #region LOGICA MAPEO EXCEL
 
-            var listaMapeoExcel = MapeoExcelAcerbrag(idAceria, formFile); // Mapeamos El Excel
+                var listaMapeoExcel = MapeoExcelAcerbrag(idAceria, formFile); // Mapeamos El Excel
 
             var listaRemito = (from l in listaMapeoExcel
                                select l.Remito).Distinct().ToList(); // Obtenemos La Lista De Los Remitos Del Excel
@@ -46,9 +48,17 @@ namespace JuncalApi.Servicios.Excel
 
             listaExcelGenerico = ComparadorRemitoExcel(listaMapeoExcel, remitosComparar,idAceria); // Comparamos Excel Con Query En Base De Datos
 
-       
-           
-            #endregion
+
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                
+                _logger.LogError(ex, "Se ha producido un error en GetExcel(Servicio Excel): {ErrorMessage}", ex.Message);
+
+              
+            }
 
             return listaExcelGenerico;
         }
@@ -112,16 +122,10 @@ namespace JuncalApi.Servicios.Excel
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al mapear el archivo de Excel.", ex);
-                // Aquí puedes realizar las acciones necesarias para manejar la excepción de manera profesional,
-                // como registrar el error en un archivo de registro, enviar una notificación por correo electrónico, etc.
-                // También puedes lanzar una excepción personalizada o retornar una lista vacía, dependiendo de tus necesidades.
-                // Por ejemplo, para lanzar una excepción personalizada:
-                // throw new CustomException("Ocurrió un error durante el mapeo del archivo Excel.", ex);
-                // O para retornar una lista vacía:
-                // return new List<ExcelMapper>();
-                // Asegúrate de elegir la estrategia de manejo de excepciones que se ajuste mejor a tu aplicación.
+                _logger.LogError(ex, "Se ha producido un error en MapeoExcelAcerbrag(Servicio Excel): {ErrorMessage}", ex.Message);
+                return new List<ExcelMapper>();
             }
+
         }
 
         #endregion
@@ -134,28 +138,34 @@ namespace JuncalApi.Servicios.Excel
         /// <param name="listaExcel">Lista de objetos ExcelMapper</param>
         /// <param name="ListaDataMateriales">Lista de objetos ItemDataMateriales</param>
         /// <returns>Lista de objetos ExcelGenerico</returns>
-        private List<ExcelGenerico> ComparadorRemitoExcel(List<ExcelMapper> listaExcel, List<ItemDataMateriales> ListaDataMateriales,int idAceria)
+        private List<ExcelGenerico> ComparadorRemitoExcel(List<ExcelMapper> listaExcel, List<ItemDataMateriales> ListaDataMateriales, int idAceria)
         {
-            var query = (from excel in listaExcel
-                         join Remito in ListaDataMateriales on excel.Remito equals Remito.Remito
-                         select new
-                         {
-                            Remito = Remito,
-                            Excel = excel,
-                            IdAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetByCondition
-                            (a => a.Cod == excel.CodigoMaterial && a.IdAceria==idAceria).Id
-                         });
-
-            List<ExcelGenerico> listaExcelGenerico = new List<ExcelGenerico>();
-            foreach(var objQuery in query)
+            try
             {
-               listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+                var query = (from excel in listaExcel
+                             join Remito in ListaDataMateriales on excel.Remito equals Remito.Remito
+                             select new
+                             {
+                                 Remito = Remito,
+                                 Excel = excel,
+                                 IdAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(a => a.Cod == excel.CodigoMaterial && a.IdAceria == idAceria).Id
+                             });
 
+                List<ExcelGenerico> listaExcelGenerico = new List<ExcelGenerico>();
+                foreach (var objQuery in query)
+                {
+                    listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+                }
+
+                return listaExcelGenerico;
             }
-
-
-            return listaExcelGenerico;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en ComparadorRemitoExcel(Servicio Excel): {ErrorMessage}", ex.Message);
+                return new List<ExcelGenerico>();
+            }
         }
+
 
         /// <summary>
         /// Calcula la suma de pesos para cada remito y código de material en la lista de ExcelMapper.
@@ -166,25 +176,34 @@ namespace JuncalApi.Servicios.Excel
         {
             Dictionary<string, int> sumaPesos = new Dictionary<string, int>();
 
-            foreach (var objExcel in listaExcel)
+            try
             {
-                string clave = $"{objExcel.Remito}-{objExcel.CodigoMaterial}";
-
-                if (int.TryParse(objExcel.Descargado, out int peso))
+                foreach (var objExcel in listaExcel)
                 {
-                    if (sumaPesos.ContainsKey(clave))
+                    string clave = $"{objExcel.Remito}-{objExcel.CodigoMaterial}";
+
+                    if (int.TryParse(objExcel.Descargado, out int peso))
                     {
-                        sumaPesos[clave] += peso;
+                        if (sumaPesos.ContainsKey(clave))
+                        {
+                            sumaPesos[clave] += peso;
+                        }
+                        else
+                        {
+                            sumaPesos.Add(clave, peso);
+                        }
                     }
                     else
                     {
-                        sumaPesos.Add(clave, peso);
+                        _logger.LogError("Se ha producido un error , no se pudo convertir a entero el elemento descargado , " + objExcel.Descargado 
+                        + " en el remito :" + objExcel.Remito + " " + DateTime.Now);
                     }
                 }
-                else
-                {
-                    // Puedes manejar el error o ignorar el registro aquí
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en CalcularSumaPesos: {ErrorMessage}", ex.Message);
+                return new Dictionary<string, int>();
             }
 
             return sumaPesos;
@@ -198,34 +217,55 @@ namespace JuncalApi.Servicios.Excel
         /// <returns>Lista de objetos ExcelMapper actualizados</returns>
         private List<ExcelMapper> ActualizarPesos(List<ExcelMapper> listaExcel, Dictionary<string, int> sumaPesos)
         {
+            if (listaExcel == null || listaExcel.Count == 0)
+            {
+                _logger.LogError("La lista 'listaExcel' es nula o está vacía(Servicio Excel,Actualizar Pesos)");
+                throw new ArgumentException("La lista 'listaExcel' es nula o está vacía");
+            }
+
+            if (sumaPesos == null)
+            {
+                _logger.LogError("La lista 'sumaPesos' es nula(Servicio Excel,Actualizar Pesos)");
+                throw new ArgumentNullException(nameof(sumaPesos), "La lista 'sumaPesos' es nula");
+            }
+
             List<ExcelMapper> listaResultado = new List<ExcelMapper>();
 
-            foreach (var objExcel in listaExcel)
+            try
             {
-                string clave = $"{objExcel.Remito}-{objExcel.CodigoMaterial}";
-
-                if (sumaPesos.ContainsKey(clave))
+                foreach (var objExcel in listaExcel)
                 {
-                    ExcelMapper nuevoObjeto = new ExcelMapper
-                    {
-                        Remito = objExcel.Remito,
-                        CodigoMaterial = objExcel.CodigoMaterial,
-                        Descargado = sumaPesos[clave].ToString(),
-                        Fecha = objExcel.Fecha,
-                        NombreMaterial = objExcel.NombreMaterial,
-                        Bruto = objExcel.Bruto,
-                        Tara = objExcel.Tara,
-                        Descuento = objExcel.Descuento,
-                        DescuentoDetalle = objExcel.DescuentoDetalle
-                    };
+                    string clave = $"{objExcel.Remito}-{objExcel.CodigoMaterial}";
 
-                    listaResultado.Add(nuevoObjeto);
-                    sumaPesos.Remove(clave);
+                    if (sumaPesos.ContainsKey(clave))
+                    {
+                        ExcelMapper nuevoObjeto = new ExcelMapper
+                        {
+                            Remito = objExcel.Remito,
+                            CodigoMaterial = objExcel.CodigoMaterial,
+                            Descargado = sumaPesos[clave].ToString(),
+                            Fecha = objExcel.Fecha,
+                            NombreMaterial = objExcel.NombreMaterial,
+                            Bruto = objExcel.Bruto,
+                            Tara = objExcel.Tara,
+                            Descuento = objExcel.Descuento,
+                            DescuentoDetalle = objExcel.DescuentoDetalle
+                        };
+
+                        listaResultado.Add(nuevoObjeto);
+                        sumaPesos.Remove(clave);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en ActualizarPesos(Servicio Excel)", ex.Message);
+                throw; // Re-lanza la excepción para que sea manejada en un nivel superior
             }
 
             return listaResultado;
         }
+
 
         /// <summary>
         /// Verifica si hay repetición de materiales en la lista de ExcelMapper y actualiza los pesos en consecuencia.
@@ -234,46 +274,53 @@ namespace JuncalApi.Servicios.Excel
         /// <returns>Lista de objetos ExcelMapper actualizados</returns>
         private List<ExcelMapper> ComprobarSiRepetimosMaterial(List<ExcelMapper> listaExcel)
         {
-            Dictionary<string, int> sumaPesos = CalcularSumaPesos(listaExcel);
-            List<ExcelMapper> listaResultado = ActualizarPesos(listaExcel, sumaPesos);
+            try
+            {
+                Dictionary<string, int> sumaPesos = CalcularSumaPesos(listaExcel);
+                List<ExcelMapper> listaResultado = ActualizarPesos(listaExcel, sumaPesos);
 
-            return listaResultado;
+                return listaResultado;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en ComprobarSiRepetimosMaterial: {ErrorMessage}", ex.Message);
+                throw; // Re-lanza la excepción para que sea manejada en un nivel superior
+            }
         }
+
 
         private string ObtenerSubString(int desde, int total, string mapperString)
         {
-            // Asegurarse de que el parámetro mapperString no sea nulo
-            if (mapperString == null)
+            try
             {
-                return string.Empty; // Devolver cadena vacía si el parámetro es nulo
-            }
-
-            // Asegurarse de que el rango especificado esté dentro de los límites de la cadena original
-            if (desde < 0 || desde >= mapperString.Length || total <= 0)
-            {
-                return string.Empty; // Devolver cadena vacía si el rango no es válido
-            }
-
-            // Calcular el índice de finalización del rango
-            int hasta = desde + total - 1;
-            hasta = Math.Min(hasta, mapperString.Length - 1);
-
-            string respuesta = string.Empty;
-
-            // Recorrer la cadena original y cargar la nueva palabra en el rango especificado
-            for (int i = 0; i < mapperString.Length; i++)
-            {
-                if (i >= desde && i <= hasta)
+                // Asegurarse de que el parámetro mapperString no sea nulo
+                if (mapperString == null)
                 {
-                    respuesta += mapperString[i];
+                    return string.Empty; // Devolver cadena vacía si el parámetro es nulo
                 }
-            }
 
-            return respuesta;
+                // Asegurarse de que el rango especificado esté dentro de los límites de la cadena original
+                if (desde < 0 || desde >= mapperString.Length || total <= 0)
+                {
+                    return string.Empty; // Devolver cadena vacía si el rango no es válido
+                }
+
+                // Calcular el índice de finalización del rango
+                int hasta = desde + total - 1;
+                hasta = Math.Min(hasta, mapperString.Length - 1);
+
+                // Crear la subcadena usando el método Substring
+                return mapperString.Substring(desde, hasta - desde + 1);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en ObtenerSubString(Servicio Excel): {ErrorMessage}", ex.Message);
+                throw; 
+            }
         }
 
 
-    
+
 
 
         #endregion
