@@ -1,1 +1,0 @@
-2023-11-26 22:01:16.436 -03:00 [ERR] Ocurrió un error al obtener la lista de acerias

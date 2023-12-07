@@ -17,7 +17,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             var result = new List<ProveedorCuentaCorrienteRespuesta>();
 
-            var query = from proveedorCc in _db.JuncalProveedorCuentaCorrientes.Where(a => a.Isdeleted == false)
+            var query = from proveedorCc in _db.JuncalProveedorCuentaCorrientes.Where(a => a.IdProveedor == idProveedor && a.Isdeleted == false)
                         join tipoMovimiento in _db.JuncalCcTiposMovimientos
                             on proveedorCc.IdTipoMovimiento equals tipoMovimiento.Id into ProveedorMovimientosJoin
                         from _ProveedorMovimientos in ProveedorMovimientosJoin.DefaultIfEmpty()

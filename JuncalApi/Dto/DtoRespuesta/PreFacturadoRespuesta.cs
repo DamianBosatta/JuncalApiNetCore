@@ -6,6 +6,7 @@ namespace JuncalApi.Dto.DtoRespuesta
     public class PreFacturadoRespuesta
     {
         public int Id { get; set; }
+        public JuncalProveedor? Proveedor { get; set; }
 
         public int IdOrden { get; set; }
 

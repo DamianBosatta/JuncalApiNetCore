@@ -1,6 +1,5 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Repositorios.InterfaceRepositorio;
-using Microsoft.EntityFrameworkCore;
 using OpenQA.Selenium;
 using System.Linq.Expressions;
 
@@ -28,10 +27,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 _db.Set<T>().Remove(model);
                 return Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while deleting object from the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer Delete(Repositorio Generico) ");
             }
         }
 
@@ -41,10 +41,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             {
                 return _db.Set<T>().ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while retrieving all objects from the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer GetAll(Repositorio Generico) ");
             }
         }
 
@@ -56,10 +57,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 query = PrepareQuery(query, predicate, orderBy);
                 return query.ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while retrieving objects with predicate from the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer GetAll(Repositorio Generico) ");
             }
         }
         public List<T> GetAllByCondition(Expression<Func<T, bool>> where)
@@ -68,10 +70,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             {
                 return _db.Set<T>().Where(where).ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while retrieving objects by condition from the database");
-                throw; 
+                _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+                throw new InvalidOperationException("Excepcion En DataBase Al Hacer GetAllByCondition(Repositorio Generico) ");
             }
         }
         public T GetByCondition(Expression<Func<T, bool>> where)
@@ -80,10 +83,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             {
                 return _db.Set<T>().Where(where).SingleOrDefault();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while retrieving object by condition from the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+            throw new InvalidOperationException("Excepcion En DataBase Al Hacer GetByCondition(Repositorio Generico) ");
             }
         }
 
@@ -94,17 +98,19 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 var model = _db.Set<T>().Find(id);
                 if (model == null)
                 {
-                    var errorMessage = $"Object with ID {id} not found in the database.";
-                    _logger.LogError(errorMessage);
-                    throw new NotFoundException(errorMessage);
+                    var errorMessage = $"Objeto Con el Id: {id} No Se Encontro";
+                _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+                 " A Continuacion Encontraras Mas Informacion -> ->");
+                 throw new NotFoundException(errorMessage);
 
                 }
                 return model;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while retrieving object by ID from the database");
-                throw; 
+            _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+            " A Continuacion Encontraras Mas Informacion -> ->");
+            throw new InvalidOperationException("Excepcion En DataBase Al Hacer GetById(Repositorio Generico) ");
             }
         }
 
@@ -115,10 +121,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 _db.Add(model);
                 return Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while inserting object into the database");
-                throw; 
+            _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+            " A Continuacion Encontraras Mas Informacion -> ->");
+            throw new InvalidOperationException("Excepcion En DataBase Al Hacer Insert(Repositorio Generico)");
             }
         }
 
@@ -129,10 +136,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 _db.AddRange(model);
                 return Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while inserting a range of objects into the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+            " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) ");
             }
         }
 
@@ -142,10 +150,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             {
                 return _db.SaveChanges() > 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while saving changes to the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer Save(Repositorio Generico) ");
             }
         }
 
@@ -157,10 +166,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 _db.Update(model);
                 return Save();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error occurred while updating object in the database");
-                throw; 
+             _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion En DataBase Al Hacer Update(Repositorio Generico) ");
             }
         }
 

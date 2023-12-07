@@ -15,10 +15,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public List<ProveedorListaPrecioRespuesta> ObtenerListaPrecioPorId(int id)
         {
             var listaPreciosActivas = _db.JuncalProveedorListaprecios
-                .Where(lp => lp.Activo==true &&
-                             lp.FechaVigencia < lp.FechaVencimiento &&
-                             lp.FechaVencimiento > DateTime.Now &&
-                             !lp.IsDeleted);
+                                     .Where(lp => lp.Activo == true &&
+                                      lp.FechaVigencia <= DateTime.Now &&
+                                      lp.FechaVencimiento > DateTime.Now &&
+                                      !lp.IsDeleted);
+
 
             var proveedoresJoin = listaPreciosActivas
                 .Join(_db.JuncalProveedors.Where(p => !p.Isdeleted && p.Id == id),

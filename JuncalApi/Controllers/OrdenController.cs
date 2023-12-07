@@ -4,16 +4,14 @@ using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Codigos_Utiles;
-using JuncalApi.Modelos.Item;
 using JuncalApi.Servicios.Facturar;
 using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrdenController : Controller
@@ -33,6 +31,7 @@ namespace JuncalApi.Controllers
             _logger = logger;
         }
 
+   
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RemitoRespuesta>>> GetOrdenes()
         {
@@ -40,17 +39,18 @@ namespace JuncalApi.Controllers
             {
                 var ListaOrdenes = _uow.RepositorioJuncalOrden.GetRemito(0);
 
-                if (ListaOrdenes.Count() > 0)
+                if (ListaOrdenes.Count() > 0 && ListaOrdenes != null)
                 {
                     return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaOrdenes });
                 }
 
                 return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitoRespuesta>() });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error al obtener las órdenes");
-                return StatusCode(500, "Ocurrió un error al obtener las órdenes");
+                _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+                " A Continuacion Encontraras Mas Informacion -> ->");              
+                throw new InvalidOperationException("Excepcion Al Obtener Lista En GetOrdenes(Controller Orden)");
             }
         }
 
@@ -68,10 +68,11 @@ namespace JuncalApi.Controllers
 
                 return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<RemitosPendientesRespuesta>() });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error al obtener las órdenes pendientes");
-                return StatusCode(500, "Ocurrió un error al obtener las órdenes pendientes");
+             _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+              " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion Al Obtener Lista En GetPendientes(Controller Orden)");
             }
         }
 
@@ -95,80 +96,82 @@ namespace JuncalApi.Controllers
                 _mapper.Map(orden, ordenExiste);
                 return Ok(new { success = false, message = " Ya esta Cargado Ese Numero De Remito ", result = ordenExiste });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error al cargar las órdenes");
-                return StatusCode(500, "Ocurrió un error al cargar las órdenes");
+             _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion Al Insertar en CargarOrdenes(Controller Orden)");
             }
         }
 
-        #region  FACTURAR ORDEN
+        //#region  FACTURAR ORDEN
 
-        [Route("Facturar/")]
-        [HttpPost]
-        public ActionResult FacturarOrdenes([FromBody] List<FacturarOrdenRequerido> listFacturarRequerido)
-        {
-            try
-            {
-                if (!ModelState.IsValid || listFacturarRequerido is null || listFacturarRequerido.Count == 0)
-                {
-                    return BadRequest(new { success = false, message = "Datos de entrada inválidos", result = 400 });
-                }
+        //[Route("Facturar/")]
+        //[HttpPost]
+        //public ActionResult FacturarOrdenes([FromBody] List<FacturarOrdenRequerido> listFacturarRequerido)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid || listFacturarRequerido is null || listFacturarRequerido.Count == 0)
+        //        {
+        //            return BadRequest(new { success = false, message = "Datos de entrada inválidos", result = 400 });
+        //        }
 
-                var cuentasCorrientes = _serviceFacturar.FacturarRemitoExterno(listFacturarRequerido);
+        //        var cuentasCorrientes = _serviceFacturar.FacturarRemitoExterno(listFacturarRequerido);
 
-                if (cuentasCorrientes == null || cuentasCorrientes.Count == 0)
-                {
-                    return NotFound(new { success = false, message = "No se encontraron cuentas corrientes", result = 404 });
-                }
+        //        if (cuentasCorrientes == null || cuentasCorrientes.Count == 0)
+        //        {
+        //            return NotFound(new { success = false, message = "No se encontraron cuentas corrientes", result = 404 });
+        //        }
 
-                List<int> NumeroRemitosFacturados = new List<int>();
+        //        List<int> NumeroRemitosFacturados = new List<int>();
               
-                foreach (var cuentaCorriente in cuentasCorrientes)
-                {
-                    var confirmacionInsertCc = InsertarCuentaCorriente(cuentaCorriente);
+        //        foreach (var cuentaCorriente in cuentasCorrientes)
+        //        {
+        //            var confirmacionInsertCc = InsertarCuentaCorriente(cuentaCorriente);
 
-                    if (!confirmacionInsertCc)
-                    {
-                        _logger.LogError("Error al procesar la solicitud de facturación de órdenes externas , remito nro : " 
-                        + cuentaCorriente.IdRemitoExterno); // permite ante un error de carga saber que fallo en la carpeta logs
-                         return StatusCode(500, "Error al insertar en la base de datos");
-                        
-                    }
+        //            if (!confirmacionInsertCc)
+        //            {
+        //                _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+        //         " A Continuacion Encontraras Mas Informacion -> ->");
+        //                throw new InvalidOperationException("Excepcion Al Insertar En Cuenta Corriente(Controller Orden)");
 
-                    ActualizarEstadoOrdenInterna((int)cuentaCorriente.IdRemitoExterno);
-                    NumeroRemitosFacturados.Add((int)cuentaCorriente.IdRemitoExterno);
-                }
+        //            }
 
-                decimal totalImporte = (decimal)cuentasCorrientes.Sum(cc => cc.Importe);
+        //            ActualizarEstadoOrdenInterna((int)cuentaCorriente.IdRemitoExterno);
+        //            NumeroRemitosFacturados.Add((int)cuentaCorriente.IdRemitoExterno);
+        //        }
 
-                return Ok(new { success = true, message = $"Los Remitos fueron facturados por un total de: ${totalImporte} , Los Remitos Facturados fueron " +
-                    $" los numero : ${NumeroRemitosFacturados}", result = 200 });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al procesar la solicitud de facturación de órdenes externas");
-                return StatusCode(500, "Ocurrió un error al procesar la solicitud de facturación de órdenes externas");
-            }
-        }
+        //        decimal totalImporte = (decimal)cuentasCorrientes.Sum(cc => cc.Importe);
+
+        //        return Ok(new { success = true, message = $"Los Remitos fueron facturados por un total de: ${totalImporte} , Los Remitos Facturados fueron " +
+        //            $" los numero : ${NumeroRemitosFacturados}", result = 200 });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+        //        " A Continuacion Encontraras Mas Informacion -> ->");
+        //        throw new InvalidOperationException("Excepcion Al Insertar Factura(Controller Orden)");
+        //    }
+        //}
 
 
-        private bool InsertarCuentaCorriente(JuncalProveedorCuentaCorriente cuentaCorriente)
-        {
-            return _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
-        }
+        //private bool InsertarCuentaCorriente(JuncalProveedorCuentaCorriente cuentaCorriente)
+        //{
+        //    return _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
+        //}
 
-        private void ActualizarEstadoOrdenInterna(int idRemito)
-        {
-            var orden = _uow.RepositorioJuncalOrden.GetById(idRemito);
-            if (orden is not null)
-            {
-                orden.IdEstado = CodigosUtiles.Facturado;
-                _uow.RepositorioJuncalOrden.Update(orden);
-            }
-        }
+        //private void ActualizarEstadoOrdenInterna(int idRemito)
+        //{
+        //    var orden = _uow.RepositorioJuncalOrden.GetById(idRemito);
+        //    if (orden is not null)
+        //    {
+        //        orden.IdEstado = CodigosUtiles.Facturado;
+        //        _uow.RepositorioJuncalOrden.Update(orden);
+        //    }
+        //}
         
-        #endregion
+        //#endregion
 
         [Route("Borrar/{id?}")]
         [HttpPut]
@@ -190,10 +193,11 @@ namespace JuncalApi.Controllers
 
                 return Ok(new { success = false, message = "La Orden No Fue Encontrada", result = new OrdenRespuesta() == null });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error al eliminar la orden");
-                return StatusCode(500, "Ocurrió un error al eliminar la orden");
+                _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+                    " A Continuacion Encontraras Mas Informacion -> ->");
+                throw new InvalidOperationException("Excepcion Al Desactivar Orden(Controller Orden)");
             }
         }
 
@@ -215,10 +219,11 @@ namespace JuncalApi.Controllers
 
                 return Ok(new { success = false, message = "La Orden No Fue Encontrada ", result = new OrdenRespuesta() == null });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "Error al editar la orden");
-                return StatusCode(500, "Ocurrió un error al editar la orden");
+             _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+             " A Continuacion Encontraras Mas Informacion -> ->");
+             throw new InvalidOperationException("Excepcion Al Editar Orden(Controller Orden)");
             }
         }
 
@@ -238,8 +243,9 @@ namespace JuncalApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener el remito por ID");
-                return StatusCode(500, "Ocurrió un error al obtener el remito por ID");
+                _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+                    " A Continuacion Encontraras Mas Informacion -> ->");
+                throw new InvalidOperationException("Excepcion Al Obtener Remito Por Id(Controller Orden)");
             }
         }
     }

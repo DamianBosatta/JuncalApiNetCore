@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using System;
 using Serilog;
 using Serilog.Events;
+using JuncalApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -98,6 +99,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCustomExceptionHandler();
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthentication();

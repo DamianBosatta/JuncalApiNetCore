@@ -45,7 +45,7 @@ namespace JuncalApi.Controllers
             }
         }
 
-        [Route("ProveedorListaPrecio/{id?}")]
+        [Route("ProveedorListaPrecio/{idProveedorListaPrecio?}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProveedorListaPrecioMaterialRespuesta>>> GetProveedorListaPrecioMaterial(int idProveedorListaPrecio)
         {

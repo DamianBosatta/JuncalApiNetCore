@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,14 +8,18 @@ namespace JuncalApi.DataBase;
 
 public partial class JuncalContext : DbContext
 {
+    
     public JuncalContext()
     {
+        
     }
 
     public JuncalContext(DbContextOptions<JuncalContext> options)
-        : base(options)
+       : base(options)
     {
+       
     }
+
 
 
     public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
@@ -93,14 +98,17 @@ public partial class JuncalContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+            
+            
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json")
+                    .Build();
 
-            string? connectionString = configuration.GetConnectionString("JuncalApiDB");
+                string? connectionString = configuration.GetConnectionString("JuncalApiDB");
 
-            optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
+                optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
+          
         }
     }
 

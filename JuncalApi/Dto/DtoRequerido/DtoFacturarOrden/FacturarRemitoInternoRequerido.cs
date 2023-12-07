@@ -6,11 +6,11 @@ namespace JuncalApi.Dto.DtoRequerido.DtoFacturarOrden
     {
         public JuncalOrdenInterno? OrdenInterno { get; set; }
 
-        public int IdListaPrecio { get; set; }
+        public int? IdListaPrecio { get; set; }
 
-        public int IdMaterial { get; set; }
+        public int? IdMaterial { get; set; }
 
-        public decimal Peso { get; set; }
+        public decimal? Peso { get; set; }
 
         public bool Cerrar { get; set; }
 

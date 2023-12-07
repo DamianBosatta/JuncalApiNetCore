@@ -69,8 +69,9 @@
 
         #region ESTADO INTERNO
         public static int EnviadoInterno = 1;
+        public static int CerradoFacturado = 2;
+        public static int Cerrado = 3;
 
-        public static int RecibidoInterno = 2;
 
 
         #endregion

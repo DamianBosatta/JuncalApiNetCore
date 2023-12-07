@@ -86,6 +86,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
+                List<DtoRespuestaFacturar> facturaRespuesta = new List<DtoRespuestaFacturar>();
                 List<int> idOrdenesFacturadas = new List<int>();
                 int cantidadMaterialesFacturados = 0;
 
@@ -93,7 +94,7 @@ namespace JuncalApi.Controllers
 
                 if (checkLista)
                 {
-                    _facturar.Facturacion(listPreFacturar, out idOrdenesFacturadas, out cantidadMaterialesFacturados);
+                    _facturar.Facturacion(listPreFacturar, out idOrdenesFacturadas, out cantidadMaterialesFacturados,out facturaRespuesta);
 
                     if (cantidadMaterialesFacturados > 0)
                     {
@@ -102,7 +103,8 @@ namespace JuncalApi.Controllers
                             success = true,
                             message = "Los Materiales y Ordenes pasaron a facturadas ",
                             result = cantidadMaterialesFacturados,
-                            idOrdenesFacturadas
+                            idOrdenesFacturadas,
+                            facturaRespuesta
                         });
                     }
                 }
@@ -112,7 +114,8 @@ namespace JuncalApi.Controllers
                     success = false,
                     message = "La Lista de Pre Facturar Llego Vacia ",
                     result = cantidadMaterialesFacturados,
-                    idOrdenesFacturadas
+                    idOrdenesFacturadas,
+                    facturaRespuesta
                 });
             }
             catch (Exception ex)

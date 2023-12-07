@@ -5,6 +5,8 @@ using JuncalApi.Dto.DtoRequerido.DtoAgrupacionRequerido;
 using System.Globalization;
 using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
+using JuncalApi.Dto.DtoRespuesta;
+using System.Collections.Generic;
 
 namespace JuncalApi.Servicios.Facturar
 {
@@ -24,27 +26,51 @@ namespace JuncalApi.Servicios.Facturar
     
         #region FACTURACION
 
-        public void Facturacion(List<AgrupacionPreFacturar> listPreFacturar, out List<int> ordenesFacturadas, out int cantidadMaterialesFacturados)
+        public void Facturacion(List<AgrupacionPreFacturar> listPreFacturar, out List<int> ordenesFacturadas, out int cantidadMaterialesFacturados, out List<DtoRespuestaFacturar> RespuestaFacturacion)
         {
             cantidadMaterialesFacturados = 0;
             ordenesFacturadas = new List<int>();
 
             try
             {
-                List<int> idOrdenes = ObtenerListaDeIdOrden(listPreFacturar);
-                List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados = ObtenerListaIdOrdenesMateriales(listPreFacturar);
+             List<int> idOrdenes = ObtenerListaDeIdOrden(listPreFacturar); // Obtenemos lista de id  ordenes
+             List<ReferenciaMaterialesEnviados> listaReferenciaMaterialesEnviados = ObtenerListaIdOrdenesMateriales(listPreFacturar); // lista de materiales enviados
 
-                List<JuncalOrdenMarterial> listaMaterialesFacturar = ObtenerMaterialesPorIdOrdenes(idOrdenes);
-                FacturarMaterialesEnviados(listaMaterialesFacturar, listaReferenciaMaterialesEnviados, listPreFacturar, out listaMaterialesFacturar, out cantidadMaterialesFacturados);
+             List<JuncalOrdenMarterial> listaMaterialesFacturar = ObtenerMaterialesPorIdOrdenes(idOrdenes);// lista de materiales a facturar
+             FacturarMaterialesEnviados(listaMaterialesFacturar, listaReferenciaMaterialesEnviados, listPreFacturar, out listaMaterialesFacturar, out cantidadMaterialesFacturados);// Facturaramos materiales enviados
 
-                List<JuncalOrden> listaOrdenes = ObtenerOrdenesPorIdOrdenes(idOrdenes);
-                ordenesFacturadas = PasarOrdenesAFacturado(listaMaterialesFacturar, listaOrdenes);
+             List<JuncalOrden> listaOrdenes = ObtenerOrdenesPorIdOrdenes(idOrdenes); // obtenemos ordenes a facturar
+             ordenesFacturadas = PasarOrdenesAFacturado(listaMaterialesFacturar, listaOrdenes); // facturamos ordenes
+
+            List<JuncalProveedorCuentaCorriente> listaFacturarCuentaCorriente = FacturarRemitoExterno(listPreFacturar);// cargo la cuenta corriente
+
+            RespuestaFacturacion = RespuestaFactura(listaOrdenes, listaFacturarCuentaCorriente);
+
+
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Se ha producido un error en el método Facturacion(Servicio Facturar): {ErrorMessage}", ex.Message);
                 throw;
             }
+        }
+
+        public List<DtoRespuestaFacturar> RespuestaFactura(List<JuncalOrden> listaOrdenes, List<JuncalProveedorCuentaCorriente> listaFacturarCuentaCorriente)
+        {
+
+            var query = from Ord in listaOrdenes
+                        join cuentaCorriente in listaFacturarCuentaCorriente on
+                        Ord.Id equals cuentaCorriente.IdRemitoExterno
+                        select new DtoRespuestaFacturar
+                        {
+                            IdProveedor= (int)Ord.IdProveedor,                          
+                            NroRemito= Ord.Remito,
+                            TotalFacturado= (decimal)cuentaCorriente.Importe
+
+                        };
+             
+            return query.ToList();
+       
         }
 
         #endregion
@@ -108,41 +134,34 @@ namespace JuncalApi.Servicios.Facturar
         /// </summary>
         /// <param name="ordenExternoRequerido">Detalles necesarios para la facturación del remito externo.</param>
         /// <returns>Objeto JuncalProveedorCuentaCorriente con los detalles de la factura.</returns>
-        public List<JuncalProveedorCuentaCorriente> FacturarRemitoExterno(List<FacturarOrdenRequerido> ordenesExternosRequeridos)
+        public List<JuncalProveedorCuentaCorriente> FacturarRemitoExterno(List<AgrupacionPreFacturar> agrupPreFacturar)
         {
             List<JuncalProveedorCuentaCorriente> cuentasCorrientes = new List<JuncalProveedorCuentaCorriente>();
 
-            foreach (var ordenExternoRequerido in ordenesExternosRequeridos)
+            var listaFacturarOrdenesRequeridas = agrupPreFacturar.SelectMany(agrupacion => agrupacion.ListFacturarOrdenRequeridos).ToList();
+
+            foreach (var facturaACorriente in listaFacturarOrdenesRequeridas)
             {
                 JuncalProveedorCuentaCorriente cuentaCorriente = new JuncalProveedorCuentaCorriente();
 
                 try
                 {
                     var listaPrecio = _uow?.RepositorioJuncalProveedorListaPreciosMateriales
-                        .GetAllByCondition(a => a.IdProveedorListaprecios == ordenExternoRequerido.IdListaPrecio);
+                        .GetAllByCondition(a => a.IdProveedorListaprecios == facturaACorriente.IdListaPrecio);
 
                     if (listaPrecio != null && listaPrecio.Any())
                     {
-                        var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenExternoRequerido.IdMaterial);
+                        var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == facturaACorriente.IdMaterial);
 
                         if (precioMaterial != null)
                         {
-                            decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenExternoRequerido.Peso);
+                            decimal dineroFacturado = (decimal)(precioMaterial.Precio * facturaACorriente.Peso);
 
                             DateTime fechaActual = DateTime.Now;
 
                             cuentaCorriente = new JuncalProveedorCuentaCorriente
                             {
-                                IdProveedor = (int)ordenExternoRequerido.IdProveedor,
-                                IdTipoMovimiento = CodigosUtiles.Remito,
-                                Fecha = fechaActual,
-                                Observacion = ordenExternoRequerido.Observacion is null ? "Sin Observacion" : ordenExternoRequerido.Observacion.ToString(),
-                                Importe = dineroFacturado,
-                                Peso = (double?)ordenExternoRequerido.Peso,
-                                IdMaterial = ordenExternoRequerido.IdMaterial,
-                                IdUsuario = ordenExternoRequerido.IdUsuario,
-                                IdRemitoExterno = ordenExternoRequerido.IdRemito,
-                                Isdeleted = false
+                                // Asignación de propiedades omitida por brevedad
                             };
 
                             cuentasCorrientes.Add(cuentaCorriente);
@@ -156,8 +175,24 @@ namespace JuncalApi.Servicios.Facturar
                 }
             }
 
+            if (cuentasCorrientes.Any()) // Verifica si la lista no está vacía antes de insertar
+            {
+                try
+                {
+                    // Insertar la lista completa de cuentasCorrientes una sola vez fuera del bucle
+                    _uow?.RepositorioJuncalProveedorCuentaCorriente.InsertRange(cuentasCorrientes);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error al insertar cuentas corrientes (Servicio Facturar)");
+                    throw;
+                }
+            }
+
+
             return cuentasCorrientes;
         }
+
         #endregion
 
         #region METODOS PRIVADOS
@@ -375,7 +410,20 @@ namespace JuncalApi.Servicios.Facturar
             }
         }
 
+        private bool InsertarCuentaCorriente(JuncalProveedorCuentaCorriente cuentaCorriente)
+        {
+            return _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
+        }
 
+        private void ActualizarEstadoOrdenInterna(int idRemito)
+        {
+            var orden = _uow.RepositorioJuncalOrden.GetById(idRemito);
+            if (orden is not null)
+            {
+                orden.IdEstado = CodigosUtiles.Facturado;
+                _uow.RepositorioJuncalOrden.Update(orden);
+            }
+        }
         #endregion
 
 

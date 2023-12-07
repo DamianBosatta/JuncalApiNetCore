@@ -1,4 +1,4 @@
-﻿namespace JuncalApi.Dto.DtoRequerido.DtoFacturarOrden
+﻿namespace JuncalApi.Dto.DtoRequerido.DtoAgrupacionRequerido
 {
     public class FacturarOrdenRequerido
     {

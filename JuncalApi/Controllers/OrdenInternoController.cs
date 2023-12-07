@@ -16,6 +16,10 @@ using JuncalApi.Servicios.Facturar;
 
 namespace JuncalApi.Controllers
 {
+    [Authorize]
+    [Route("api/[controller]")]
+    [ApiController]
+
     public class OrdenInternoController : Controller
     {
         private readonly ILogger<OrdenInternoController> _logger;
@@ -60,7 +64,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
-                var ListaOrdenes = _uow.RepositorioJuncalOrdenInterno.GetAllRemitos().Where(a => a.IdEstado == CodigosUtiles.RecibidoInterno).ToList();
+                var ListaOrdenes = _uow.RepositorioJuncalOrdenInterno.GetAllRemitos().Where(a => a.IdEstado == CodigosUtiles.CerradoFacturado).ToList();
 
                 if (ListaOrdenes.Count() > 0)
                 {
@@ -121,7 +125,7 @@ namespace JuncalApi.Controllers
 
                     if (ordenInterna is not null)
                     {
-                        ordenInterna.IdEstadoInterno = CodigosUtiles.RecibidoInterno;
+                        ordenInterna.IdEstadoInterno = CodigosUtiles.Cerrado;
                         _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
                         return Ok(new { success = true, message = "El remito fue cerrado", result = 200 });
                     }
@@ -139,7 +143,7 @@ namespace JuncalApi.Controllers
                             var ordenInterna = _uow.RepositorioJuncalOrdenInterno.GetById(facturarRequerido.OrdenInterno.Id);
                             if (ordenInterna is not null)
                             {
-                                ordenInterna.IdEstadoInterno = CodigosUtiles.RecibidoInterno;
+                                ordenInterna.IdEstadoInterno = CodigosUtiles.CerradoFacturado;
                                 _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
                             }
                         }

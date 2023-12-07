@@ -46,7 +46,7 @@ namespace JuncalApi.Controllers
             }
         }
 
-        [Route("Proveedor")]
+        [Route("Proveedor/{idProveedor?}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimientoForIdProveedor(int idProveedor)
         {
