@@ -4792,19 +4792,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Damian\\.nuget\\packages\\": {}
+    "C:\\Users\\Felix\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Damian\\Desktop\\Juncal\\JuncalApi\\JuncalApi.csproj",
+      "projectUniqueName": "C:\\Users\\Felix\\Desktop\\JuncalApi3\\JuncalApi\\JuncalApi.csproj",
       "projectName": "JuncalApi",
-      "projectPath": "C:\\Users\\Damian\\Desktop\\Juncal\\JuncalApi\\JuncalApi.csproj",
-      "packagesPath": "C:\\Users\\Damian\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Damian\\Desktop\\Juncal\\JuncalApi\\obj\\",
+      "projectPath": "C:\\Users\\Felix\\Desktop\\JuncalApi3\\JuncalApi\\JuncalApi.csproj",
+      "packagesPath": "C:\\Users\\Felix\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Felix\\Desktop\\JuncalApi3\\JuncalApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Damian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Felix\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

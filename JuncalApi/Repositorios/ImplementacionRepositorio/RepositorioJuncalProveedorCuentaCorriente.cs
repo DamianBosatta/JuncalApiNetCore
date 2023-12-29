@@ -15,53 +15,81 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         #region GET PROVEEDOR CUENTAS CORRIENTES
         public List<ProveedorCuentaCorrienteRespuesta> GetProveedorCuentasCorrientes(int idProveedor)
         {
-            var result = new List<ProveedorCuentaCorrienteRespuesta>();
+            // Parte 1: Obtener las cuentas corrientes del proveedor
+            var proveedorCcQuery = _db.JuncalProveedorCuentaCorrientes
+                .Where(a => a.IdProveedor == idProveedor && a.Isdeleted == false);
 
-            var query = from proveedorCc in _db.JuncalProveedorCuentaCorrientes.Where(a => a.IdProveedor == idProveedor && a.Isdeleted == false)
-                        join tipoMovimiento in _db.JuncalCcTiposMovimientos
-                            on proveedorCc.IdTipoMovimiento equals tipoMovimiento.Id into ProveedorMovimientosJoin
-                        from _ProveedorMovimientos in ProveedorMovimientosJoin.DefaultIfEmpty()
-                        join material in _db.JuncalProveedorListapreciosMateriales.DefaultIfEmpty()
-                            on proveedorCc.IdMaterial equals material.Id into MaterialesJoin
-                        from _Materiales in MaterialesJoin.DefaultIfEmpty()
-                        join usuario in _db.JuncalUsuarios.Where(a => a.Isdeleted == false)
-                            on proveedorCc.IdUsuario equals usuario.Id into UsuarioJoin
-                        from _Usuario in UsuarioJoin.DefaultIfEmpty()
-                        join listaPrecio in _db.JuncalProveedorListaprecios
-                            on _Materiales.IdProveedorListaprecios equals listaPrecio.Id into ListaPrecioJoin
-                        from _ListaPrecio in ListaPrecioJoin.DefaultIfEmpty()
-                        join remitoInterno in _db.JuncalOrdenInternos
-                            on proveedorCc.IdRemitoInterno equals remitoInterno.Id into RemitoInternoJoin
-                        from _RemitoInterno in RemitoInternoJoin.DefaultIfEmpty()
-                        join remitoExterno in _db.JuncalOrdens
-                            on proveedorCc.IdRemitoExterno equals remitoExterno.Id into RemitoExternoJoin
-                        from _RemitoExterno in RemitoExternoJoin.DefaultIfEmpty()
-                        select new ProveedorCuentaCorrienteRespuesta
-                        {
-                            Id = proveedorCc.Id,
-                            IdTipoMovimiento = proveedorCc.IdTipoMovimiento,
-                            IdUsuario = proveedorCc.IdUsuario,
-                            Fecha = proveedorCc.Fecha,
-                            Importe = proveedorCc.Importe,
-                            Peso = proveedorCc.Peso,
-                            IdMaterial = proveedorCc.IdMaterial,
-                            Observacion = proveedorCc.Observacion,
-                            IdProveedor = proveedorCc.IdProveedor,
-                            NombreTipoMovimiento = _ProveedorMovimientos.Descripcion,
-                            NombreMaterial = _Materiales.Nombre,
-                            PrecioMaterial = (decimal)_Materiales.Precio,
-                            NombreLista = _ListaPrecio.Nombre,
-                            NombreUsuario = _Usuario.Nombre + " " + _Usuario.Apellido,
-                            IdOrdenInterno = proveedorCc.IdRemitoInterno,
-                            IdOrdenExterno = proveedorCc.IdRemitoExterno,
-                            NumeroRemito = _RemitoExterno != null ? _RemitoExterno.Remito : _RemitoInterno != null ? _RemitoInterno.Remito : null
-                        };
-            result = query.ToList();
+            // Parte 2: Unir con los tipos de movimiento
+            var joinedMovimientos = from proveedorCc in proveedorCcQuery
+                                    join tipoMovimiento in _db.JuncalCcTiposMovimientos
+                                        on proveedorCc.IdTipoMovimiento equals tipoMovimiento.Id into ProveedorMovimientosJoin
+                                    from _ProveedorMovimientos in ProveedorMovimientosJoin.DefaultIfEmpty()
+                                    select new { proveedorCc, _ProveedorMovimientos };
+
+            // Parte 3: Unir con materiales
+            var joinedMateriales = from joined in joinedMovimientos
+                                   join material in _db.JuncalProveedorListapreciosMateriales.DefaultIfEmpty()
+                                       on joined.proveedorCc.IdMaterial equals material.Id into MaterialesJoin
+                                   from _Materiales in MaterialesJoin.DefaultIfEmpty()
+                                   select new { joined.proveedorCc, joined._ProveedorMovimientos, _Materiales };
+
+            // Parte 4: Unir con usuarios
+            var joinedUsuarios = from joined in joinedMateriales
+                                 join usuario in _db.JuncalUsuarios.Where(a => a.Isdeleted == false)
+                                     on joined.proveedorCc.IdUsuario equals usuario.Id into UsuarioJoin
+                                 from _Usuario in UsuarioJoin.DefaultIfEmpty()
+                                 select new { joined.proveedorCc, joined._ProveedorMovimientos, joined._Materiales, _Usuario };
+
+            // Parte 5: Unir con listas de precios
+            var joinedListasPrecios = from joined in joinedUsuarios
+                                      join listaPrecio in _db.JuncalProveedorListaprecios
+                                          on joined._Materiales.IdProveedorListaprecios equals listaPrecio.Id into ListaPrecioJoin
+                                      from _ListaPrecio in ListaPrecioJoin.DefaultIfEmpty()
+                                      select new { joined.proveedorCc, joined._ProveedorMovimientos, joined._Materiales, joined._Usuario, _ListaPrecio };
+
+            // Parte 6: Unir con órdenes internas
+            var joinedOrdenesInternas = from joined in joinedListasPrecios
+                                        join remitoInterno in _db.JuncalOrdenInternos
+                                            on joined.proveedorCc.IdRemitoInterno equals remitoInterno.Id into RemitoInternoJoin
+                                        from _RemitoInterno in RemitoInternoJoin.DefaultIfEmpty()
+                                        select new { joined.proveedorCc, joined._ProveedorMovimientos, joined._Materiales, joined._Usuario, joined._ListaPrecio, _RemitoInterno };
+
+            // Parte 7: Unir con órdenes externas
+            var joinedOrdenesExternas = from joined in joinedOrdenesInternas
+                                        join remitoExterno in _db.JuncalOrdens
+                                            on joined.proveedorCc.IdRemitoExterno equals remitoExterno.Id into RemitoExternoJoin
+                                        from _RemitoExterno in RemitoExternoJoin.DefaultIfEmpty()
+                                        select new { joined.proveedorCc, joined._ProveedorMovimientos, joined._Materiales, joined._Usuario, joined._ListaPrecio, joined._RemitoInterno, _RemitoExterno };
+
+            // Parte 8: Crear el resultado final
+            var results = from joined in joinedOrdenesExternas
+                          select new ProveedorCuentaCorrienteRespuesta
+                          {
+                              Id = joined.proveedorCc.Id,
+                              IdTipoMovimiento = joined.proveedorCc.IdTipoMovimiento,
+                              IdUsuario = joined.proveedorCc.IdUsuario,
+                              Fecha = joined.proveedorCc.Fecha,
+                              Importe = joined.proveedorCc.Importe,
+                              Peso = joined.proveedorCc.Peso,
+                              IdMaterial = joined.proveedorCc.IdMaterial,
+                              Observacion = joined.proveedorCc.Observacion,
+                              IdProveedor = joined.proveedorCc.IdProveedor,
+                              NombreTipoMovimiento = joined._ProveedorMovimientos.Descripcion,
+                              NombreMaterial = joined._Materiales.Nombre,
+                              PrecioMaterial = (decimal)joined._Materiales.Precio,
+                              NombreLista = joined._ListaPrecio.Nombre,
+                              NombreUsuario = joined._Usuario.Nombre + " " + joined._Usuario.Apellido,
+                              IdOrdenInterno = joined.proveedorCc.IdRemitoInterno,
+                              IdOrdenExterno = joined.proveedorCc.IdRemitoExterno,
+                              NumeroRemito = joined._RemitoExterno != null ? joined._RemitoExterno.Remito : joined._RemitoInterno != null ? joined._RemitoInterno.Remito : ""
+                          };
+
+            var resultList = results.ToList();
 
             decimal totalCredito = 0;
             decimal totalDebito = 0;
 
-            foreach (var item in result)
+            foreach (var item in resultList)
             {
                 decimal importe = Convert.ToDecimal(item.Importe);
 
@@ -81,10 +109,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             if (idProveedor != 0)
             {
-                result = result.Where(a => a.IdProveedor == idProveedor).ToList();
+                resultList = resultList.Where(a => a.IdProveedor == idProveedor).ToList();
             }
 
-            return result;
+            return resultList;
         }
         #endregion
     }

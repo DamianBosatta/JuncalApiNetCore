@@ -22,7 +22,7 @@
 
         public int? IdOrdenExterno { get; set; }
 
-        public string Observacion { get; set; } = null!;
+        public string? Observacion { get; set; } = string.Empty;
 
         public string? NombreTipoMovimiento { get; set; } = string.Empty;
 
@@ -36,7 +36,7 @@
 
         public decimal Credito { get;set; }
 
-        public decimal PrecioMaterial { get; set; }
+        public decimal? PrecioMaterial { get; set; } 
 
         public string NombreLista {  get; set; } = string.Empty;
 

@@ -195,8 +195,6 @@ namespace JuncalApi.Servicios.Excel
                     }
                     else
                     {
-                        _logger.LogError("Se ha producido un error , no se pudo convertir a entero el elemento descargado , " + objExcel.Descargado 
-                        + " en el remito :" + objExcel.Remito + " " + DateTime.Now);
                     }
                 }
             }

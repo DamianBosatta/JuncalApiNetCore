@@ -22,6 +22,8 @@ namespace JuncalApi.Modelos
         public string? NombreUsuario { get; set; }
         [NotMapped]
         public string? NumeroFactura { get; set; }
+        [NotMapped]
+        public bool? ErrorContrato { get; set; }
 
         [NotMapped]
         public JuncalProveedor? Proveedor { get; set; }

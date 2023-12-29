@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\JuncalApi",
+    "\\JuncalApi\\Servicios",
+    "\\JuncalApi\\Servicios\\Excel",
+    "\\JuncalApi\\Servicios\\Facturar"
   ],
-  "SelectedNode": "\\JuncalApi.sln",
+  "SelectedNode": "\\JuncalApi\\Servicios\\Excel\\ServicioExcel.cs",
   "PreviewInSolutionExplorer": false
 }

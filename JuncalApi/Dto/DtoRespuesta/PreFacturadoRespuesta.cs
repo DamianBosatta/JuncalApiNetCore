@@ -48,6 +48,8 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public string? NumeroFactura { get; set; }
 
+        public bool? ErrorContrato { get; set; }
+
         public DateTime? FechaExcel { get; set; }
     }
 }

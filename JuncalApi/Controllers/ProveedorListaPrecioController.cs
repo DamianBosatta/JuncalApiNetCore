@@ -47,13 +47,13 @@ namespace JuncalApi.Controllers
             }
         }
 
-        [Route("Proveedor/{id?}")]
+        [Route("Proveedor/{idProveedorListaPrecio?}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProveedorListaPrecioRespuesta>>> GetProveedorListaPrecioForId(int idProveedor)
+        public async Task<ActionResult<IEnumerable<ProveedorListaPrecioRespuesta>>> GetProveedorListaPrecioForId(int idProveedorListaPrecio)
         {
             try
             {
-                var ListaProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.ObtenerListaPrecioPorId(idProveedor);
+                var ListaProveedorListaPrecio = _uow.RepositorioJuncalProveedorListaPrecio.ObtenerListaPrecioPorId(idProveedorListaPrecio);
 
                 if (ListaProveedorListaPrecio.Any())
                 {
@@ -139,7 +139,7 @@ namespace JuncalApi.Controllers
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("borrar/{id}")]
         public async Task<IActionResult> DeleteProveedorListaPrecio(int id)
         {
             try

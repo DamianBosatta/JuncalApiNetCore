@@ -34,10 +34,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                          from proveedor in proveedorJoin.DefaultIfEmpty()
 
                          let contratoVigente = _db.JuncalContratos
-                            .Where(c => c.Numero == contrato.Numero && listaPreFacturarada.FechaExcel <= c.FechaVencimiento && listaPreFacturarada.FechaExcel >= c.FechaVigencia)
+                            .Where(c => c.Numero == contrato.Numero && listaPreFacturarada.FechaExcel >= c.FechaVigencia &&
+                              listaPreFacturarada.FechaExcel <= c.FechaVencimiento && c.Isdeleted == false)
                             .OrderBy(c => listaPreFacturarada.FechaExcel-c.FechaVigencia)
                             .FirstOrDefault()
-                         let contratoItem = _db.JuncalContratoItems.FirstOrDefault(ci => ci.IdContrato == contratoVigente.Id && ci.IdMaterial == listaPreFacturarada.IdMaterialRecibido)
+                         let contratoItemVigente = _db.JuncalContratoItems.FirstOrDefault(ci => ci.IdContrato == contratoVigente.Id && ci.IdMaterial == listaPreFacturarada.IdMaterialRecibido)
                          let ordenMaterial = _db.JuncalOrdenMarterials.FirstOrDefault(om => om.IdOrden == listaPreFacturarada.IdOrden)
                          select new JuncalPreFacturar
                          {
@@ -53,17 +54,27 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              IdContrato = (int)orden.IdContrato,
                              Id = listaPreFacturarada.Id,
                              Aceria = aceria,
-                             NumeroContrato = contratoVigente != null ? contratoVigente.Numero : "-1",
-                             NombreContrato = contratoVigente != null ? contratoVigente.Nombre : string.Empty,
                              NombreMaterial = materialAceria.Nombre,
-                             PrecioMaterial = contratoItem != null ? contratoItem.Precio : 0,
+                             PrecioMaterial = contratoItemVigente != null ? contratoItemVigente.Precio : 0,
                              NombreUsuario = usuario != null ? usuario.Nombre : string.Empty,
                              IdUsuarioFacturacion = usuario != null ? usuario.Id : null,
                              Facturado = listaPreFacturarada.Facturado,
                              FechaFacturado = listaPreFacturarada.FechaFacturado,
                              NumeroFactura = ordenMaterial.NumFactura,
                              FechaExcel = listaPreFacturarada.FechaExcel,
-                             Proveedor= proveedor
+                             Proveedor= proveedor,
+                             NumeroContrato = contratoVigente == null ? $"{contrato.Numero}" : contratoVigente.Numero,
+
+                             NombreContrato = contratoVigente == null ? $"No existe" :
+                             listaPreFacturarada.FechaExcel < contratoVigente.FechaVigencia &&
+                              listaPreFacturarada.FechaExcel > contratoVigente.FechaVencimiento ?
+                              "Fecha invalida" :
+                             !contratoVigente.Activo ? "Inactivo" :
+                              contratoVigente.Nombre,
+                             ErrorContrato= contratoVigente == null?true: !contratoVigente.Activo?true:
+                              listaPreFacturarada.FechaExcel < contratoVigente.FechaVigencia ||
+                              listaPreFacturarada.FechaExcel > contratoVigente.FechaVencimiento ? true:false
+
                          }).ToList();
 
             return query;

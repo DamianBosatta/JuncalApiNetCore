@@ -7,6 +7,7 @@ using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
 using System.Collections.Generic;
+using JuncalApi.Dto.DtoRequerido;
 
 namespace JuncalApi.Servicios.Facturar
 {
@@ -161,7 +162,15 @@ namespace JuncalApi.Servicios.Facturar
 
                             cuentaCorriente = new JuncalProveedorCuentaCorriente
                             {
-                                // Asignación de propiedades omitida por brevedad
+                                IdProveedor = (int)facturaACorriente.IdProveedor,
+                                IdTipoMovimiento = CodigosUtiles.Remito,
+                                Fecha = fechaActual,
+                                Observacion = facturaACorriente.Observacion is null ? "Sin Observacion" : facturaACorriente.Observacion.ToString(),
+                                Importe = dineroFacturado,
+                                Peso = (double?)facturaACorriente.Peso,
+                                IdMaterial = facturaACorriente.IdMaterial,
+                                IdUsuario = facturaACorriente.IdUsuario,
+                                IdRemitoExterno = facturaACorriente.IdRemito
                             };
 
                             cuentasCorrientes.Add(cuentaCorriente);
@@ -248,118 +257,115 @@ namespace JuncalApi.Servicios.Facturar
             cantidadMaterialesFacturados = 0;
             listaMaterialesFacturarActualizada = listaMaterialesFacturar;
             string numFacturaFacturado = "";
-             try
-    {
-
-            foreach (var ordenMaterial in listaMaterialesFacturar)
+            try
             {
-                var referenciaMaterialesEnviados = listaReferenciaMaterialesEnviados.FirstOrDefault(referencia => referencia.idMaterial == ordenMaterial.IdMaterial);
 
-                if (referenciaMaterialesEnviados != null)
+                foreach (var ordenMaterial in listaMaterialesFacturar)
                 {
-                    var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
-                    
+                    var referenciaMaterialesEnviados = listaReferenciaMaterialesEnviados.FirstOrDefault(referencia => referencia.idMaterial == ordenMaterial.Id);
 
-                    if (om!=null)
+                    if (referenciaMaterialesEnviados != null)
                     {
-
-                        var referenciasEncontradas = listPreFacturar
-                        .SelectMany(p => p.referencia
-                            .Where(r => r.IdOrden == om.IdOrden && r.MaterialesEnviados.Any(me => me.idMaterial == om.IdMaterial))
-                            .Select(r => new { Referencia = r, IdUsuario = p.idUsuario })
-                        )
-                        .ToList();
+                        var om = _uow.RepositorioJuncalOrdenMarterial.GetById(ordenMaterial.Id);
 
 
-                        
-                        var numFactura = "";
-
-                        foreach (var referenciaEncontrada in referenciasEncontradas)
+                        if (om != null)
                         {
-                            var referencia = referenciaEncontrada.Referencia;
-                            var idUsuario = referenciaEncontrada.IdUsuario;
-                            var referenciaPreFacturar = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));
-                            numFactura = referenciaPreFacturar?.num_factura;
 
-                            foreach (var materialesEnviados in referencia.MaterialesEnviados)
+                            var referenciasEncontradas = listPreFacturar
+                            .SelectMany(p => p.referencia
+                                .Where(r => r.IdOrden == om.IdOrden && r.MaterialesEnviados.Any(me => me.idMaterial == om.Id))
+                                .Select(r => new { Referencia = r, IdUsuario = p.idUsuario })
+                            )
+                            .ToList();
+
+
+
+                            var numFactura = "";
+
+                            foreach (var referenciaEncontrada in referenciasEncontradas)
                             {
-                                om.NumFactura = numFactura;
-                                om.FechaFacturado = DateTime.Now;
-                                om.FacturadoParcial = true;
+                                var referencia = referenciaEncontrada.Referencia;
+                                var idUsuario = referenciaEncontrada.IdUsuario;
+                                var referenciaPreFacturar = listPreFacturar.FirstOrDefault(p => p.referencia.Contains(referencia));
+                                numFactura = referenciaPreFacturar?.num_factura;
 
-                                if(_uow.RepositorioJuncalOrdenMarterial.Update(om))
-                                { 
-                                    var materialEncontrado = listaMaterialesFacturarActualizada.Find(x => x.Id == om.Id);
-                                    materialEncontrado.FacturadoParcial = true;
+                                foreach (var materialesEnviados in referencia.MaterialesEnviados)
+                                {
+                                    om.NumFactura = numFactura;
+                                    om.FechaFacturado = DateTime.Now;
+                                    om.FacturadoParcial = true;
 
-                                    var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
-                                    prefactura.FechaFacturado = DateTime.Now;
-                                    prefactura.Facturado = true;
-                                    prefactura.IdUsuarioFacturacion = idUsuario;
+                                    if (_uow.RepositorioJuncalOrdenMarterial.Update(om))
+                                    {
+                                        var materialEncontrado = listaMaterialesFacturarActualizada.Find(x => x.Id == om.Id);
+                                        materialEncontrado.FacturadoParcial = true;
 
-                                    bool response = _uow.RepositorioJuncalPreFactura.Update(prefactura);
-                                   cantidadMaterialesFacturados += response ? 1 : 0;
+                                        var prefactura = _uow.RepositorioJuncalPreFactura.GetById(materialesEnviados.idPrefactura);
+                                        prefactura.FechaFacturado = DateTime.Now;
+                                        prefactura.Facturado = true;
+                                        prefactura.IdUsuarioFacturacion = idUsuario;
+
+                                        bool response = _uow.RepositorioJuncalPreFactura.Update(prefactura);
+                                        cantidadMaterialesFacturados += response ? 1 : 0;
+                                    }
+
+
                                 }
 
-                                
-                            }
+                                var FacturaEncontrada = listPreFacturar
+                                    .Select(p => p.factura)
+                                    .Where(r => r.NumeroFactura == numFactura)
+                                    .FirstOrDefault();
 
-                            var FacturaEncontrada = listPreFacturar
-                                .Select(p => p.factura)
-                                .Where(r => r.NumeroFactura == numFactura)
-                                .FirstOrDefault();
-
-                            if(numFacturaFacturado != FacturaEncontrada.NumeroFactura)
-                            { 
-                                JuncalFactura facturaInsert = new JuncalFactura()
+                                if (numFacturaFacturado != FacturaEncontrada.NumeroFactura)
                                 {
-                                    Destinatario = FacturaEncontrada.Destinatario,
-                                    Direccion = FacturaEncontrada.Direccion,
-                                    Cuit = FacturaEncontrada.Cuit,
-                                    ContratoNumero = FacturaEncontrada.ContratoNumero,
-                                    ContratoNombre = FacturaEncontrada.ContratoNombre,
-                                    NumeroFactura = FacturaEncontrada.NumeroFactura,
-                                    Fecha = FacturaEncontrada.Fecha,
-                                    NombreUsuario = FacturaEncontrada.NombreUsuario,
-                                    TotalFactura = decimal.Parse(FacturaEncontrada.TotalFactura, CultureInfo.InvariantCulture)
-                                };
-                                _uow.RepositorioJuncalFactura.Insert(facturaInsert);
+                                    JuncalFactura facturaInsert = new JuncalFactura()
+                                    {
+                                        Destinatario = FacturaEncontrada.Destinatario,
+                                        Direccion = FacturaEncontrada.Direccion,
+                                        Cuit = FacturaEncontrada.Cuit,
+                                        ContratoNumero = FacturaEncontrada.ContratoNumero,
+                                        ContratoNombre = FacturaEncontrada.ContratoNombre,
+                                        NumeroFactura = FacturaEncontrada.NumeroFactura,
+                                        Fecha = FacturaEncontrada.Fecha,
+                                        NombreUsuario = FacturaEncontrada.NombreUsuario,
+                                        TotalFactura = decimal.Parse(FacturaEncontrada.TotalFactura, CultureInfo.InvariantCulture)
+                                    };
+                                    _uow.RepositorioJuncalFactura.Insert(facturaInsert);
 
-                                var FacturaReferencia = _uow.RepositorioJuncalFactura.GetByNumeroFactura(facturaInsert.NumeroFactura);
+                                    var FacturaReferencia = _uow.RepositorioJuncalFactura.GetByNumeroFactura(facturaInsert.NumeroFactura);
 
-                                foreach (var material in FacturaEncontrada.listaMateriales)
-                                {
-                                    JuncalFacturaMateriale materialInsert = new JuncalFacturaMateriale();
+                                    foreach (var material in FacturaEncontrada.listaMateriales)
+                                    {
+                                        JuncalFacturaMateriale materialInsert = new JuncalFacturaMateriale();
 
-                                    materialInsert.NombreMaterial = material.NombreMaterial;
-                                    materialInsert.IdFactura = FacturaReferencia.Id;
-                                    materialInsert.SubTota = material.SubTotal;
-                                    materialInsert.Peso = material.Peso;
+                                        materialInsert.NombreMaterial = material.NombreMaterial;
+                                        materialInsert.IdFactura = FacturaReferencia.Id;
+                                        materialInsert.SubTota = material.SubTotal;
+                                        materialInsert.Peso = material.Peso;
 
 
-                                    _uow.RepositorioJuncalFacturaMateriale.Insert(materialInsert);
-                                
+                                        _uow.RepositorioJuncalFacturaMateriale.Insert(materialInsert);
 
+
+                                    }
+                                    numFacturaFacturado = FacturaEncontrada.NumeroFactura;
                                 }
-                                numFacturaFacturado = FacturaEncontrada.NumeroFactura;
                             }
+
                         }
-
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Se ha producido un error en el método FacturarMaterialesEnviados(Servicio Facturar): {ErrorMessage}", ex.Message);
+                throw;
+            }
         }
-        catch (Exception ex)
-        {
-        _logger.LogError(ex, "Se ha producido un error en el método FacturarMaterialesEnviados(Servicio Facturar): {ErrorMessage}", ex.Message);
-         throw;
-        }
-    }
 
-
-
-
-        private List<JuncalOrden> ObtenerOrdenesPorIdOrdenes(List<int> idOrdenes)
+            private List<JuncalOrden> ObtenerOrdenesPorIdOrdenes(List<int> idOrdenes)
         {
             try
             {
@@ -390,7 +396,7 @@ namespace JuncalApi.Servicios.Facturar
                         {
                             orden.FechaFacturacion = DateTime.Now;
                             orden.Facturado = true;
-                            orden.IdEstado = CodigosUtiles.Facturado;
+                            orden.IdEstado = 4;
                             bool respuesta = _uow.RepositorioJuncalOrden.Update(orden);
 
                             if (respuesta)
