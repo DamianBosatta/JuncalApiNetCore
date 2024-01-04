@@ -6,8 +6,6 @@ using System.Globalization;
 using JuncalApi.Modelos.Codigos_Utiles;
 using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
-using System.Collections.Generic;
-using JuncalApi.Dto.DtoRequerido;
 
 namespace JuncalApi.Servicios.Facturar
 {

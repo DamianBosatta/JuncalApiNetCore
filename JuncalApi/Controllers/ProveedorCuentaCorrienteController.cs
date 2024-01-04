@@ -16,21 +16,23 @@ namespace JuncalApi.Controllers
     {
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
-        private readonly ILogger<ProveedorCuentaCorrienteController> _logger; // Agregar el ILogger
+        private readonly ILogger<ProveedorCuentaCorrienteController> _logger; 
 
         public ProveedorCuentaCorrienteController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<ProveedorCuentaCorrienteController> logger)
         {
             _mapper = mapper;
             _uow = uow;
-            _logger = logger; // Inyectar el ILogger en el constructor
+            _logger = logger; 
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimiento()
+        public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimiento(bool adelantoMaterial) // Parametro Para get de cuenta corriente Material o Dinero
         {
             try
             {
-                var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(0);
+                var ListaProveedorCcMovimiento =  _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(0).Where(adMat => adMat.MaterialBool == adelantoMaterial);
+
+
 
                 if (ListaProveedorCcMovimiento.Any())
                 {

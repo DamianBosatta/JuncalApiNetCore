@@ -55,6 +55,8 @@ public partial class JuncalOrden
 
     public virtual JuncalUsuario? IdUsuarioFacturacionNavigation { get; set; }
 
+    public virtual ICollection<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; } = new List<JuncalCuentaCorrientePendiente>();
+
     public virtual ICollection<JuncalOrdenMarterial> JuncalOrdenMarterials { get; } = new List<JuncalOrdenMarterial>();
 
     public virtual ICollection<JuncalPreFacturar> JuncalPreFacturars { get; } = new List<JuncalPreFacturar>();

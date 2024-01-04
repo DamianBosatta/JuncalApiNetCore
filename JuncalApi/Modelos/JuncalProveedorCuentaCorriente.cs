@@ -29,6 +29,8 @@ public partial class JuncalProveedorCuentaCorriente
 
     public int? IdRemitoExterno { get; set; }
 
+    public bool MaterialBool { get; set; }
+
     public virtual JuncalProveedorListapreciosMateriale? IdMaterialNavigation { get; set; }
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }

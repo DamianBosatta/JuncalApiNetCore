@@ -13,6 +13,8 @@ public partial class JuncalProveedor
 
     public bool Isdeleted { get; set; }
 
+    public virtual ICollection<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; } = new List<JuncalCuentaCorrientePendiente>();
+
     public virtual ICollection<JuncalDireccionProveedor> JuncalDireccionProveedors { get; } = new List<JuncalDireccionProveedor>();
 
     public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();

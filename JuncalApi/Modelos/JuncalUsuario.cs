@@ -33,6 +33,8 @@ public partial class JuncalUsuario
 
     public virtual JuncalRole? IdRolNavigation { get; set; }
 
+    public virtual ICollection<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; } = new List<JuncalCuentaCorrientePendiente>();
+
     public virtual ICollection<JuncalOrden> JuncalOrdenIdUsuarioCreacionNavigations { get; } = new List<JuncalOrden>();
 
     public virtual ICollection<JuncalOrden> JuncalOrdenIdUsuarioFacturacionNavigations { get; } = new List<JuncalOrden>();

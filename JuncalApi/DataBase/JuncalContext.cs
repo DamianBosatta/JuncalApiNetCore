@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using JuncalApi.Modelos;
+﻿using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace JuncalApi.DataBase;
 
 public partial class JuncalContext : DbContext
 {
-    
     public JuncalContext()
     {
-        
     }
 
     public JuncalContext(DbContextOptions<JuncalContext> options)
-       : base(options)
+        : base(options)
     {
-       
     }
-
 
 
     public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
@@ -41,6 +34,8 @@ public partial class JuncalContext : DbContext
     public virtual DbSet<JuncalContrato> JuncalContratos { get; set; }
 
     public virtual DbSet<JuncalContratoItem> JuncalContratoItems { get; set; }
+
+    public virtual DbSet<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; set; }
 
     public virtual DbSet<JuncalDireccionProveedor> JuncalDireccionProveedors { get; set; }
 
@@ -98,17 +93,14 @@ public partial class JuncalContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            
-            
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json")
-                    .Build();
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-                string? connectionString = configuration.GetConnectionString("JuncalApiDB");
+            string? connectionString = configuration.GetConnectionString("JuncalApiDB");
 
-                optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
-          
+            optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
         }
     }
 
@@ -442,6 +434,59 @@ public partial class JuncalContext : DbContext
                 .HasForeignKey(d => d.IdMaterial)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_id_material");
+        });
+
+        modelBuilder.Entity<JuncalCuentaCorrientePendiente>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
+
+            entity.ToTable("juncal.CuentaCorriente_Pendiente");
+
+            entity.HasIndex(e => e.IdMaterial, "id_Material");
+
+            entity.HasIndex(e => e.IdProveedor, "id_Proveedor");
+
+            entity.HasIndex(e => e.IdRemito, "id_Remito");
+
+            entity.HasIndex(e => e.IdUsuario, "id_Usuario");
+
+            entity.Property(e => e.Id)
+                .HasColumnType("int(11)")
+                .HasColumnName("id");
+            entity.Property(e => e.IdMaterial)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Material");
+            entity.Property(e => e.IdProveedor)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Proveedor");
+            entity.Property(e => e.IdRemito)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Remito");
+            entity.Property(e => e.IdUsuario)
+                .HasColumnType("int(11)")
+                .HasColumnName("id_Usuario");
+            entity.Property(e => e.Kg)
+                .HasPrecision(10, 2)
+                .HasColumnName("kg");
+            entity.Property(e => e.Pendiente)
+                .HasDefaultValueSql("'1'")
+                .HasColumnName("pendiente");
+
+            entity.HasOne(d => d.IdMaterialNavigation).WithMany(p => p.JuncalCuentaCorrientePendientes)
+                .HasForeignKey(d => d.IdMaterial)
+                .HasConstraintName("juncal.CuentaCorriente_Pendiente_ibfk_2");
+
+            entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalCuentaCorrientePendientes)
+                .HasForeignKey(d => d.IdProveedor)
+                .HasConstraintName("juncal.CuentaCorriente_Pendiente_ibfk_1");
+
+            entity.HasOne(d => d.IdRemitoNavigation).WithMany(p => p.JuncalCuentaCorrientePendientes)
+                .HasForeignKey(d => d.IdRemito)
+                .HasConstraintName("juncal.CuentaCorriente_Pendiente_ibfk_3");
+
+            entity.HasOne(d => d.IdUsuarioNavigation).WithMany(p => p.JuncalCuentaCorrientePendientes)
+                .HasForeignKey(d => d.IdUsuario)
+                .HasConstraintName("juncal.CuentaCorriente_Pendiente_ibfk_4");
         });
 
         modelBuilder.Entity<JuncalDireccionProveedor>(entity =>
@@ -1077,6 +1122,7 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Isdeleted)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("isdeleted");
+            entity.Property(e => e.MaterialBool).HasColumnName("material_Bool");
             entity.Property(e => e.Observacion)
                 .HasMaxLength(255)
                 .HasColumnName("observacion");

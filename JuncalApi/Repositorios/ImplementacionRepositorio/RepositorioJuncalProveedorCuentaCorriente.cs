@@ -66,6 +66,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                           select new ProveedorCuentaCorrienteRespuesta
                           {
                               Id = joined.proveedorCc.Id,
+                              MaterialBool = joined.proveedorCc.MaterialBool,
                               IdTipoMovimiento = joined.proveedorCc.IdTipoMovimiento,
                               IdUsuario = joined.proveedorCc.IdUsuario,
                               Fecha = joined.proveedorCc.Fecha,

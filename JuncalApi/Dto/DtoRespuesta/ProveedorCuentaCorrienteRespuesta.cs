@@ -41,5 +41,7 @@
         public string NombreLista {  get; set; } = string.Empty;
 
         public string NumeroRemito {  get; set; } = string.Empty;
+
+        public bool MaterialBool { get; set; }
     }
 }
