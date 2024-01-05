@@ -5,6 +5,6 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 {
     public interface IRepositorioJuncalProveedorCuentaCorriente:IRepositorioGenerico<JuncalProveedorCuentaCorriente>
     {
-        public List<ProveedorCuentaCorrienteRespuesta> GetProveedorCuentasCorrientes(int idProveedor);
+        public List<ProveedorCuentaCorrienteRespuesta> GetProveedorCuentasCorrientes(int idProveedor, bool esMaterial);
     }
 }

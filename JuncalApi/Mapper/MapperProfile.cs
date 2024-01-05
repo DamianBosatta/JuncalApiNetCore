@@ -224,6 +224,13 @@ namespace JuncalApi.Mapper
 
             #endregion
 
+            #region CUENTA CORRIENTE PENDIENTE
+
+            CreateMap<CuentaCorrientePendienteRequerido, JuncalCuentaCorrientePendiente>();
+            CreateMap<JuncalCuentaCorrientePendiente, CuentaCorrientePendienteRespuesta>();
+
+            #endregion
+
 
 
         }

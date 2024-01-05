@@ -56,6 +56,7 @@ namespace JuncalApi.UnidadDeTrabajo
             this.RepositorioJuncalProveedorListaPrecio= new RepositorioJuncalProveedorListaPrecio(context, _logger); 
             this.RepositorioJuncalProveedorListaPreciosMateriales= new RepositorioJuncalProveedorListaPreciosMateriales(context, _logger);
             this.RepositorioJuncalProveedorCuentaCorriente= new RepositorioJuncalProveedorCuentaCorriente(context, _logger);
+            this.RepositorioJuncalCuentaCorrientePendiente = new RepositorioJuncalCuentaCorrientePendiente(context, _logger);
 
         } 
 
@@ -151,6 +152,7 @@ namespace JuncalApi.UnidadDeTrabajo
 
         public IRepositorioJuncalProveedorCuentaCorriente RepositorioJuncalProveedorCuentaCorriente { get; private set; }
 
+        public IRepositorioJuncalCuentaCorrientePendiente RepositorioJuncalCuentaCorrientePendiente { get; private set; }
       
 
         public void Dispose()

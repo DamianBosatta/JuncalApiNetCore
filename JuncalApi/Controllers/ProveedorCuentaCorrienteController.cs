@@ -30,7 +30,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
-                var ListaProveedorCcMovimiento =  _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(0).Where(adMat => adMat.MaterialBool == adelantoMaterial);
+                var ListaProveedorCcMovimiento =  _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(0,adelantoMaterial);
 
 
 
@@ -50,11 +50,11 @@ namespace JuncalApi.Controllers
 
         [Route("Proveedor/{idProveedor?}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimientoForIdProveedor(int idProveedor)
+        public async Task<ActionResult<IEnumerable<ProveedorCuentaCorrienteRespuesta>>> GetProveedorCcMovimientoForIdProveedor(int idProveedor,bool esMaterial)
         {
             try
             {
-                var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(idProveedor);
+                var ListaProveedorCcMovimiento = _uow.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(idProveedor, esMaterial);
 
 
 

@@ -13,7 +13,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         }
 
         #region GET PROVEEDOR CUENTAS CORRIENTES
-        public List<ProveedorCuentaCorrienteRespuesta> GetProveedorCuentasCorrientes(int idProveedor)
+        public List<ProveedorCuentaCorrienteRespuesta> GetProveedorCuentasCorrientes(int idProveedor , bool esMaterial)
         {
             // Parte 1: Obtener las cuentas corrientes del proveedor
             var proveedorCcQuery = _db.JuncalProveedorCuentaCorrientes
@@ -108,10 +108,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 item.SaldoTotal = totalCredito - totalDebito;
             }
 
-            if (idProveedor != 0)
-            {
-                resultList = resultList.Where(a => a.IdProveedor == idProveedor).ToList();
-            }
+
+            resultList= idProveedor==0? resultList : resultList.Where(a=>a.IdProveedor== idProveedor).ToList();
+           
+            resultList.Where(a => a.MaterialBool == esMaterial);// si es material entra en true te devuelve cuenta corriente con materiales
+                                                                // y si no en dinero.
 
             return resultList;
         }
