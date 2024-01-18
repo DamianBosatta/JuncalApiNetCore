@@ -1,0 +1,325 @@
+2024-01-14 08:54:35.578 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+AutoMapper.AutoMapperMappingException: Error mapping types.
+
+Mapping types:
+List`1 -> List`1
+System.Collections.Generic.List`1[[JuncalApi.Modelos.JuncalProveedorCuentaCorriente, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.List`1[[JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+ ---> AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+JuncalProveedorCuentaCorriente -> ProveedorListaPrecioMaterialRespuesta
+JuncalApi.Modelos.JuncalProveedorCuentaCorriente -> JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta
+   at lambda_method1380(Closure , JuncalProveedorCuentaCorriente , ProveedorListaPrecioMaterialRespuesta , ResolutionContext )
+   at lambda_method1379(Closure , Object , List`1 , ResolutionContext )
+   --- End of inner exception stack trace ---
+   at lambda_method1379(Closure , Object , List`1 , ResolutionContext )
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 138
+2024-01-14 08:54:35.834 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 856.3714 ms
+2024-01-14 08:57:16.554 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+AutoMapper.AutoMapperMappingException: Error mapping types.
+
+Mapping types:
+List`1 -> List`1
+System.Collections.Generic.List`1[[JuncalApi.Modelos.JuncalProveedorCuentaCorriente, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.List`1[[JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+ ---> AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+JuncalProveedorCuentaCorriente -> ProveedorListaPrecioMaterialRespuesta
+JuncalApi.Modelos.JuncalProveedorCuentaCorriente -> JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta
+   at lambda_method1380(Closure , JuncalProveedorCuentaCorriente , ProveedorListaPrecioMaterialRespuesta , ResolutionContext )
+   at lambda_method1379(Closure , Object , List`1 , ResolutionContext )
+   --- End of inner exception stack trace ---
+   at lambda_method1379(Closure , Object , List`1 , ResolutionContext )
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 138
+2024-01-14 08:57:16.569 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 62302.0430 ms
+2024-01-14 09:02:21.264 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+AutoMapper.AutoMapperMappingException: Error mapping types.
+
+Mapping types:
+List`1 -> List`1
+System.Collections.Generic.List`1[[JuncalApi.Modelos.JuncalProveedorCuentaCorriente, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]] -> System.Collections.Generic.List`1[[JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta, JuncalApi, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+ ---> AutoMapper.AutoMapperMappingException: Missing type map configuration or unsupported mapping.
+
+Mapping types:
+JuncalProveedorCuentaCorriente -> ProveedorListaPrecioMaterialRespuesta
+JuncalApi.Modelos.JuncalProveedorCuentaCorriente -> JuncalApi.Dto.DtoRespuesta.ProveedorListaPrecioMaterialRespuesta
+   at lambda_method599(Closure , JuncalProveedorCuentaCorriente , ProveedorListaPrecioMaterialRespuesta , ResolutionContext )
+   at lambda_method598(Closure , Object , List`1 , ResolutionContext )
+   --- End of inner exception stack trace ---
+   at lambda_method598(Closure , Object , List`1 , ResolutionContext )
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq)
+2024-01-14 09:02:21.416 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 101902.6600 ms
+2024-01-14 09:12:15.467 -03:00 [ERR] Failed executing DbCommand (47ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (Size = 255), @p9='?', @p10='?' (DbType = Double), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Int32), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?', @p18='?' (DbType = Boolean), @p19='?' (Size = 255), @p20='?', @p21='?' (DbType = Double)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+2024-01-14 09:12:15.830 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-14 09:12:16.199 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:12:16.249 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:12:16.303 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+System.InvalidOperationException: Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.InsertRange(IEnumerable`1 model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 143
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-14 09:12:16.367 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 1112.6598 ms
+2024-01-14 09:14:00.361 -03:00 [ERR] Failed executing DbCommand (33ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (Size = 255), @p9='?', @p10='?' (DbType = Double), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Int32), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?', @p18='?' (DbType = Boolean), @p19='?' (Size = 255), @p20='?', @p21='?' (DbType = Double)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+2024-01-14 09:14:00.361 -03:00 [ERR] Failed executing DbCommand (33ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (Size = 255), @p9='?', @p10='?' (DbType = Double), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Int32), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?', @p18='?' (DbType = Boolean), @p19='?' (Size = 255), @p20='?', @p21='?' (DbType = Double)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+2024-01-14 09:14:00.420 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-14 09:14:00.430 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-14 09:14:00.539 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:14:00.676 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:14:00.676 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:14:00.833 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+System.InvalidOperationException: Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.InsertRange(IEnumerable`1 model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 143
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-14 09:14:00.833 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:14:00.855 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 15785.4878 ms
+2024-01-14 09:14:00.920 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+System.InvalidOperationException: Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.InsertRange(IEnumerable`1 model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 143
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-14 09:14:00.926 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 63427.4197 ms
+2024-01-14 09:15:01.705 -03:00 [ERR] Failed executing DbCommand (33ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (Size = 255), @p9='?', @p10='?' (DbType = Double)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+2024-01-14 09:15:01.744 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-14 09:15:01.848 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:15:01.921 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:15:01.991 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+System.InvalidOperationException: Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.InsertRange(IEnumerable`1 model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 143
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-14 09:15:01.996 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 4444.6712 ms
+2024-01-14 09:22:57.105 -03:00 [ERR] Failed executing DbCommand (85ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?', @p7='?' (DbType = Boolean), @p8='?' (Size = 255), @p9='?', @p10='?' (DbType = Double), @p11='?' (DbType = Int32), @p12='?' (DbType = Int32), @p13='?' (DbType = Int32), @p14='?' (DbType = Int32), @p15='?' (DbType = Int32), @p16='?' (DbType = Int32), @p17='?', @p18='?' (DbType = Boolean), @p19='?' (Size = 255), @p20='?', @p21='?' (DbType = Double)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `material_Bool`, `observacion`, `pendiente`, `peso`)
+VALUES (@p11, @p12, @p13, @p14, @p15, @p16, @p17, @p18, @p19, @p20, @p21);
+SELECT `id`, `fecha`, `isdeleted`
+FROM `juncal.proveedor_CuentaCorriente`
+WHERE ROW_COUNT() = 1 AND `id` = LAST_INSERT_ID();
+2024-01-14 09:22:57.170 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Column 'pendiente' cannot be null
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-14 09:22:57.381 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:22:57.451 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-14 09:22:57.519 -03:00 [ERR] Error en CargarProveedorListaPrecioMaterial
+System.InvalidOperationException: Excepcion En DataBase Al Hacer InsertRange(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.InsertRange(IEnumerable`1 model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 143
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.CargarProveedorCcMovimiento(List`1 ProveedorCcMovimientoReq) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-14 09:22:57.522 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente responded 500 in 4017.0107 ms

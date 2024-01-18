@@ -1,0 +1,791 @@
+2024-01-16 13:49:47.426 -03:00 [ERR] Failed executing DbCommand (64ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 13:49:47.451 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 13:49:47.553 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 13:49:47.574 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 517.0058 ms
+2024-01-16 14:11:13.949 -03:00 [ERR] Failed executing DbCommand (123ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:11:14.234 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:11:14.512 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:11:14.596 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 1017.2899 ms
+2024-01-16 14:11:26.028 -03:00 [ERR] Failed executing DbCommand (34ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND ((`j`.`material_Bool` = @__esMaterial_1) AND NOT (COALESCE(`j`.`pendiente`, FALSE)))
+2024-01-16 14:11:26.051 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:11:26.193 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:11:26.212 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 281.5472 ms
+2024-01-16 14:11:57.483 -03:00 [ERR] Failed executing DbCommand (54ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:11:57.561 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:11:57.712 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:11:57.726 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 339.2384 ms
+2024-01-16 14:12:01.356 -03:00 [ERR] Failed executing DbCommand (57ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:12:01.400 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:12:01.560 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:12:01.583 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 334.6561 ms
+2024-01-16 14:12:26.892 -03:00 [ERR] Failed executing DbCommand (54ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:12:26.935 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:12:27.096 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:12:27.114 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/6 responded 500 in 318.4647 ms
+2024-01-16 14:13:36.296 -03:00 [ERR] Failed executing DbCommand (62ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:13:36.546 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:13:36.756 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:13:36.871 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 1079.2845 ms
+2024-01-16 14:14:08.428 -03:00 [ERR] Failed executing DbCommand (45ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND ((`j`.`material_Bool` = @__esMaterial_1) AND NOT (COALESCE(`j`.`pendiente`, FALSE)))
+2024-01-16 14:14:08.460 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:14:08.631 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:14:08.647 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 354.2837 ms
+2024-01-16 14:14:09.804 -03:00 [ERR] Failed executing DbCommand (44ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:14:09.842 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:14:09.963 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:14:09.980 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 267.6592 ms
+2024-01-16 14:15:53.716 -03:00 [ERR] Failed executing DbCommand (67ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:15:53.881 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:16:03.978 -03:00 [ERR] Failed executing DbCommand (42ms) [Parameters=[@__idProveedor_0='?' (DbType = Int32), @__esMaterial_1='?' (DbType = Boolean)], CommandType='"Text"', CommandTimeout='30']
+SELECT `j`.`id` AS `Id`, `j`.`material_Bool` AS `MaterialBool`, `j`.`id_tipo_movimiento` AS `IdTipoMovimiento`, `j`.`id_usuario` AS `IdUsuario`, `j`.`fecha` AS `Fecha`, `j`.`importe` AS `Importe`, `j`.`peso` AS `Peso`, `j`.`id_material` AS `IdMaterial`, `j`.`observacion` AS `Observacion`, `j`.`id_proveedor` AS `IdProveedor`, `j0`.`descripcion` AS `NombreTipoMovimiento`, `t`.`nombre` AS `NombreMaterial`, `t`.`precio` AS `PrecioMaterial`, `j3`.`nombre` AS `NombreLista`, CONCAT(CONCAT(COALESCE(`t0`.`nombre`, ''), ' '), COALESCE(`t0`.`apellido`, '')) AS `NombreUsuario`, `j`.`idRemitoInterno` AS `IdOrdenInterno`, `j`.`idRemitoExterno` AS `IdOrdenExterno`, CASE
+    WHEN `j5`.`id` IS NOT NULL THEN `j5`.`remito`
+    WHEN `j4`.`id` IS NOT NULL THEN `j4`.`remito`
+    ELSE ''
+END AS `NumeroRemito`, `j`.`pendiente` AS `Pendiente`
+FROM `juncal.proveedor_CuentaCorriente` AS `j`
+LEFT JOIN `juncal.cc_tipos_movimientos` AS `j0` ON `j`.`id_tipo_movimiento` = `j0`.`id`
+LEFT JOIN (
+    SELECT `j1`.`id`, `j1`.`id_proveedor_listaprecios`, `j1`.`nombre`, `j1`.`precio`
+    FROM (
+        SELECT NULL AS `empty`
+    ) AS `e`
+    LEFT JOIN `juncal.proveedor_listaprecios_materiales` AS `j1` ON TRUE
+) AS `t` ON `j`.`id_material` = `t`.`id`
+LEFT JOIN (
+    SELECT `j2`.`id`, `j2`.`apellido`, `j2`.`nombre`
+    FROM `juncal.usuario` AS `j2`
+    WHERE NOT (`j2`.`isdeleted`)
+) AS `t0` ON `j`.`id_usuario` = `t0`.`id`
+LEFT JOIN `juncal.proveedor_listaprecios` AS `j3` ON `t`.`id_proveedor_listaprecios` = `j3`.`id`
+LEFT JOIN `juncal.orden_interno` AS `j4` ON `j`.`idRemitoInterno` = `j4`.`id`
+LEFT JOIN `juncal.orden` AS `j5` ON `j`.`idRemitoExterno` = `j5`.`id`
+WHERE ((`j`.`id_proveedor` = @__idProveedor_0) AND (`j`.`isdeleted` = FALSE)) AND (`j`.`material_Bool` = @__esMaterial_1)
+2024-01-16 14:16:03.988 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 14:16:30.311 -03:00 [ERR] Error en GetProveedorCcMovimientoForIdProveedor
+MySqlConnector.MySqlException (0x80004005): Unknown column 'j.pendiente' in 'field list'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalProveedorCuentaCorriente.GetProveedorCuentasCorrientes(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalProveedorCuentaCorriente.cs:line 90
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.GetProveedorCcMovimientoForIdProveedor(Int32 idProveedor, Boolean esMaterial) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 57
+2024-01-16 14:16:30.428 -03:00 [ERR] HTTP GET /api/ProveedorCuentaCorriente/Proveedor/5 responded 500 in 74725.7885 ms
+2024-01-16 20:35:47.710 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-01-16 20:35:47.963 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+   at MySqlConnector.Core.ServerSession.OpenTcpSocketAsync(ConnectionSettings cs, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 1129
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 438
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 403
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 408
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 98
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 128
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 929
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 959
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 423
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   --- End of inner exception stack trace ---
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+   at MySqlConnector.Core.ServerSession.OpenTcpSocketAsync(ConnectionSettings cs, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 1129
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 438
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 403
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 408
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 98
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 128
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 929
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 959
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 423
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   --- End of inner exception stack trace ---
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 20:35:48.201 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-16 20:35:48.277 -03:00 [ERR] Error al obtener las notificaciones
+System.InvalidOperationException: Excepcion En DataBase Al Hacer GetAll(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.GetAll(Expression`1 predicate, Func`2 orderBy) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 64
+   at JuncalApi.Controllers.NotificacionController.GetNotificaciones() in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\NotificacionController.cs:line 37
+2024-01-16 20:35:48.346 -03:00 [ERR] HTTP GET /api/Notificacion responded 500 in 20221.7310 ms
+2024-01-16 21:02:30.919 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-01-16 21:02:30.926 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+   at MySqlConnector.Core.ServerSession.OpenTcpSocketAsync(ConnectionSettings cs, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 1129
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 438
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 403
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 408
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 98
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 128
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 929
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 959
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 423
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   --- End of inner exception stack trace ---
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseMySql' call.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+ ---> MySqlConnector.MySqlException (0x80004005): Connect Timeout expired.
+   at MySqlConnector.Core.ServerSession.OpenTcpSocketAsync(ConnectionSettings cs, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 1129
+   at MySqlConnector.Core.ServerSession.ConnectAsync(ConnectionSettings cs, MySqlConnection connection, Int32 startTickCount, ILoadBalancer loadBalancer, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ServerSession.cs:line 438
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 403
+   at MySqlConnector.Core.ConnectionPool.ConnectSessionAsync(MySqlConnection connection, String logMessage, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 408
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 98
+   at MySqlConnector.Core.ConnectionPool.GetSessionAsync(MySqlConnection connection, Int32 startTickCount, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/ConnectionPool.cs:line 128
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 929
+   at MySqlConnector.MySqlConnection.CreateSessionAsync(ConnectionPool pool, Int32 startTickCount, Activity activity, Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 959
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 423
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   --- End of inner exception stack trace ---
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-01-16 21:02:31.014 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-16 21:02:31.073 -03:00 [ERR] Error al obtener las notificaciones
+System.InvalidOperationException: Excepcion En DataBase Al Hacer GetAll(Repositorio Generico) 
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.GetAll(Expression`1 predicate, Func`2 orderBy) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 64
+   at JuncalApi.Controllers.NotificacionController.GetNotificaciones() in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\NotificacionController.cs:line 37
+2024-01-16 21:02:31.079 -03:00 [ERR] HTTP GET /api/Notificacion responded 500 in 19400.1044 ms

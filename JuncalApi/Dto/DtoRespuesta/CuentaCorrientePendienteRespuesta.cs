@@ -1,4 +1,6 @@
-﻿namespace JuncalApi.Dto.DtoRespuesta
+﻿using JuncalApi.Modelos;
+
+namespace JuncalApi.Dto.DtoRespuesta
 {
     public class CuentaCorrientePendienteRespuesta
     {
@@ -6,7 +8,7 @@
 
         public int? IdProveedor { get; set; }
 
-        public string NombreProveedor { get; set; }= string.Empty;
+        public JuncalProveedor? Proveedor { get; set; }
 
         public int? IdMaterial { get; set; }
 

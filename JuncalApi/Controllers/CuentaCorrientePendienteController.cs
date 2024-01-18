@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
-{   [Authorize]
+{   //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CuentaCorrientePendienteController : Controller

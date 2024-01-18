@@ -43,5 +43,6 @@
         public string NumeroRemito {  get; set; } = string.Empty;
 
         public bool MaterialBool { get; set; }
+
     }
 }

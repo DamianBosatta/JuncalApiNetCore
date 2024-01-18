@@ -72,6 +72,7 @@ namespace JuncalApi.Controllers
             }
         }
 
+
         [Route("Buscar/{id?}")]
         [HttpGet]
         public ActionResult GetByIdProveedorCcMovimiento(int id)
@@ -97,23 +98,29 @@ namespace JuncalApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult CargarProveedorCcMovimiento([FromBody] ProveedorCuentaCorrienteRequerido ProveedorCcMovimientoReq)
+        public ActionResult CargarProveedorCcMovimiento([FromBody] List<ProveedorCuentaCorrienteRequerido> ProveedorCcMovimientoReq)
         {
             try
             {
-                var ProveedorCcMovimiento = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCcMovimientoReq);
+                if (!ProveedorCcMovimientoReq.Any())
+                {
+                    return Ok(new { success = false, message = "Lista de Movimientos cuenta Corriente llegó vacía", result = new List<ProveedorListaPrecioMaterialRespuesta>() });
+                }
 
-                _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCcMovimiento);
+                var ProveedorCuentaCorriente = _mapper.Map<List<JuncalProveedorCuentaCorriente>>(ProveedorCcMovimientoReq);
 
-                var ProveedorCcMovimientoRes = _mapper.Map<ProveedorCuentaCorrienteRespuesta>(ProveedorCcMovimiento);
+                _uow.RepositorioJuncalProveedorCuentaCorriente.InsertRange(ProveedorCuentaCorriente);
 
-                return Ok(new { success = true, message = "La CC Del Proveedor Fue Creada Con Éxito", result = ProveedorCcMovimientoRes });
+                var ProveedorCuentaCorrienteRes = _mapper.Map<List<JuncalProveedorCuentaCorriente>>(ProveedorCuentaCorriente);
+
+                return Ok(new { success = true, message = "La lista de movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error en CargarProveedorCcMovimiento");
+                _logger.LogError(ex, "Error en CargarProveedorListaPrecioMaterial");
                 return StatusCode(500, "Error interno del servidor");
             }
+
         }
 
         [HttpPut("{id}")]

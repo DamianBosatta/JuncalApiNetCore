@@ -25,5 +25,7 @@
         public int? IdRemitoExterno { get; set; }
 
         public bool MaterialBool { get; set; }
+
+        public bool? Pendiente { get; set; }
     }
 }

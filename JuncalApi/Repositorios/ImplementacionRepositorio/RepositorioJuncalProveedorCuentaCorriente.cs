@@ -17,7 +17,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             // Parte 1: Obtener las cuentas corrientes del proveedor
             var proveedorCcQuery = _db.JuncalProveedorCuentaCorrientes
-                .Where(a => a.IdProveedor == idProveedor && a.Isdeleted == false);
+            .Where(a => a.IdProveedor == idProveedor && a.Isdeleted == false &&
+                 a.MaterialBool == esMaterial );
 
             // Parte 2: Unir con los tipos de movimiento
             var joinedMovimientos = from proveedorCc in proveedorCcQuery
@@ -82,7 +83,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                               NombreUsuario = joined._Usuario.Nombre + " " + joined._Usuario.Apellido,
                               IdOrdenInterno = joined.proveedorCc.IdRemitoInterno,
                               IdOrdenExterno = joined.proveedorCc.IdRemitoExterno,
-                              NumeroRemito = joined._RemitoExterno != null ? joined._RemitoExterno.Remito : joined._RemitoInterno != null ? joined._RemitoInterno.Remito : ""
+                              NumeroRemito = joined._RemitoExterno != null ? joined._RemitoExterno.Remito : joined._RemitoInterno != null ? joined._RemitoInterno.Remito : "",
+                              
                           };
 
             var resultList = results.ToList();
@@ -117,6 +119,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             return resultList;
         }
         #endregion
+
+
     }
 }
 

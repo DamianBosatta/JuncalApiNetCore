@@ -22,7 +22,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                             on ccPendiente.IdMaterial equals material.Id into materialJoin
                         from material in materialJoin.DefaultIfEmpty()
                         join materialJuncal in _db.JuncalMaterials
-                            on material.IdMaterial equals materialJuncal.Id into materialJuncalJoin
+                            on ccPendiente.IdMaterial equals materialJuncal.Id into materialJuncalJoin
                         from materialJuncal in materialJuncalJoin.DefaultIfEmpty()
                         join remito in _db.JuncalOrdens
                             on ccPendiente.IdRemito equals remito.Id into remitoJoin
@@ -34,7 +34,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         {
                             Id = ccPendiente.Id,
                             IdProveedor = ccPendiente.IdProveedor,
-                            NombreProveedor = proveedor != null ? proveedor.Nombre :" Sin Nombre Proveedor",
+                            Proveedor = proveedor,
                             IdMaterial = ccPendiente.IdMaterial,
                             Material = materialJuncal != null ? materialJuncal.Nombre : "Sin Nombre Material",
                             IdRemito = ccPendiente.IdRemito,

@@ -24,6 +24,8 @@ namespace JuncalApi.Dto.DtoExcel
 
         public int IdMaterial { get { return DataMateriales is null ? 0 : DataMateriales.OrdenMaterial.Id; } }
 
+        public int idMaterialJuncalEnviado { get { return DataMateriales is null ? 0 : DataMateriales.Material.Id; } }
+
         public DateTime? FechaRemitoJuncal
         {
             get
