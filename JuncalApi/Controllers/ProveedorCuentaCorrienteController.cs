@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using JuncalApi.Dto.DtoRequerido;
+using JuncalApi.Dto.DtoRequerido.DtoAgrupacionRequerido;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Servicios.Facturar;
 using JuncalApi.UnidadDeTrabajo;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JuncalApi.Controllers
 {
-    //    [Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProveedorCuentaCorrienteController : ControllerBase
@@ -17,12 +19,14 @@ namespace JuncalApi.Controllers
         private readonly IUnidadDeTrabajo _uow;
         private readonly IMapper _mapper;
         private readonly ILogger<ProveedorCuentaCorrienteController> _logger; 
+        private readonly IFacturarServicio _facturarServicio;
 
-        public ProveedorCuentaCorrienteController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<ProveedorCuentaCorrienteController> logger)
+        public ProveedorCuentaCorrienteController(IUnidadDeTrabajo uow, IMapper mapper, ILogger<ProveedorCuentaCorrienteController> logger,IFacturarServicio facturarServicio)
         {
             _mapper = mapper;
             _uow = uow;
-            _logger = logger; 
+            _logger = logger;
+            _facturarServicio= facturarServicio;
         }
 
         [HttpGet]
@@ -122,8 +126,37 @@ namespace JuncalApi.Controllers
             }
 
         }
+        [Route("Facturar/}")]
+        [HttpPost]
+        public ActionResult FacturarOrdenProveedor([FromBody] FacturarOrdenRequerido ordenRequerida )
+        {
+            try
+            {
+                var cuentaCorriente = _facturarServicio.FacturarRemitoExterno(ordenRequerida);
+                bool respuesta = false;
 
-        [HttpPut("{id}")]
+            if(cuentaCorriente!= null)
+            {
+                respuesta = (bool)(_uow?.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente));
+
+                    return respuesta is true ? Ok(new { success = true, message = "Orden del proveedor facturada correctamente", result = respuesta }) :
+                    Ok(new { success = false, message = "No se puedo facturar la orden en cuenta corriente", result = respuesta });
+            }
+
+            return NotFound("No se puedo encontrar cuenta corriente con la orden recibida");
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error en insertar orden en cuenta corriente proveedor");
+                return StatusCode(500, "Error interno del servidor");
+            }
+        }
+        
+
+
+
+            [HttpPut("{id}")]
         public async Task<IActionResult> EditProveedorCcMovimiento(int id, ProveedorCuentaCorrienteRequerido ProveedorCcMovimientoReq)
         {
             try

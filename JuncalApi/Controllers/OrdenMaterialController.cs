@@ -82,29 +82,27 @@ namespace JuncalApi.Controllers
 
         [Route("Facturar")]
         [HttpPost]
-        public ActionResult Facturar([FromBody] List<AgrupacionPreFacturar> listPreFacturar)
+        public ActionResult FacturarMateriales([FromBody] List<AgrupacionPreFacturar> listPreFacturar)
         {
             try
             {
-                List<DtoRespuestaFacturar> facturaRespuesta = new List<DtoRespuestaFacturar>();
-                List<int> idOrdenesFacturadas = new List<int>();
+              
                 int cantidadMaterialesFacturados = 0;
 
                 bool checkLista = listPreFacturar.Count() > 0 ? true : false;
 
                 if (checkLista)
                 {
-                    _facturar.Facturacion(listPreFacturar, out idOrdenesFacturadas, out cantidadMaterialesFacturados,out facturaRespuesta);
+                    _facturar.FacturacionMateriales(listPreFacturar, out cantidadMaterialesFacturados);
 
                     if (cantidadMaterialesFacturados > 0)
                     {
                         return Ok(new
                         {
                             success = true,
-                            message = "Los Materiales y Ordenes pasaron a facturadas ",
-                            result = cantidadMaterialesFacturados,
-                            idOrdenesFacturadas,
-                            facturaRespuesta
+                            message = "Los Materiales a facturados ",
+                            result = cantidadMaterialesFacturados
+                           
                         });
                     }
                 }
@@ -113,9 +111,8 @@ namespace JuncalApi.Controllers
                 {
                     success = false,
                     message = "La Lista de Pre Facturar Llego Vacia ",
-                    result = cantidadMaterialesFacturados,
-                    idOrdenesFacturadas,
-                    facturaRespuesta
+                    result = cantidadMaterialesFacturados
+                   
                 });
             }
             catch (Exception ex)

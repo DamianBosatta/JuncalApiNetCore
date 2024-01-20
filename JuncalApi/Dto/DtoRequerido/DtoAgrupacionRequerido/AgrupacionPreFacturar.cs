@@ -16,7 +16,7 @@
 
         public Factura factura { get; set; } = new Factura();
 
-        public List<FacturarOrdenRequerido> ListFacturarOrdenRequeridos { get; set; } = new List<FacturarOrdenRequerido>(); 
+     
 
     }
 }
