@@ -31,8 +31,6 @@ public partial class JuncalProveedorCuentaCorriente
 
     public bool MaterialBool { get; set; }
 
-    public bool? Pendiente { get; set; }
-
     public virtual JuncalProveedorListapreciosMateriale? IdMaterialNavigation { get; set; }
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }

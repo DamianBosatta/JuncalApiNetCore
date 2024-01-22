@@ -1123,7 +1123,6 @@ public partial class JuncalContext : DbContext
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("isdeleted");
             entity.Property(e => e.MaterialBool).HasColumnName("material_Bool");
-            entity.Property(e => e.Pendiente).HasColumnName("pendiente");
             entity.Property(e => e.Observacion)
                 .HasMaxLength(255)
                 .HasColumnName("observacion");

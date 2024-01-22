@@ -16,5 +16,7 @@
 
         public string Observacion { get; set; } = string.Empty;
 
+        public int idPendiente { get; set; }
+
     }
 }

@@ -126,22 +126,32 @@ namespace JuncalApi.Controllers
             }
 
         }
-        [Route("Facturar/}")]
+        [Route("Facturar/")]
         [HttpPost]
         public ActionResult FacturarOrdenProveedor([FromBody] FacturarOrdenRequerido ordenRequerida )
         {
             try
             {
-                var cuentaCorriente = _facturarServicio.FacturarRemitoExterno(ordenRequerida);
-                bool respuesta = false;
+                var pendiente = _uow.RepositorioJuncalCuentaCorrientePendiente.GetByCondition(x => x.Id == ordenRequerida.idPendiente);
+                if (pendiente != null)
+                {
+                    var cuentaCorriente = _facturarServicio.FacturarRemitoExterno(ordenRequerida);
+                    bool respuesta = false;
 
-            if(cuentaCorriente!= null)
-            {
-                respuesta = (bool)(_uow?.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente));
-
-                    return respuesta is true ? Ok(new { success = true, message = "Orden del proveedor facturada correctamente", result = respuesta }) :
-                    Ok(new { success = false, message = "No se puedo facturar la orden en cuenta corriente", result = respuesta });
-            }
+                    if (cuentaCorriente != null)
+                    {
+                        respuesta = (bool)(_uow?.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente));
+                        if (respuesta)
+                        {
+                            pendiente.Pendiente = false;
+                            var respuestaPendiente = (bool)_uow.RepositorioJuncalCuentaCorrientePendiente.Update(pendiente);
+                            
+                            return respuesta is true ? Ok(new { success = true, message = "Orden del proveedor facturada correctamente", result = respuesta }) :
+                            Ok(new { success = false, message = "No se puedo facturar la orden en cuenta corriente", result = respuesta });
+                        }
+                    
+                    }
+                }
 
             return NotFound("No se puedo encontrar cuenta corriente con la orden recibida");
 
@@ -153,8 +163,6 @@ namespace JuncalApi.Controllers
             }
         }
         
-
-
 
             [HttpPut("{id}")]
         public async Task<IActionResult> EditProveedorCcMovimiento(int id, ProveedorCuentaCorrienteRequerido ProveedorCcMovimientoReq)

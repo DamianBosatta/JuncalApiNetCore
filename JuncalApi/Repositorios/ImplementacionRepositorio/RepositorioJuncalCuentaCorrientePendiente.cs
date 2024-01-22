@@ -15,6 +15,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             try { 
             var query = from ccPendiente in _db.JuncalCuentaCorrientePendientes
+                        where ccPendiente.Pendiente == true
                         join proveedor in _db.JuncalProveedors
                             on ccPendiente.IdProveedor equals proveedor.Id into proveedorJoin
                         from proveedor in proveedorJoin.DefaultIfEmpty()
