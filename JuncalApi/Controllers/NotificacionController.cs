@@ -39,6 +39,18 @@ namespace JuncalApi.Controllers
                 var notificacion = _uow.RepositorioJuncalNotificacion.GetAll().FirstOrDefault();
                 int contratos = notificacion?.CantidadContratos ?? 0;
                 bool contratosComprobados = false;
+                
+                var proveedorPendientes = _uow.RepositorioJuncalCuentaCorrientePendiente
+                .GetAllByCondition(x => x.Pendiente == true)
+                .GroupBy(x => x.IdProveedor)
+                .Select(group => new
+                {
+                    proveedor = _uow.RepositorioJuncalProveedor.GetByCondition(x => x.Id == group.Key),
+                    cantidad = group.Count()
+                })
+                .ToList();
+                var totalProveedores = proveedorPendientes.Sum(p => p.cantidad);
+
 
                 if (notificacion == null)
                 {
@@ -64,10 +76,11 @@ namespace JuncalApi.Controllers
                     message = "Notificaciones",
                     sinFacturar = cantidadSinFacturar,
                     reclamos = cantidadReclamos,
-                    total = cantidadSinFacturar + cantidadReclamos,
+                    total = cantidadSinFacturar + cantidadReclamos + totalProveedores,
                     fechaComprobacionContratos = notificacion.Fecha,
                     contratosCambiados = contratos,
-                    contratoscomprobados = contratosComprobados
+                    contratoscomprobados = contratosComprobados,
+                    ProveedorPendientes = proveedorPendientes
                 };
 
                 return Ok(response);
