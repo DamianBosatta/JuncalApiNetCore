@@ -125,7 +125,7 @@ namespace JuncalApi.Controllers
 
                     if (ordenInterna is not null)
                     {
-                        ordenInterna.IdEstadoInterno = CodigosUtiles.Cerrado;
+                        ordenInterna.IdEstadoInterno = 2;
                         _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
                         return Ok(new { success = true, message = "El remito fue cerrado", result = 200 });
                     }
@@ -134,7 +134,7 @@ namespace JuncalApi.Controllers
                 {
                     var cuentaCorriente = _facturar.FacturarRemitoInterno(facturarRequerido);
 
-                    if (cuentaCorriente is not null)
+                    if (cuentaCorriente != null)
                     {
                         var confirmacionInsertCc = _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
 
@@ -143,12 +143,22 @@ namespace JuncalApi.Controllers
                             var ordenInterna = _uow.RepositorioJuncalOrdenInterno.GetById(facturarRequerido.OrdenInterno.Id);
                             if (ordenInterna is not null)
                             {
-                                ordenInterna.IdEstadoInterno = CodigosUtiles.CerradoFacturado;
+                                ordenInterna.IdEstadoInterno = 2;
                                 _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
                             }
                         }
 
                         return Ok(new { success = true, message = $"El remito fue facturado por un total de: ${cuentaCorriente.Importe}", result = 200 });
+                    }
+                    else
+                    {
+                        var ordenInterna = _uow.RepositorioJuncalOrdenInterno.GetById(facturarRequerido.OrdenInterno.Id);
+                        if (ordenInterna is not null)
+                        {
+                            ordenInterna.IdEstadoInterno = 2;
+                            _uow.RepositorioJuncalOrdenInterno.Update(ordenInterna);
+                        }
+                        return Ok(new { success = true, message = $"El remito fue cerrado", result = 200 });
                     }
                 }
 
@@ -156,10 +166,11 @@ namespace JuncalApi.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al procesar la solicitud de facturación de órdenes internas");
-                return StatusCode(500, "Ocurrió un error al procesar la solicitud de facturación de órdenes internas");
+                // Manejar excepciones y devolver un mensaje de error apropiado
+                return Ok(new { success = false, message = "Ocurrió un error al procesar la solicitud", result = 500 });
             }
         }
+
 
         [Route("Borrar/{id?}")]
         [HttpPut]

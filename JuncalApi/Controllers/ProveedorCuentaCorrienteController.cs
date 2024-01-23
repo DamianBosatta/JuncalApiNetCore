@@ -102,26 +102,68 @@ namespace JuncalApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult CargarProveedorCcMovimiento([FromBody] List<ProveedorCuentaCorrienteRequerido> ProveedorCcMovimientoReq)
+        public ActionResult CargarProveedorCcMovimiento([FromBody] ProveedorCuentaCorrienteRequerido ProveedorCcMovimientoReq)
         {
             try
             {
-                if (!ProveedorCcMovimientoReq.Any())
+
+                var ProveedorCuentaCorriente = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCcMovimientoReq);
+
+                if(ProveedorCuentaCorriente.MaterialBool== true)
                 {
-                    return Ok(new { success = false, message = "Lista de Movimientos cuenta Corriente llegó vacía", result = new List<ProveedorListaPrecioMaterialRespuesta>() });
+                    var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == ProveedorCuentaCorriente.IdProveedor && x.MaterialBool == true && x.IdMaterial == ProveedorCuentaCorriente.IdMaterial)
+                                      .OrderByDescending(x => x.Id)
+                                      .FirstOrDefault();
+
+                    if(ultimoMov!=null)
+                    {
+                        ProveedorCuentaCorriente.Total = ultimoMov.Total + ProveedorCuentaCorriente.Peso;
+                        _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
+
+                        var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);
+                        return Ok(new { success = true, message = "El movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
+                    }
+                    else
+                    {
+                        ProveedorCuentaCorriente.Total = ProveedorCuentaCorriente.Peso;
+                        _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
+
+                        var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);
+
+                        return Ok(new { success = true, message = "El movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
+                    }
+
+
+                }
+                else
+                {
+                    var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == ProveedorCuentaCorriente.IdProveedor && x.MaterialBool == false)
+                                      .OrderByDescending(x => x.Id)
+                                      .FirstOrDefault();
+
+                    if(ultimoMov != null)
+                    {
+                        ProveedorCuentaCorriente.Total = ultimoMov.Total + ProveedorCuentaCorriente.Importe;
+                        _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
+
+                        var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);
+                        return Ok(new { success = true, message = "El movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
+                    }
+                    else
+                    {
+                        ProveedorCuentaCorriente.Total = ProveedorCuentaCorriente.Importe;
+                     _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
+
+                        var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);
+                        return Ok(new { success = true, message = "El movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
+                    }
+
                 }
 
-                var ProveedorCuentaCorriente = _mapper.Map<List<JuncalProveedorCuentaCorriente>>(ProveedorCcMovimientoReq);
-
-                _uow.RepositorioJuncalProveedorCuentaCorriente.InsertRange(ProveedorCuentaCorriente);
-
-                var ProveedorCuentaCorrienteRes = _mapper.Map<List<JuncalProveedorCuentaCorriente>>(ProveedorCuentaCorriente);
-
-                return Ok(new { success = true, message = "La lista de movimientos de Proveedor Fue Creada Con Exito", result = ProveedorCuentaCorrienteRes });
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error en CargarProveedorListaPrecioMaterial");
+                _logger.LogError(ex, "Error en CargarProveedorCcMovimiento");
                 return StatusCode(500, "Error interno del servidor");
             }
 
@@ -132,25 +174,34 @@ namespace JuncalApi.Controllers
         {
             try
             {
+                //Obtenemos el pendiente
                 var pendiente = _uow.RepositorioJuncalCuentaCorrientePendiente.GetByCondition(x => x.Id == ordenRequerida.idPendiente);
                 if (pendiente != null)
                 {
+                    // obtenemos la cuenta corriente
                     var cuentaCorriente = _facturarServicio.FacturarRemitoExterno(ordenRequerida);
-                    bool respuesta = false;
-
-                    if (cuentaCorriente != null)
+                    if(cuentaCorriente == null)
                     {
-                        respuesta = (bool)(_uow?.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente));
-                        if (respuesta)
+                        pendiente.Pendiente = false;
+                        var respuestaPendiente = _uow.RepositorioJuncalCuentaCorrientePendiente.Update(pendiente);
+                        if (respuestaPendiente)
                         {
-                            pendiente.Pendiente = false;
-                            var respuestaPendiente = (bool)_uow.RepositorioJuncalCuentaCorrientePendiente.Update(pendiente);
-                            
-                            return respuesta is true ? Ok(new { success = true, message = "Orden del proveedor facturada correctamente", result = respuesta }) :
-                            Ok(new { success = false, message = "No se puedo facturar la orden en cuenta corriente", result = respuesta });
+                            return Ok(new { success = true, message = "Se actualizo la cuenta materiales del Proveedor", result = true });
                         }
-                    
+                        
+                    }else
+                    {
+                        pendiente.Pendiente = false;
+                        var respuestaPendiente = _uow.RepositorioJuncalCuentaCorrientePendiente.Update(pendiente);
+                        var respuestaProveedorCC = _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
+                        if(respuestaPendiente && respuestaProveedorCC)
+                        {
+                            return Ok(new { success = true, message = "Se actualizo la cuenta materiales y y cuenta corriente del Proveedor ", result = true });
+                        }
+                        
                     }
+                    
+                    
                 }
 
             return NotFound("No se puedo encontrar cuenta corriente con la orden recibida");

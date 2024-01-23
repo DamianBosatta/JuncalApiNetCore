@@ -72,7 +72,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                               IdUsuario = joined.proveedorCc.IdUsuario,
                               Fecha = joined.proveedorCc.Fecha,
                               Importe = joined.proveedorCc.Importe,
-                              Peso = joined.proveedorCc.Peso,
+                              Peso = (double?)joined.proveedorCc.Peso,
                               IdMaterial = joined.proveedorCc.IdMaterial,
                               Observacion = joined.proveedorCc.Observacion,
                               IdProveedor = joined.proveedorCc.IdProveedor,
@@ -84,6 +84,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                               IdOrdenInterno = joined.proveedorCc.IdRemitoInterno,
                               IdOrdenExterno = joined.proveedorCc.IdRemitoExterno,
                               NumeroRemito = joined._RemitoExterno != null ? joined._RemitoExterno.Remito : joined._RemitoInterno != null ? joined._RemitoInterno.Remito : "",
+                              Total = (decimal)joined.proveedorCc.Total,
                               
                           };
 
@@ -91,27 +92,46 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             decimal totalCredito = 0;
             decimal totalDebito = 0;
-
-            foreach (var item in resultList)
+            if (!esMaterial)
             {
-                decimal importe = Convert.ToDecimal(item.Importe);
-
-                if (importe > 0)
+                foreach (var item in resultList)
                 {
-                    totalCredito += importe;
+                    decimal importe = Convert.ToDecimal(item.Importe);
+
+                    if (importe > 0)
+                    {
+                        totalCredito += importe;
+                    }
+                    else
+                    {
+                        totalDebito += Math.Abs(importe);
+                    }
+
+                    item.Credito = totalCredito;
+                    item.Debito = totalDebito;
+                    item.SaldoTotal = totalCredito - totalDebito;
                 }
-                else
+            }
+            else {
+                foreach (var item in resultList)
                 {
-                    totalDebito += Math.Abs(importe);
+                    decimal importe = Convert.ToDecimal(item.Peso);
+                    if (importe > 0)
+                    {
+                        totalCredito += importe;
+                    }
+                    else
+                    {
+                        totalDebito += Math.Abs(importe);
+                    }
+                    item.Credito = totalCredito;
+                    item.Debito = totalDebito;
+                    item.SaldoTotal = totalCredito - totalDebito;
                 }
 
-                item.Credito = totalCredito;
-                item.Debito = totalDebito;
-                item.SaldoTotal = totalCredito - totalDebito;
             }
 
-
-            resultList= idProveedor==0? resultList : resultList.Where(a=>a.IdProveedor== idProveedor).ToList();
+            resultList = idProveedor==0? resultList : resultList.Where(a=>a.IdProveedor== idProveedor).ToList();
            
             resultList.Where(a => a.MaterialBool == esMaterial);// si es material entra en true te devuelve cuenta corriente con materiales
                                                                 // y si no en dinero.

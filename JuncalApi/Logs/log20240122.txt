@@ -424,3 +424,100 @@ System.InvalidOperationException: Excepcion En DataBase Al Hacer Insert(Reposito
    at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.Insert(T model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 128
    at JuncalApi.Controllers.ProveedorCuentaCorrienteController.FacturarOrdenProveedor(FacturarOrdenRequerido ordenRequerida) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 140
 2024-01-22 14:14:54.299 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente/Facturar responded 500 in 19498.9554 ms
+2024-01-22 19:39:27.105 -03:00 [ERR] Failed executing DbCommand (0ms) [Parameters=[@p0='?' (DbType = Int32), @p1='?' (DbType = DateTime), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32), @p4='?' (DbType = Int32), @p5='?' (DbType = Int32), @p6='?' (DbType = Int32), @p7='?' (DbType = Int32), @p8='?' (DbType = Decimal), @p9='?' (DbType = Boolean), @p10='?' (DbType = Boolean), @p11='?' (Size = 255), @p12='?' (DbType = Decimal)], CommandType='"Text"', CommandTimeout='30']
+SET AUTOCOMMIT = 1;
+INSERT INTO `juncal.proveedor_CuentaCorriente` (`id`, `fecha`, `id_material`, `id_proveedor`, `idRemitoExterno`, `idRemitoInterno`, `id_tipo_movimiento`, `id_usuario`, `importe`, `isdeleted`, `material_Bool`, `observacion`, `peso`)
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12);
+2024-01-22 19:39:27.351 -03:00 [ERR] An exception occurred in the database while saving changes for context type 'JuncalApi.DataBase.JuncalContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Duplicate entry '70' for key 'PRIMARY'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> MySqlConnector.MySqlException (0x80004005): Duplicate entry '70' for key 'PRIMARY'
+   at MySqlConnector.Core.ResultSet.ReadResultSetHeaderAsync(IOBehavior ioBehavior) in /_/src/MySqlConnector/Core/ResultSet.cs:line 43
+   at MySqlConnector.MySqlDataReader.ActivateResultSet(CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 130
+   at MySqlConnector.MySqlDataReader.CreateAsync(CommandListPosition commandListPosition, ICommandPayloadCreator payloadCreator, IDictionary`2 cachedProcedures, IMySqlCommand command, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlDataReader.cs:line 468
+   at MySqlConnector.Core.CommandExecutor.ExecuteReaderAsync(IReadOnlyList`1 commands, ICommandPayloadCreator payloadCreator, CommandBehavior behavior, Activity activity, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/Core/CommandExecutor.cs:line 56
+   at MySqlConnector.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, IOBehavior ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlCommand.cs:line 344
+   at MySqlConnector.MySqlCommand.ExecuteDbDataReader(CommandBehavior behavior) in /_/src/MySqlConnector/MySqlCommand.cs:line 278
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.Execute(IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.Execute(IEnumerable`1 commandBatches, IRelationalConnection connection)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(IList`1 entriesToSave)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(StateManager stateManager, Boolean acceptAllChangesOnSuccess)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChanges(Boolean acceptAllChangesOnSuccess)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChanges(Boolean acceptAllChangesOnSuccess)
+2024-01-22 19:39:27.458 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-22 19:39:27.525 -03:00 [ERR] ATENCION!! Capturamos Error En El Repositorio Generico A Continuacion Encontraras Mas Informacion -> ->
+2024-01-22 19:39:27.587 -03:00 [ERR] Error al insertar cuentas corrientes (Servicio Facturar)
+System.InvalidOperationException: Excepcion En DataBase Al Hacer Insert(Repositorio Generico)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.Insert(T model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 128
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 182
+2024-01-22 19:39:27.710 -03:00 [ERR] Error en insertar orden en cuenta corriente proveedor
+System.InvalidOperationException: Excepcion En DataBase Al Hacer Insert(Repositorio Generico)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioGenerico`1.Insert(T model) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioGenerico.cs:line 128
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 182
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.FacturarOrdenProveedor(FacturarOrdenRequerido ordenRequerida) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-22 19:39:27.718 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente/Facturar responded 500 in 4848.7966 ms
+2024-01-22 19:42:40.971 -03:00 [ERR] Error al insertar cuentas corrientes (Servicio Facturar)
+Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'JuncalApi.Modelos.JuncalProveedorCuentaCorriente'. Path 'IdMaterialNavigation.JuncalProveedorCuentaCorrientes'.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonConvert.SerializeObjectInternal(Object value, Type type, JsonSerializer jsonSerializer)
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 180
+2024-01-22 19:42:41.393 -03:00 [ERR] Error en insertar orden en cuenta corriente proveedor
+Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'JuncalApi.Modelos.JuncalProveedorCuentaCorriente'. Path 'IdMaterialNavigation.JuncalProveedorCuentaCorrientes'.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonConvert.SerializeObjectInternal(Object value, Type type, JsonSerializer jsonSerializer)
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 180
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.FacturarOrdenProveedor(FacturarOrdenRequerido ordenRequerida) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-22 19:42:41.405 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente/Facturar responded 500 in 3954.6633 ms
+2024-01-22 23:26:34.548 -03:00 [ERR] Error al insertar cuentas corrientes (Servicio Facturar)
+Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'JuncalApi.Modelos.JuncalProveedorCuentaCorriente'. Path 'IdMaterialNavigation.JuncalProveedorCuentaCorrientes'.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonConvert.SerializeObjectInternal(Object value, Type type, JsonSerializer jsonSerializer)
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 181
+2024-01-22 23:26:34.921 -03:00 [ERR] Error en insertar orden en cuenta corriente proveedor
+Newtonsoft.Json.JsonSerializationException: Self referencing loop detected with type 'JuncalApi.Modelos.JuncalProveedorCuentaCorriente'. Path 'IdMaterialNavigation.JuncalProveedorCuentaCorrientes'.
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.CheckForCircularReference(JsonWriter writer, Object value, JsonProperty property, JsonContract contract, JsonContainerContract containerContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeList(JsonWriter writer, IEnumerable values, JsonArrayContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.SerializeObject(JsonWriter writer, Object value, JsonObjectContract contract, JsonProperty member, JsonContainerContract collectionContract, JsonProperty containerProperty)
+   at Newtonsoft.Json.Serialization.JsonSerializerInternalWriter.Serialize(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonSerializer.SerializeInternal(JsonWriter jsonWriter, Object value, Type objectType)
+   at Newtonsoft.Json.JsonConvert.SerializeObjectInternal(Object value, Type type, JsonSerializer jsonSerializer)
+   at JuncalApi.Servicios.Facturar.FacturarServicio.FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Servicios\Facturar\FacturarServicio.cs:line 181
+   at JuncalApi.Controllers.ProveedorCuentaCorrienteController.FacturarOrdenProveedor(FacturarOrdenRequerido ordenRequerida) in C:\Users\Felix\Desktop\JuncalApi3\JuncalApi\Controllers\ProveedorCuentaCorrienteController.cs:line 136
+2024-01-22 23:26:34.936 -03:00 [ERR] HTTP POST /api/ProveedorCuentaCorriente/Facturar responded 500 in 4727.8410 ms

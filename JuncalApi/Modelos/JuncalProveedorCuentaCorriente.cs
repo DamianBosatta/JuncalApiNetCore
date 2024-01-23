@@ -19,7 +19,9 @@ public partial class JuncalProveedorCuentaCorriente
 
     public decimal? Importe { get; set; }
 
-    public double? Peso { get; set; }
+    public decimal? Peso { get; set; }
+
+    public decimal? Total { get; set; }
 
     public int? IdMaterial { get; set; }
 

@@ -26,10 +26,10 @@ namespace JuncalApi.Servicios.Facturar
         #region FACTURACION MATERIALES
 
 
-        public void FacturacionMateriales(List<AgrupacionPreFacturar> listPreFacturar,out int cantidadMaterialesFacturados)
+        public void FacturacionMateriales(List<AgrupacionPreFacturar> listPreFacturar, out List<int> ordenesFacturadas, out int cantidadMaterialesFacturados)
         {
             cantidadMaterialesFacturados = 0;
-          
+            ordenesFacturadas = new List<int>();
 
             try
             {
@@ -38,8 +38,10 @@ namespace JuncalApi.Servicios.Facturar
 
              List<JuncalOrdenMarterial> listaMaterialesFacturar = ObtenerMaterialesPorIdOrdenes(idOrdenes);// lista de materiales a facturar
              FacturarMaterialesEnviados(listaMaterialesFacturar, listaReferenciaMaterialesEnviados, listPreFacturar, out listaMaterialesFacturar, out cantidadMaterialesFacturados);// Facturaramos materiales enviados
-           
-                                                                                                    
+               
+                List<JuncalOrden> listaOrdenes = ObtenerOrdenesPorIdOrdenes(idOrdenes);
+                ordenesFacturadas = PasarOrdenesAFacturado(listaMaterialesFacturar, listaOrdenes);
+
             }
             catch (Exception ex)
             {
@@ -77,42 +79,161 @@ namespace JuncalApi.Servicios.Facturar
         public JuncalProveedorCuentaCorriente FacturarRemitoInterno(FacturarRemitoInternoRequerido ordenInternoRequerido)
         {
             JuncalProveedorCuentaCorriente cuentaCorriente = new JuncalProveedorCuentaCorriente();
+            decimal restoFacturarOrden = 0;
+            decimal cuentaCorrienteResto = 0;
+
             try
             {
+                var cuentaCorrienteMateriales = _uow.RepositorioJuncalProveedorCuentaCorriente
+    .GetAllByCondition(x => x.IdProveedor == ordenInternoRequerido.OrdenInterno.IdProveedor
+                        && x.MaterialBool == true
+                        && x.IdMaterial == ordenInternoRequerido.IdMaterial)
+    .OrderByDescending(x => x.Id)
+    .FirstOrDefault();
+
+
                 var listaPrecio = _uow?.RepositorioJuncalProveedorListaPreciosMateriales
                     .GetAllByCondition(a => a.IdProveedorListaprecios == ordenInternoRequerido.IdListaPrecio);
 
-                if (listaPrecio != null && listaPrecio.Any())
+                if (cuentaCorrienteMateriales != null)
                 {
-                    var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenInternoRequerido.IdMaterial);
 
-                    if (precioMaterial != null)
+                    // Restar el peso de ordenFacturar.peso del campo cuentaCorrienteMateriales.peso
+                    decimal pesoRestante = (decimal)(cuentaCorrienteMateriales.Total - ordenInternoRequerido.Peso);
+
+                    // Verificar que el resultado no sea menor que cero
+                    if (pesoRestante < 0)
                     {
-                        decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenInternoRequerido.Peso);
+                        cuentaCorrienteResto = (decimal)cuentaCorrienteMateriales.Total;  // Almacenar el valor original en cuentaCorrienteResto
+                        restoFacturarOrden = Math.Abs(pesoRestante); // Almacenar el excedente en restoFacturarOrden
+                        pesoRestante = 0;
+                    }
+                    else
+                    {
+                        cuentaCorrienteResto = (decimal)ordenInternoRequerido.Peso; // Almacenar el valor original en cuentaCorrienteResto
 
-                        DateTime fechaActual = DateTime.Now;
+                    }
 
 
-                        cuentaCorriente = new JuncalProveedorCuentaCorriente
+                    JuncalProveedorCuentaCorriente nuevoMov = new JuncalProveedorCuentaCorriente();
+                    nuevoMov.IdProveedor = ordenInternoRequerido.OrdenInterno.IdProveedor;
+                    nuevoMov.IdMaterial = ordenInternoRequerido.IdMaterial;
+                    nuevoMov.IdTipoMovimiento = 3;
+                    nuevoMov.Fecha = DateTime.Now;
+                    nuevoMov.MaterialBool = true;
+                    nuevoMov.Observacion = ordenInternoRequerido.Observacion;
+                    nuevoMov.IdUsuario = ordenInternoRequerido.IdUsuario;
+                    nuevoMov.Peso = -cuentaCorrienteResto;
+                    nuevoMov.IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id;
+                    nuevoMov.Total = pesoRestante;
+
+
+                    _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(nuevoMov);
+
+
+                    if (restoFacturarOrden > 0)
+                    {
+
+                        if (listaPrecio != null && listaPrecio.Any())
                         {
-                            IdProveedor = (int)ordenInternoRequerido.OrdenInterno.IdProveedor,
-                            IdTipoMovimiento = CodigosUtiles.Remito,
-                            Fecha = fechaActual,
-                            Observacion = ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
-                            Importe = dineroFacturado,
-                            Peso = (double?)ordenInternoRequerido.Peso,
-                            IdMaterial = ordenInternoRequerido.IdMaterial,
-                            IdUsuario = ordenInternoRequerido.IdUsuario,
-                            IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id
-                        };
+                            var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenInternoRequerido.IdMaterial);
 
-                        return cuentaCorriente;
+                            if (precioMaterial != null)
+                            {
+                                decimal dineroFacturado = (decimal)(precioMaterial.Precio * restoFacturarOrden);
+
+                                DateTime fechaActual = DateTime.Now;
+
+                                cuentaCorriente = new JuncalProveedorCuentaCorriente
+                                {
+                                    IdProveedor = (int)ordenInternoRequerido.OrdenInterno.IdProveedor,
+                                    IdTipoMovimiento = CodigosUtiles.Remito,
+                                    Fecha = fechaActual,
+                                    Observacion = ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
+                                    Importe = dineroFacturado,
+                                    Peso = restoFacturarOrden,
+                                    IdMaterial = ordenInternoRequerido.IdMaterial,
+                                    IdUsuario = ordenInternoRequerido.IdUsuario,
+                                    IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id
+
+                                };
+
+                                var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == cuentaCorriente.IdProveedor && x.MaterialBool == false)
+                                      .OrderByDescending(x => x.Id)
+                                      .FirstOrDefault();
+
+                                if (ultimoMov != null)
+                                {
+                                    cuentaCorriente.Total = ultimoMov.Total + cuentaCorriente.Importe;
+
+                                }
+                                else
+                                {
+                                    cuentaCorriente.Total = cuentaCorriente.Importe;
+
+                                }
+
+                                return cuentaCorriente;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                else // si no hay adelantos de Material
+                {
+                    if (listaPrecio != null && listaPrecio.Any())
+                    {
+                        var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenInternoRequerido.IdMaterial);
+
+                        if (precioMaterial != null)
+                        {
+                            decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenInternoRequerido.Peso);
+
+                            DateTime fechaActual = DateTime.Now;
+
+                            cuentaCorriente = new JuncalProveedorCuentaCorriente
+                            {
+                                IdProveedor = (int)ordenInternoRequerido.OrdenInterno.IdProveedor,
+                                IdTipoMovimiento = CodigosUtiles.Remito,
+                                Fecha = fechaActual,
+                                Observacion = ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
+                                Importe = dineroFacturado,
+                                Peso = ordenInternoRequerido.Peso,
+                                IdMaterial = ordenInternoRequerido.IdMaterial,
+                                IdUsuario = ordenInternoRequerido.IdUsuario,
+                                IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id
+
+                            };
+
+                            var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == cuentaCorriente.IdProveedor && x.MaterialBool == false)
+                                  .OrderByDescending(x => x.Id)
+                                  .FirstOrDefault();
+
+                            if (ultimoMov != null)
+                            {
+                                cuentaCorriente.Total = ultimoMov.Total + cuentaCorriente.Importe;
+
+                            }
+                            else
+                            {
+                                cuentaCorriente.Total = cuentaCorriente.Importe;
+
+                            }
+
+                            return cuentaCorriente;
+                        }
                     }
                 }
+
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al facturar remito interno(Servicio Facturar)");
+                _logger.LogError(ex, "Error al insertar cuentas corrientes (Servicio Facturar)");
                 throw;
             }
 
@@ -129,39 +250,158 @@ namespace JuncalApi.Servicios.Facturar
         /// <returns>Objeto JuncalProveedorCuentaCorriente con los detalles de la factura.</returns>
         public JuncalProveedorCuentaCorriente FacturarRemitoExterno(FacturarOrdenRequerido ordenFacturar)
         {                              
-                JuncalProveedorCuentaCorriente cuentaCorriente = new JuncalProveedorCuentaCorriente();
+            JuncalProveedorCuentaCorriente cuentaCorriente = new JuncalProveedorCuentaCorriente();
+            decimal restoFacturarOrden = 0;
+            decimal cuentaCorrienteResto = 0;
+
             try
             {
+                var cuentaCorrienteMateriales = _uow.RepositorioJuncalProveedorCuentaCorriente
+    .GetAllByCondition(x => x.IdProveedor == ordenFacturar.IdProveedor
+                        && x.MaterialBool == true
+                        && x.IdMaterial == ordenFacturar.IdMaterial)
+    .OrderByDescending(x => x.Id)
+    .FirstOrDefault();
+
 
                 var listaPrecio = _uow?.RepositorioJuncalProveedorListaPreciosMateriales
-                        .GetAllByCondition(a => a.IdProveedorListaprecios == ordenFacturar.IdListaPrecio);
+                    .GetAllByCondition(a => a.IdProveedorListaprecios == ordenFacturar.IdListaPrecio);
 
-                if (listaPrecio != null && listaPrecio.Any())
+                if (cuentaCorrienteMateriales!=null) 
                 {
-                    var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenFacturar.IdMaterial);
 
-                    if (precioMaterial != null)
+                    // Restar el peso de ordenFacturar.peso del campo cuentaCorrienteMateriales.peso
+                    decimal pesoRestante = (decimal)(cuentaCorrienteMateriales.Total - ordenFacturar.Peso);
+
+                    // Verificar que el resultado no sea menor que cero
+                    if (pesoRestante < 0)
                     {
-                        decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenFacturar.Peso);
+                        cuentaCorrienteResto = (decimal)cuentaCorrienteMateriales.Total;  // Almacenar el valor original en cuentaCorrienteResto
+                        restoFacturarOrden = Math.Abs(pesoRestante); // Almacenar el excedente en restoFacturarOrden
+                        pesoRestante = 0;
+                    }
+                    else
+                    {
+                        cuentaCorrienteResto = ordenFacturar.Peso; // Almacenar el valor original en cuentaCorrienteResto
 
-                        DateTime fechaActual = DateTime.Now;
+                    }
 
-                        cuentaCorriente = new JuncalProveedorCuentaCorriente
+
+                    JuncalProveedorCuentaCorriente nuevoMov = new JuncalProveedorCuentaCorriente();
+                        nuevoMov.IdProveedor = ordenFacturar.IdProveedor;
+                        nuevoMov.IdMaterial = ordenFacturar.IdMaterial;
+                        nuevoMov.IdTipoMovimiento = 3;
+                        nuevoMov.Fecha = DateTime.Now;
+                        nuevoMov.MaterialBool = true;
+                        nuevoMov.Observacion = ordenFacturar.Observacion;
+                        nuevoMov.IdUsuario = ordenFacturar.IdUsuario;
+                        nuevoMov.Peso = -cuentaCorrienteResto;
+                        nuevoMov.IdRemitoExterno = ordenFacturar.IdRemito;
+                        nuevoMov.Total = pesoRestante;
+
+
+                        _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(nuevoMov);
+
+
+                    if (restoFacturarOrden > 0)
+                    {
+                        
+                        if (listaPrecio != null && listaPrecio.Any())
                         {
-                            IdProveedor = (int)ordenFacturar.IdProveedor,
-                            IdTipoMovimiento = CodigosUtiles.Remito,
-                            Fecha = fechaActual,
-                            Observacion = ordenFacturar.Observacion is null ? "Sin Observacion" : ordenFacturar.Observacion.ToString(),
-                            Importe = dineroFacturado,
-                            Peso = (double?)ordenFacturar.Peso,
-                            IdMaterial = ordenFacturar.IdMaterial,
-                            IdUsuario = ordenFacturar.IdUsuario,
-                            IdRemitoExterno = ordenFacturar.IdRemito
-                        };
+                            var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenFacturar.IdMaterial);
+
+                            if (precioMaterial != null)
+                            {
+                                decimal dineroFacturado = (decimal)(precioMaterial.Precio * restoFacturarOrden);
+
+                                DateTime fechaActual = DateTime.Now;
+
+                                cuentaCorriente = new JuncalProveedorCuentaCorriente
+                                {
+                                    IdProveedor = (int)ordenFacturar.IdProveedor,
+                                    IdTipoMovimiento = CodigosUtiles.Remito,
+                                    Fecha = fechaActual,
+                                    Observacion = ordenFacturar.Observacion is null ? "Sin Observacion" : ordenFacturar.Observacion.ToString(),
+                                    Importe = dineroFacturado,
+                                    Peso = restoFacturarOrden,
+                                    IdMaterial = ordenFacturar.IdMaterial,
+                                    IdUsuario = ordenFacturar.IdUsuario,
+                                    IdRemitoExterno = ordenFacturar.IdRemito
+                                  
+                                };
+
+                                var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == cuentaCorriente.IdProveedor && x.MaterialBool == false)
+                                      .OrderByDescending(x => x.Id)
+                                      .FirstOrDefault();
+
+                                if (ultimoMov != null)
+                                {
+                                    cuentaCorriente.Total = ultimoMov.Total + cuentaCorriente.Importe;
+
+                                }
+                                else
+                                {
+                                    cuentaCorriente.Total = cuentaCorriente.Importe;
+
+                                }
+
+                                return cuentaCorriente;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                else // si no hay adelantos de Material
+                {
+                    if (listaPrecio != null && listaPrecio.Any())
+                    {
+                        var precioMaterial = listaPrecio.FirstOrDefault(a => a.Id == ordenFacturar.IdMaterial);
+
+                        if (precioMaterial != null)
+                        {
+                            decimal dineroFacturado = (decimal)(precioMaterial.Precio * ordenFacturar.Peso);
+
+                            DateTime fechaActual = DateTime.Now;
+
+                            cuentaCorriente = new JuncalProveedorCuentaCorriente
+                            {
+                                IdProveedor = (int)ordenFacturar.IdProveedor,
+                                IdTipoMovimiento = CodigosUtiles.Remito,
+                                Fecha = fechaActual,
+                                Observacion = ordenFacturar.Observacion is null ? "Sin Observacion" : ordenFacturar.Observacion.ToString(),
+                                Importe = dineroFacturado,
+                                Peso = ordenFacturar.Peso,
+                                IdMaterial = ordenFacturar.IdMaterial,
+                                IdUsuario = ordenFacturar.IdUsuario,
+                                IdRemitoExterno = ordenFacturar.IdRemito
+
+                            };
+
+                            var ultimoMov = _uow.RepositorioJuncalProveedorCuentaCorriente.GetAllByCondition(x => x.IdProveedor == cuentaCorriente.IdProveedor && x.MaterialBool == false)
+                                  .OrderByDescending(x => x.Id)
+                                  .FirstOrDefault();
+
+                            if (ultimoMov != null)
+                            {
+                                cuentaCorriente.Total = ultimoMov.Total + cuentaCorriente.Importe;
+
+                            }
+                            else
+                            {
+                                cuentaCorriente.Total = cuentaCorriente.Importe;
+
+                            }
+
+                            return cuentaCorriente;
+                        }
                     }
                 }
-                                                                             
-                   
+
                 }
                 catch (Exception ex)
                 {
@@ -388,10 +628,7 @@ namespace JuncalApi.Servicios.Facturar
             }
         }
 
-        private bool InsertarCuentaCorriente(JuncalProveedorCuentaCorriente cuentaCorriente)
-        {
-            return _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(cuentaCorriente);
-        }
+
 
         private void ActualizarEstadoOrdenInterna(int idRemito)
         {

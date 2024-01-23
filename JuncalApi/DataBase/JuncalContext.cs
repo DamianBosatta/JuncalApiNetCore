@@ -1119,6 +1119,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Importe)
                 .HasPrecision(10)
                 .HasColumnName("importe");
+            entity.Property(e => e.Total)
+               .HasPrecision(10)
+               .HasColumnName("total");
             entity.Property(e => e.Isdeleted)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("isdeleted");

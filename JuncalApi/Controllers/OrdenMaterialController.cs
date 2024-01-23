@@ -87,33 +87,37 @@ namespace JuncalApi.Controllers
             try
             {
               
-                int cantidadMaterialesFacturados = 0;
+                List<int> idOrdenesFacturadas = new List<int>();
 
-                bool checkLista = listPreFacturar.Count() > 0 ? true : false;
+            int cantidadMaterialesFacturados = 0;
 
-                if (checkLista)
+            bool checkLista = listPreFacturar.Count() > 0 ? true : false;
+
+            if (checkLista)
+            {
+                _facturar.FacturacionMateriales(listPreFacturar, out idOrdenesFacturadas, out cantidadMaterialesFacturados);
+
+                if (cantidadMaterialesFacturados > 0)
                 {
-                    _facturar.FacturacionMateriales(listPreFacturar, out cantidadMaterialesFacturados);
 
-                    if (cantidadMaterialesFacturados > 0)
+                    return Ok(new
                     {
-                        return Ok(new
-                        {
-                            success = true,
-                            message = "Los Materiales a facturados ",
-                            result = cantidadMaterialesFacturados
-                           
-                        });
-                    }
+                        success = true,
+                        message = "Los Materiales y Ordenes pasaron a facturadas ",
+                        result = cantidadMaterialesFacturados,
+                        idOrdenesFacturadas
+                    });
                 }
 
-                return Ok(new
-                {
-                    success = false,
-                    message = "La Lista de Pre Facturar Llego Vacia ",
-                    result = cantidadMaterialesFacturados
-                   
-                });
+
+            }
+
+            return Ok(new { success = false, message = "La Lista de Pre Facturar Llego Vacia ", result = cantidadMaterialesFacturados,
+            idOrdenesFacturadas});
+
+
+        
+
             }
             catch (Exception ex)
             {

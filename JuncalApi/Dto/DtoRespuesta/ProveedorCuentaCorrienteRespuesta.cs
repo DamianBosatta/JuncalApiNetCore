@@ -44,5 +44,7 @@
 
         public bool MaterialBool { get; set; }
 
+        public decimal Total { get; set; }
+
     }
 }
