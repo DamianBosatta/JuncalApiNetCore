@@ -101,7 +101,6 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapControllers();
 app.UseCors("corsapp");
+app.MapControllers();
 app.Run();

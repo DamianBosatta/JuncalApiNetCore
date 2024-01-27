@@ -286,8 +286,9 @@ namespace JuncalApi.Servicios.Facturar
 
                     }
 
-
-                    JuncalProveedorCuentaCorriente nuevoMov = new JuncalProveedorCuentaCorriente();
+                    if (cuentaCorrienteResto != 0)
+                    {
+                        JuncalProveedorCuentaCorriente nuevoMov = new JuncalProveedorCuentaCorriente();
                         nuevoMov.IdProveedor = ordenFacturar.IdProveedor;
                         nuevoMov.IdMaterial = ordenFacturar.IdMaterial;
                         nuevoMov.IdTipoMovimiento = 3;
@@ -301,6 +302,8 @@ namespace JuncalApi.Servicios.Facturar
 
 
                         _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(nuevoMov);
+                    }
+                   
 
 
                     if (restoFacturarOrden > 0)
