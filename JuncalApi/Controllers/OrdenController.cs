@@ -4,6 +4,7 @@ using JuncalApi.Dto.DtoRequerido.DtoFacturarOrden;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
 using JuncalApi.Modelos.Codigos_Utiles;
+using JuncalApi.Modelos.Item;
 using JuncalApi.Servicios.Facturar;
 using JuncalApi.Servicios.Remito;
 using JuncalApi.UnidadDeTrabajo;
@@ -53,6 +54,29 @@ namespace JuncalApi.Controllers
                 throw new InvalidOperationException("Excepcion Al Obtener Lista En GetOrdenes(Controller Orden)");
             }
         }
+
+        [HttpGet("Reporte")]
+        public async Task<ActionResult<IEnumerable<ItemReporteAcerias>>> GetReporte(DateTime fecha)
+        {
+            try
+            {
+                var ListaReportes = _uow.RepositorioJuncalOrden.ReporteAcerias(fecha);
+
+                if (ListaReportes.Count() > 0 && ListaReportes != null)
+                {
+                    return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaReportes });
+                }
+
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<ItemReporteAcerias>() });
+            }
+            catch (Exception)
+            {
+                _logger.LogError("ATENCION!! Capturamos Error En la Controladora De Ordenes," +
+                " A Continuacion Encontraras Mas Informacion -> ->");
+                throw new InvalidOperationException("Excepcion Al Obtener Lista En GetReporte(Controller Orden)");
+            }
+        }
+
 
         [HttpGet("api/pendientes")]
         public async Task<ActionResult<IEnumerable<RemitosPendientesRespuesta>>> GetPendientes()

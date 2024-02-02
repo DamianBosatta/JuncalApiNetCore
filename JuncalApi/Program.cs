@@ -14,8 +14,12 @@ using System;
 using Serilog;
 using Serilog.Events;
 using JuncalApi.Middleware;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+var cultureInfo = new CultureInfo("es-AR");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 builder.Logging.ClearProviders();
 

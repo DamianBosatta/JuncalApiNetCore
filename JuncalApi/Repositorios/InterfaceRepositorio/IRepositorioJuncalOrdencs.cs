@@ -9,6 +9,9 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
         public List<RemitoRespuesta>? GetRemito(int idOrden);
 
         public List<RemitosPendientesRespuesta> GetRemitosPendientes();
-       
+
+        public List<ItemReporteAcerias> ReporteAcerias(DateTime fechaReporte);
+
+
     }
 }

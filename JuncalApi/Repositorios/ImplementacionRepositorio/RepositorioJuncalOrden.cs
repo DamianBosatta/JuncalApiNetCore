@@ -1,6 +1,7 @@
 ﻿using JuncalApi.DataBase;
 using JuncalApi.Dto.DtoRespuesta;
 using JuncalApi.Modelos;
+using JuncalApi.Modelos.Item;
 using JuncalApi.Repositorios.InterfaceRepositorio;
 
 
@@ -130,6 +131,49 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
     }
 }
         #endregion
+
+
+        public List<ItemReporteAcerias> ReporteAcerias(DateTime fechaReporte)
+        {
+            var query = from aceria in _db.JuncalAceria
+                        join remito in _db.JuncalOrdens
+                            on aceria.Id equals remito.IdAceria
+                                into remitoJoin
+                        from remito in remitoJoin.DefaultIfEmpty()
+                        join materialesRemito in _db.JuncalOrdenMarterials
+                            on remito.Id equals materialesRemito.IdOrden
+                                into materialesRemitoJoin
+                        from materialesRemito in materialesRemitoJoin.DefaultIfEmpty()
+                        join materiales in _db.JuncalMaterials
+                            on materialesRemito.IdMaterial equals materiales.Id
+                                into materialesJoin
+                        from materiales in materialesJoin.DefaultIfEmpty()
+                        join preFacturar in _db.JuncalPreFacturars
+                            on remito.Id equals preFacturar.IdOrden
+                                into preFacturarJoin
+                        from preFacturar in preFacturarJoin.DefaultIfEmpty()
+                        join estado in _db.JuncalEstados
+                            on remito.IdEstado equals estado.Id
+                                into estadoJoin
+                        from estado in estadoJoin.DefaultIfEmpty()
+                        where remito.Fecha == fechaReporte
+                        orderby aceria.Id
+                        select new ItemReporteAcerias
+                        {
+                            IdAceria = aceria.Id,
+                            DescripcionAceria = aceria.Nombre,
+                            IdEstado = estado.Id,
+                            DescripcionEstado = estado.Nombre,
+                            IdMaterial = materiales.Id,
+                            DescripcionMaterial = materiales.Nombre,
+                            KgEnviados = materialesRemito.Peso.ToString(),
+                            KgRecibidos = preFacturar == null ? "Aun no se facturó el material" : preFacturar.PesoNeto.ToString()
+                        };
+
+
+            var reporteAceriasList = query.ToList();
+            return reporteAceriasList;
+        }
 
     }
 }
