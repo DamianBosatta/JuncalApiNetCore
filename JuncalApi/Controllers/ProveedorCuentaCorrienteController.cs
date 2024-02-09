@@ -117,7 +117,7 @@ namespace JuncalApi.Controllers
 
                     if(ultimoMov!=null)
                     {
-                        ProveedorCuentaCorriente.Total = ultimoMov.Total + ProveedorCuentaCorriente.Peso;
+                        ProveedorCuentaCorriente.Total = ultimoMov.Total + (decimal)ProveedorCuentaCorriente.Peso;
                         _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
 
                         var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);
@@ -125,7 +125,7 @@ namespace JuncalApi.Controllers
                     }
                     else
                     {
-                        ProveedorCuentaCorriente.Total = ProveedorCuentaCorriente.Peso;
+                        ProveedorCuentaCorriente.Total = (decimal?)ProveedorCuentaCorriente.Peso;
                         _uow.RepositorioJuncalProveedorCuentaCorriente.Insert(ProveedorCuentaCorriente);
 
                         var ProveedorCuentaCorrienteRes = _mapper.Map<JuncalProveedorCuentaCorriente>(ProveedorCuentaCorriente);

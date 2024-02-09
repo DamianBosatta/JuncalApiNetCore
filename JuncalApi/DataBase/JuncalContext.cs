@@ -1,4 +1,6 @@
-﻿using JuncalApi.Modelos;
+﻿using System;
+using System.Collections.Generic;
+using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
 
 namespace JuncalApi.DataBase;
@@ -442,13 +444,13 @@ public partial class JuncalContext : DbContext
 
             entity.ToTable("juncal.CuentaCorriente_Pendiente");
 
-            entity.HasIndex(e => e.IdMaterial, "id_Material");
-
             entity.HasIndex(e => e.IdProveedor, "id_Proveedor");
 
             entity.HasIndex(e => e.IdRemito, "id_Remito");
 
             entity.HasIndex(e => e.IdUsuario, "id_Usuario");
+
+            entity.HasIndex(e => e.IdMaterial, "juncal.CuentaCorriente_Pendiente_ibfk_2");
 
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
@@ -897,6 +899,7 @@ public partial class JuncalContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
             entity.Property(e => e.FacturadoParcial).HasColumnName("facturadoParcial");
+            entity.Property(e => e.FechaProcesado).HasColumnName("fechaProcesado");
             entity.Property(e => e.IdMaterial)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_material");
@@ -1119,9 +1122,6 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Importe)
                 .HasPrecision(10)
                 .HasColumnName("importe");
-            entity.Property(e => e.Total)
-               .HasPrecision(10)
-               .HasColumnName("total");
             entity.Property(e => e.Isdeleted)
                 .HasDefaultValueSql("'0'")
                 .HasColumnName("isdeleted");
@@ -1130,6 +1130,9 @@ public partial class JuncalContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("observacion");
             entity.Property(e => e.Peso).HasColumnName("peso");
+            entity.Property(e => e.Total)
+                .HasPrecision(10)
+                .HasColumnName("total");
 
             entity.HasOne(d => d.IdMaterialNavigation).WithMany(p => p.JuncalProveedorCuentaCorrientes)
                 .HasForeignKey(d => d.IdMaterial)

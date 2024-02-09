@@ -135,44 +135,42 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
         public List<ItemReporteAcerias> ReporteAcerias(DateTime fechaReporte)
         {
-            var query = from aceria in _db.JuncalAceria
-                        join remito in _db.JuncalOrdens
-                            on aceria.Id equals remito.IdAceria
-                                into remitoJoin
-                        from remito in remitoJoin.DefaultIfEmpty()
-                        join materialesRemito in _db.JuncalOrdenMarterials
-                            on remito.Id equals materialesRemito.IdOrden
-                                into materialesRemitoJoin
-                        from materialesRemito in materialesRemitoJoin.DefaultIfEmpty()
-                        join materiales in _db.JuncalMaterials
-                            on materialesRemito.IdMaterial equals materiales.Id
-                                into materialesJoin
-                        from materiales in materialesJoin.DefaultIfEmpty()
-                        join preFacturar in _db.JuncalPreFacturars
-                            on remito.Id equals preFacturar.IdOrden
-                                into preFacturarJoin
-                        from preFacturar in preFacturarJoin.DefaultIfEmpty()
-                        join estado in _db.JuncalEstados
-                            on remito.IdEstado equals estado.Id
-                                into estadoJoin
-                        from estado in estadoJoin.DefaultIfEmpty()
-                        where remito.Fecha == fechaReporte
-                        orderby aceria.Id
-                        select new ItemReporteAcerias
-                        {
-                            IdAceria = aceria.Id,
-                            DescripcionAceria = aceria.Nombre,
-                            IdEstado = estado.Id,
-                            DescripcionEstado = estado.Nombre,
-                            IdMaterial = materiales.Id,
-                            DescripcionMaterial = materiales.Nombre,
-                            KgEnviados = materialesRemito.Peso.ToString(),
-                            KgRecibidos = preFacturar == null ? "Aun no se facturó el material" : preFacturar.PesoNeto.ToString()
-                        };
+            var reporte = (from aceria in _db.JuncalAceria
+                           join remito in _db.JuncalOrdens on aceria.Id equals remito.IdAceria into remitoJoin
+                           from remito in remitoJoin.DefaultIfEmpty()
+                           join materialesRemito in _db.JuncalOrdenMarterials on remito.Id equals materialesRemito.IdOrden into materialesRemitoJoin
+                           from materialesRemito in materialesRemitoJoin.DefaultIfEmpty()
+                           join material in _db.JuncalMaterials on materialesRemito.IdMaterial equals material.Id into materialesJoin
+                           from material in materialesJoin.DefaultIfEmpty()
+                           join preFacturar in _db.JuncalPreFacturars on remito.Id equals preFacturar.IdOrden into preFacturarJoin
+                           from preFacturar in preFacturarJoin.DefaultIfEmpty()
+                           join estado in _db.JuncalEstados on remito.IdEstado equals estado.Id into estadoJoin
+                           from estado in estadoJoin.DefaultIfEmpty()
+                           select new
+                           {
+                               aceria.Nombre,
+                               NombreMaterial = material.Nombre,
+                               KgEnviados = materialesRemito.Peso,
+                               KgRecibidos = materialesRemito.Peso,
+                               EnviadosParcial = materialesRemito.FacturadoParcial==false && materialesRemito.FechaFacturado <= fechaReporte,
+                               RecibidosParcial = materialesRemito.FacturadoParcial==true && materialesRemito.FechaFacturado == fechaReporte
+                           })
+                   .GroupBy(item => new { item.Nombre, item.NombreMaterial })
+                   .Select(group => new ItemReporteAcerias
+                   {
+                       DescripcionAceria = group.Key.Nombre,
+                       MaterialesDetalle = group.Select(matGroup => new ItemMaterialReporte
+                       {
+                           NombreMaterial = matGroup.NombreMaterial,
+                           KgEnviados = group.Where(x => x.EnviadosParcial).Sum(x => x.KgEnviados) ?? 0, // Sumar kg enviados
+                           KgRecibidos = group.Where(x => x.RecibidosParcial).Sum(x => x.KgRecibidos) ?? 0 // Sumar kg recibidos
+                       }).ToList()
+                   })
+                   .ToList();
+
+            return reporte;
 
 
-            var reporteAceriasList = query.ToList();
-            return reporteAceriasList;
         }
 
     }

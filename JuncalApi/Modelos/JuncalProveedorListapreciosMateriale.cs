@@ -19,7 +19,5 @@ public partial class JuncalProveedorListapreciosMateriale
 
     public virtual JuncalProveedorListaprecio? IdProveedorListapreciosNavigation { get; set; }
 
-    public virtual ICollection<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; } = new List<JuncalCuentaCorrientePendiente>();
-
     public virtual ICollection<JuncalProveedorCuentaCorriente> JuncalProveedorCuentaCorrientes { get; } = new List<JuncalProveedorCuentaCorriente>();
 }

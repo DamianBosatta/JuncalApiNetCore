@@ -13,6 +13,8 @@ public partial class JuncalMaterial
 
     public virtual ICollection<JuncalAceriaMaterial> JuncalAceriaMaterials { get; } = new List<JuncalAceriaMaterial>();
 
+    public virtual ICollection<JuncalCuentaCorrientePendiente> JuncalCuentaCorrientePendientes { get; } = new List<JuncalCuentaCorrientePendiente>();
+
     public virtual ICollection<JuncalOrdenMarterial> JuncalOrdenMarterials { get; } = new List<JuncalOrdenMarterial>();
 
     public virtual ICollection<JuncalOrdenMaterialInternoRecibido> JuncalOrdenMaterialInternoRecibidos { get; } = new List<JuncalOrdenMaterialInternoRecibido>();

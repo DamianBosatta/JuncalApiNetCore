@@ -92,7 +92,7 @@ namespace JuncalApi.Dto.DtoExcel
 
         public bool ? ExisteCodigoMaterial {get { return DataMateriales.ListaCodigoMaterialesACeria.Contains(ExcelAcerbrag.CodigoMaterial) ? true : false;} }
 
-
+        public DateTime FechaProcesado = DateTime.Now;
 
 
     }

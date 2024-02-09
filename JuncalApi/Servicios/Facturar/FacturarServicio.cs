@@ -123,7 +123,7 @@ namespace JuncalApi.Servicios.Facturar
                     nuevoMov.MaterialBool = true;
                     nuevoMov.Observacion = ordenInternoRequerido.Observacion;
                     nuevoMov.IdUsuario = ordenInternoRequerido.IdUsuario;
-                    nuevoMov.Peso = -cuentaCorrienteResto;
+                    nuevoMov.Peso = (double?)-cuentaCorrienteResto;
                     nuevoMov.IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id;
                     nuevoMov.Total = pesoRestante;
 
@@ -151,7 +151,7 @@ namespace JuncalApi.Servicios.Facturar
                                     Fecha = fechaActual,
                                     Observacion = ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
                                     Importe = dineroFacturado,
-                                    Peso = restoFacturarOrden,
+                                    Peso = (double?)restoFacturarOrden,
                                     IdMaterial = ordenInternoRequerido.IdMaterial,
                                     IdUsuario = ordenInternoRequerido.IdUsuario,
                                     IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id
@@ -203,7 +203,7 @@ namespace JuncalApi.Servicios.Facturar
                                 Fecha = fechaActual,
                                 Observacion = ordenInternoRequerido.Observacion is null ? "Sin Observacion" : ordenInternoRequerido.Observacion.ToString(),
                                 Importe = dineroFacturado,
-                                Peso = ordenInternoRequerido.Peso,
+                                Peso = (double?)ordenInternoRequerido.Peso,
                                 IdMaterial = ordenInternoRequerido.IdMaterial,
                                 IdUsuario = ordenInternoRequerido.IdUsuario,
                                 IdRemitoInterno = ordenInternoRequerido.OrdenInterno.Id
@@ -296,7 +296,7 @@ namespace JuncalApi.Servicios.Facturar
                         nuevoMov.MaterialBool = true;
                         nuevoMov.Observacion = ordenFacturar.Observacion;
                         nuevoMov.IdUsuario = ordenFacturar.IdUsuario;
-                        nuevoMov.Peso = -cuentaCorrienteResto;
+                        nuevoMov.Peso = (double?)-cuentaCorrienteResto;
                         nuevoMov.IdRemitoExterno = ordenFacturar.IdRemito;
                         nuevoMov.Total = pesoRestante;
 
@@ -326,7 +326,7 @@ namespace JuncalApi.Servicios.Facturar
                                     Fecha = fechaActual,
                                     Observacion = ordenFacturar.Observacion is null ? "Sin Observacion" : ordenFacturar.Observacion.ToString(),
                                     Importe = dineroFacturado,
-                                    Peso = restoFacturarOrden,
+                                    Peso = (double?)restoFacturarOrden,
                                     IdMaterial = ordenFacturar.IdMaterial,
                                     IdUsuario = ordenFacturar.IdUsuario,
                                     IdRemitoExterno = ordenFacturar.IdRemito
@@ -378,7 +378,7 @@ namespace JuncalApi.Servicios.Facturar
                                 Fecha = fechaActual,
                                 Observacion = ordenFacturar.Observacion is null ? "Sin Observacion" : ordenFacturar.Observacion.ToString(),
                                 Importe = dineroFacturado,
-                                Peso = ordenFacturar.Peso,
+                                Peso = (double?)ordenFacturar.Peso,
                                 IdMaterial = ordenFacturar.IdMaterial,
                                 IdUsuario = ordenFacturar.IdUsuario,
                                 IdRemitoExterno = ordenFacturar.IdRemito

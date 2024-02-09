@@ -19,7 +19,7 @@ public partial class JuncalCuentaCorrientePendiente
 
     public bool? Pendiente { get; set; }
 
-    public virtual JuncalProveedorListapreciosMateriale? IdMaterialNavigation { get; set; }
+    public virtual JuncalMaterial? IdMaterialNavigation { get; set; }
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }
 
