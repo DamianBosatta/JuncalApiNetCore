@@ -56,7 +56,7 @@ namespace JuncalApi.Controllers
         }
 
         [HttpGet("Reporte")]
-        public async Task<ActionResult<IEnumerable<ItemReporteAcerias>>> GetReporte(DateTime fecha)
+        public async Task<ActionResult<IEnumerable<ReporteAceria>>> GetReporte(DateTime fecha)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace JuncalApi.Controllers
                     return Ok(new { success = true, message = "Lista Para Ser Utilizada", result = ListaReportes });
                 }
 
-                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<ItemReporteAcerias>() });
+                return Ok(new { success = false, message = "La Lista No Contiene Datos", result = new List<ReporteAceria>() });
             }
             catch (Exception)
             {

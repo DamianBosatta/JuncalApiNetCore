@@ -10,7 +10,7 @@ namespace JuncalApi.Repositorios.InterfaceRepositorio
 
         public List<RemitosPendientesRespuesta> GetRemitosPendientes();
 
-        public List<ItemReporteAcerias> ReporteAcerias(DateTime fechaReporte);
+        public List<ReporteAceria> ReporteAcerias(DateTime fechaReporte);
 
 
     }
