@@ -1,12 +1,7 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\JuncalApi",
-    "\\JuncalApi\\Controllers",
-    "\\JuncalApi\\Servicios",
-    "\\JuncalApi\\Servicios\\Excel",
-    "\\JuncalApi\\Servicios\\Facturar"
+    ""
   ],
-  "SelectedNode": "\\JuncalApi\\Controllers\\ProveedorCuentaCorrienteController.cs",
+  "SelectedNode": "\\JuncalApi.sln",
   "PreviewInSolutionExplorer": false
 }

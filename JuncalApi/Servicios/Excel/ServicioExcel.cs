@@ -142,20 +142,43 @@ namespace JuncalApi.Servicios.Excel
         {
             try
             {
+                /// Si no encuentra el codigo, error de NULL
                 var query = (from excel in listaExcel
                              join Remito in ListaDataMateriales on excel.Remito equals Remito.Remito
                              select new
                              {
                                  Remito = Remito,
                                  Excel = excel,
-                                 IdAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(a => a.Cod == excel.CodigoMaterial && a.IdAceria == idAceria).Id
+                                 IdAceriaMaterial = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(a => a.Cod == excel.CodigoMaterial && a.IdAceria == idAceria && a.Isdeleted == false).Id
                              });
 
                 List<ExcelGenerico> listaExcelGenerico = new List<ExcelGenerico>();
-                foreach (var objQuery in query)
+
+                HashSet<(int, int)> idAceriaMaterialEvaluados = new HashSet<(int, int)>();
+
+                var QueryCoincidente = query.Where(objQuery => objQuery.IdAceriaMaterial == objQuery.Remito.IdAceriaMaterial);
+                var QueryNoCoincidente = query.Where(objQuery => objQuery.IdAceriaMaterial != objQuery.Remito.IdAceriaMaterial);
+                foreach (var objQuery in QueryCoincidente)
                 {
-                    listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+                    var tuple = (objQuery.IdAceriaMaterial, objQuery.Remito.IdOrden);
+                    if (!idAceriaMaterialEvaluados.Contains(tuple))
+                    {
+                        listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+                        idAceriaMaterialEvaluados.Add(tuple);
+                    }
                 }
+
+                foreach (var objQuery in QueryNoCoincidente)
+                {
+                    var tuple = (objQuery.IdAceriaMaterial, objQuery.Remito.IdOrden);
+                    if (!idAceriaMaterialEvaluados.Contains(tuple))
+                    {
+                        listaExcelGenerico.Add(new ExcelGenerico(objQuery.Remito, objQuery.Excel, objQuery.IdAceriaMaterial));
+                        idAceriaMaterialEvaluados.Add(tuple);
+                    }
+                }
+
+
 
                 return listaExcelGenerico;
             }

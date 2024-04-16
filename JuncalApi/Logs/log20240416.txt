@@ -1,0 +1,18 @@
+2024-04-16 18:38:13.571 -03:00 [ERR] Se ha producido un error en ComparadorRemitoExcel(Servicio Excel): Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at JuncalApi.Servicios.Excel.ServicioExcel.<>c__DisplayClass6_0.<ComparadorRemitoExcel>b__2(ExcelMapper excel, ItemDataMateriales Remito) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 147
+   at System.Linq.Enumerable.JoinIterator[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector, IEqualityComparer`1 comparer)+MoveNext()
+   at System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   at JuncalApi.Servicios.Excel.ServicioExcel.ComparadorRemitoExcel(List`1 listaExcel, List`1 ListaDataMateriales, Int32 idAceria) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 160
+2024-04-16 18:49:56.062 -03:00 [ERR] Se ha producido un error en ComparadorRemitoExcel(Servicio Excel): Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at JuncalApi.Servicios.Excel.ServicioExcel.<>c__DisplayClass6_0.<ComparadorRemitoExcel>b__2(ExcelMapper excel, ItemDataMateriales Remito) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 147
+   at System.Linq.Enumerable.JoinIterator[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector, IEqualityComparer`1 comparer)+MoveNext()
+   at System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   at JuncalApi.Servicios.Excel.ServicioExcel.ComparadorRemitoExcel(List`1 listaExcel, List`1 ListaDataMateriales, Int32 idAceria) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 160
+2024-04-16 18:52:05.726 -03:00 [ERR] Se ha producido un error en ComparadorRemitoExcel(Servicio Excel): Object reference not set to an instance of an object.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at JuncalApi.Servicios.Excel.ServicioExcel.<>c__DisplayClass6_0.<ComparadorRemitoExcel>b__2(ExcelMapper excel, ItemDataMateriales Remito) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 147
+   at System.Linq.Enumerable.JoinIterator[TOuter,TInner,TKey,TResult](IEnumerable`1 outer, IEnumerable`1 inner, Func`2 outerKeySelector, Func`2 innerKeySelector, Func`3 resultSelector, IEqualityComparer`1 comparer)+MoveNext()
+   at System.Linq.Enumerable.WhereEnumerableIterator`1.MoveNext()
+   at JuncalApi.Servicios.Excel.ServicioExcel.ComparadorRemitoExcel(List`1 listaExcel, List`1 ListaDataMateriales, Int32 idAceria) in C:\Users\Felix\source\repos\JuncalApiNetCore7\JuncalApi\Servicios\Excel\ServicioExcel.cs:line 160

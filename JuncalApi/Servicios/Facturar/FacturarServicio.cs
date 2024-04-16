@@ -510,7 +510,7 @@ namespace JuncalApi.Servicios.Facturar
                                     om.NumFactura = numFactura;
                                     om.FechaFacturado = DateTime.Now;
                                     om.FacturadoParcial = true;
-                                    om.FechaProcesado= DateTime.Now;
+  
 
                                     if (_uow.RepositorioJuncalOrdenMarterial.Update(om))
                                     {

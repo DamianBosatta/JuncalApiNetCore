@@ -65,7 +65,14 @@ namespace JuncalApi.Controllers
                 if (preFacturado is null)
                 {
                     var preFacturarobj = _mapper.Map<JuncalPreFacturar>(preFacturadoReq);
-                    _uow.RepositorioJuncalPreFactura.Insert(preFacturarobj);
+                    var insert = _uow.RepositorioJuncalPreFactura.Insert(preFacturarobj);
+                    if (insert)
+                    {
+                        var mat = _uow.RepositorioJuncalOrdenMarterial.GetByCondition(om => om.IdOrden == preFacturarobj.IdOrden && om.Id == preFacturarobj.IdMaterialEnviado);
+                        mat.FechaProcesado = DateTime.Now;
+                        mat.FacturadoParcial = true;
+                        _uow.RepositorioJuncalOrdenMarterial.Update(mat);
+                    }
                     preFacturarNuevo = _mapper.Map<PreFacturadoRespuesta>(preFacturarobj);
                     return Ok(new { success = true, message = "Pre Facturado Con Éxito", result = preFacturarNuevo });
                 }

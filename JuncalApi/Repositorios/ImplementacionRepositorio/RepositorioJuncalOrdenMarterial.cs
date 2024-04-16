@@ -28,7 +28,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             // Obtener las órdenes que cumplen las condiciones específicas
             var ordenes = _db.JuncalOrdens
                 .Where(a => remito.Contains(a.Remito.Trim()) && a.Isdeleted == false &&
-                            a.IdAceria == idAceria && a.IdEstado == CodigosUtiles.Enviado)
+                            a.IdAceria == idAceria && a.IdEstado != CodigosUtiles.Cobrado)
                 .ToList();
 
             // Obtener los identificadores de las órdenes que cumplen las condiciones
@@ -36,7 +36,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             // Obtener los materiales asociados a las órdenes que cumplen la condición de FacturadoParcial == false
             var ordenesMateriales = _db.JuncalOrdenMarterials
-                .Where(a => a.FacturadoParcial == false && ordenIds.Contains(a.IdOrden))
+                .Where(a => a.FacturadoParcial == false && ordenIds.Contains(a.IdOrden) && a.Isdeleted == false && a.FacturadoParcial == false)
                 .ToList();
 
             // Obtener los identificadores de los materiales asociados a las ordenesMateriales
@@ -49,7 +49,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
             // Obtener los registros de JuncalAceriaMaterials asociados a la aceria específica (idAceria)
             var aceriaMateriales = _db.JuncalAceriaMaterials
-                .Where(a => a.IdAceria == idAceria && listaCodigos.Contains(a.Cod))
+                .Where(a => a.IdAceria == idAceria && listaCodigos.Contains(a.Cod) && a.Isdeleted == false)
                 .ToList();
 
             // Combinar los resultados para obtener el resultado final
@@ -58,12 +58,12 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                                 on orden.Id equals ordenMaterial.IdOrden into joinOrdenMaterial
                             from jOrdenMaterial in joinOrdenMaterial.DefaultIfEmpty()
                             join material in materialesJuncal
-                                on jOrdenMaterial.IdMaterial equals material.Id into joinMaterial
+                                on (jOrdenMaterial?.IdMaterial) equals material.Id into joinMaterial
                             from jMaterial in joinMaterial.DefaultIfEmpty()
                             join aceriaMaterial in aceriaMateriales
-                                on jMaterial.Id equals aceriaMaterial.IdMaterial into joinAceriaMaterial
+                                on (jMaterial?.Id) equals aceriaMaterial.IdMaterial into joinAceriaMaterial
                             from jAceriaMaterial in joinAceriaMaterial.DefaultIfEmpty()
-                            where orden != null
+                            where orden != null && jAceriaMaterial != null
                             select new
                             {
                                 orden,
@@ -71,8 +71,6 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                                 jAceriaMaterial,
                                 jMaterial
                             };
-
-
 
 
             // Finalmente, puedes trabajar con el resultado para realizar las operaciones necesarias

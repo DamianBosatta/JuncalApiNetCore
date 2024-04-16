@@ -28,22 +28,22 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         {
             try
             {
-                var query = (from _orden in _db.JuncalOrdens.Where(a => a.Isdeleted == false)
-                             join aceria in _db.JuncalAceria.Where(a => a.Isdeleted == false) on _orden.IdAceria equals aceria.Id into JoinAceria
+                var query = (from _orden in _db.JuncalOrdens.Where(o => o.Isdeleted == false)
+                             join aceria in _db.JuncalAceria on _orden.IdAceria equals aceria.Id into JoinAceria
                              from jaceria in JoinAceria.DefaultIfEmpty()
-                             join contrato in _db.JuncalContratos.Where(a => a.Isdeleted == false) on _orden.IdContrato equals contrato.Id into JoinContrato
+                             join contrato in _db.JuncalContratos on _orden.IdContrato equals contrato.Id into JoinContrato
                              from jcontrato in JoinContrato.DefaultIfEmpty()
-                             join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
+                             join camion in _db.JuncalCamions on _orden.IdCamion equals camion.Id into JoinCamion
                              from jcamion in JoinCamion.DefaultIfEmpty()
-                             join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false) on jcamion.IdChofer equals chofer.Id into JoinChofer
+                             join chofer in _db.JuncalChofers on jcamion.IdChofer equals chofer.Id into JoinChofer
                              from jchofer in JoinChofer.DefaultIfEmpty()
-                             join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on jcamion.IdTransportista equals transportista.Id into JoinTransportista
+                             join transportista in _db.JuncalTransportista on jcamion.IdTransportista equals transportista.Id into JoinTransportista
                              from jtransportista in JoinTransportista.DefaultIfEmpty()
-                             join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
+                             join acoplado in _db.JuncalAcoplados on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
                              from jacoplado in JoinAcoplado.DefaultIfEmpty()
-                             join estado in _db.JuncalEstados.Where(a => a.Isdeleted == false) on _orden.IdEstado equals estado.Id into JoinEstado
+                             join estado in _db.JuncalEstados on _orden.IdEstado equals estado.Id into JoinEstado
                              from jestado in JoinEstado.DefaultIfEmpty()
-                             join proveedor in _db.JuncalProveedors.Where(a => a.Isdeleted == false) on _orden.IdProveedor equals proveedor.Id into JoinProveedor
+                             join proveedor in _db.JuncalProveedors on _orden.IdProveedor equals proveedor.Id into JoinProveedor
                              from jproveedor in JoinProveedor.DefaultIfEmpty()
                              join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
                              from jdireccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
@@ -161,28 +161,33 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
 
                 foreach (var grupoMaterial in materialesProcesadosAgrupados)
                 {
-                    var pesoRecibidoTotal = _db.JuncalOrdenMarterials
-                        .Where(m => m.FechaProcesado.HasValue &&
-                                    m.FechaProcesado.Value.Date == fechaReporte.Date &&
-                                    m.IdMaterial == grupoMaterial.Key &&
-                                    m.FacturadoParcial &&
-                                    !m.Isdeleted)
+                    var pesoRecibidoTotal = _db.JuncalOrdens
+                        .Where(o => o.Fecha.Date <= fechaReporte.Date &&
+                                    o.IdAceria == aceria.Id &&
+                                    o.Isdeleted == false)
+                        .SelectMany(o => o.JuncalOrdenMarterials
+                            .Where(m => m.IdMaterial == grupoMaterial.Key &&
+                                        m.FechaProcesado.HasValue &&
+                                        m.FechaProcesado.Value.Date == fechaReporte.Date &&
+                                        !m.Isdeleted))
                         .Sum(m => m.Peso) ?? 0;
 
                     var pesoPendienteTotal = _db.JuncalOrdens
                         .Where(o => o.Fecha.Date <= fechaReporte.Date &&
                                     o.IdAceria == aceria.Id &&
-                                    (bool)!o.Isdeleted)
+                                    o.Isdeleted == false)
                         .SelectMany(o => o.JuncalOrdenMarterials
                             .Where(m => m.IdMaterial == grupoMaterial.Key &&
-                                        !m.FacturadoParcial &&
+                                        !m.FechaProcesado.HasValue &&
                                         !m.Isdeleted))
                         .Sum(m => m.Peso) ?? 0;
 
                     var material = grupoMaterial.First(); // Tomamos el primer material del grupo
-
-                    reporteAceria.MaterialesProcesados.Add(new ItemMaterial(material.IdMaterial, material.Nombre, pesoRecibidoTotal));
-                    reporteAceria.MaterialesPendientes.Add(new ItemMaterial(material.IdMaterial, material.Nombre, pesoPendienteTotal));
+                    if (pesoRecibidoTotal > 0 || pesoPendienteTotal > 0)
+                    {
+                        reporteAceria.Materiales.Add(new ItemMaterial(material.IdMaterial, material.Nombre, pesoRecibidoTotal, pesoPendienteTotal));
+                    }
+                    
                 }
 
                 reporteAcerias.Add(reporteAceria);

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class DireccionProveedorController : Controller
@@ -56,7 +56,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
-                var DireccionProveedor = _uow.RepositorioJuncalDireccionProveedor.GetByCondition(c => c.Direccion == direccionReq.Direccion && c.Isdelete == false);
+                var DireccionProveedor = _uow.RepositorioJuncalDireccionProveedor.GetByCondition(c => c.Direccion == direccionReq.Direccion && c.IdProveedor == direccionReq.IdProveedor && c.Isdelete == false);
 
                 if (DireccionProveedor is null)
                 {
