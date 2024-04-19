@@ -87,7 +87,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
-                var orden = _uow.RepositorioJuncalOrdenInterno.GetByCondition(c => c.Remito == ordenReq.Remito);
+                var orden = _uow.RepositorioJuncalOrdenInterno.GetByCondition(c => c.Remito == ordenReq.Remito && c.Isdeleted == false);
 
                 if (orden is null)
                 {

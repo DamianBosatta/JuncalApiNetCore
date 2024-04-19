@@ -76,7 +76,7 @@ namespace JuncalApi.Controllers
         {
             try
             {
-                var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(m => m.Cod.Equals(aceriaMatRequerido.Cod) && m.Isdeleted == false);
+                var aceriaMat = _uow.RepositorioJuncalAceriaMaterial.GetByCondition(m => m.Cod.Equals(aceriaMatRequerido.Cod) && m.Isdeleted == false && m.IdAceria == aceriaMatRequerido.IdAceria);
 
                 if (aceriaMat is null)
                 {
