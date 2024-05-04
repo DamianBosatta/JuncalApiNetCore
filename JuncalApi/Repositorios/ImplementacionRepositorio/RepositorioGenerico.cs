@@ -166,7 +166,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                 _db.Update(model);
                 return Save();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
              _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
              " A Continuacion Encontraras Mas Informacion -> ->");

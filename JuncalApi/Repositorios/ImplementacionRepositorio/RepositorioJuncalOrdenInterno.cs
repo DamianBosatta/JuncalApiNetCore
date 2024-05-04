@@ -22,7 +22,9 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         from contrato in JoinContrato.DefaultIfEmpty()
                         join camion in _db.JuncalCamions.Where(a => a.Isdeleted == false) on _orden.IdCamion equals camion.Id into JoinCamion
                         from camion in JoinCamion.DefaultIfEmpty()
-                        join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on camion.IdTransportista equals transportista.Id into JoinTransportista
+						join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false) on _orden.IdChofer equals chofer.Id into JoinChofer
+						from chofer in JoinChofer.DefaultIfEmpty()
+						join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false) on camion.IdTransportista equals transportista.Id into JoinTransportista
                         from transportista in JoinTransportista.DefaultIfEmpty()
                         join acoplado in _db.JuncalAcoplados.Where(a => a.Isdeleted == false) on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
                         from acoplado in JoinAcoplado.DefaultIfEmpty()
@@ -32,7 +34,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                         from proveedor in JoinProveedor.DefaultIfEmpty()
                         join direccionProveedor in _db.JuncalDireccionProveedors on _orden.IdDireccionProveedor equals direccionProveedor.Id into JoinDireccionProveedor
                         from direccionProveedor in JoinDireccionProveedor.DefaultIfEmpty()
-                        select new {_orden, JoinAceria = aceria, JoinContrato=contrato,JoinCamion= camion,JoinTransportista=transportista, JoinAcoplado= acoplado,JoinEstado = estado, JoinProveedor=proveedor,JoinDireccionProveedor= direccionProveedor};
+                        select new {_orden, JoinAceria = aceria, JoinContrato=contrato,JoinCamion= camion,JoinTransportista=transportista, JoinAcoplado= acoplado,JoinEstado = estado, JoinProveedor=proveedor,JoinDireccionProveedor= direccionProveedor,JoinChofer=chofer};
 
 
             ItemRemitoInterno? remitoInterno = query.Select(result => new ItemRemitoInterno
@@ -40,7 +42,8 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             RemitoOrden=result._orden,
             Aceria=result.JoinAceria,
             Contrato=result.JoinContrato,
-            Camion=result.JoinCamion,           
+            Camion=result.JoinCamion,      
+            Chofer=result.JoinChofer,
             Transportista=result.JoinTransportista,
             Acoplado= result.JoinAcoplado,
             Estado=result.JoinEstado,

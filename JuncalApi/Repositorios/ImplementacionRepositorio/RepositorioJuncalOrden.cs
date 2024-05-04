@@ -51,7 +51,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              {
                                  Id = _orden.Id,
                                  Remito = _orden.Remito,
-                                 Observaciones = _orden.Observaciones,
+                                 Observacion = _orden.Observaciones,
                                  IdAceria = _orden.IdAceria,
                                  NombreAceria = jaceria.Nombre,
                                  DireccionAceria = jaceria.Direccion,

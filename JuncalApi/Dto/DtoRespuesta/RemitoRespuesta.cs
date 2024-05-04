@@ -12,7 +12,7 @@ namespace JuncalApi.Dto.DtoRespuesta
 
         public DateTime? FechaRemito { get; set; } = new DateTime();
 
-        public string? Observaciones { get; set; } = string.Empty;
+        public string? Observacion { get; set; } = string.Empty;
 
         public int? IdAceria { get; set; } = 0;
 

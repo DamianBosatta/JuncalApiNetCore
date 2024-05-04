@@ -16,7 +16,7 @@ using JuncalApi.Servicios.Facturar;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -198,7 +198,7 @@ namespace JuncalApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditOrden(int id, OrdenRequerido ordenEdit)
+        public IActionResult EditOrden(int id, OrdenInternaRequerida ordenEdit)
         {
             try
             {
