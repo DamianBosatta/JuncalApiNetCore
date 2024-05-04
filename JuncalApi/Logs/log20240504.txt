@@ -1,0 +1,132 @@
+2024-05-04 10:49:39.771 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: Nullable object must have a value.
+   at lambda_method85(Closure , QueryContext , DbDataReader , ResultContext , SingleQueryResultCoordinator )
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: Nullable object must have a value.
+   at lambda_method85(Closure , QueryContext , DbDataReader , ResultContext , SingleQueryResultCoordinator )
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-05-04 10:49:39.984 -03:00 [ERR] Ocurrió una excepción en GetRemito(Repositorio Orden)
+System.InvalidOperationException: Nullable object must have a value.
+   at lambda_method85(Closure , QueryContext , DbDataReader , ResultContext , SingleQueryResultCoordinator )
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Collections.Generic.List`1..ctor(IEnumerable`1 collection)
+   at System.Linq.Enumerable.ToList[TSource](IEnumerable`1 source)
+   at JuncalApi.Repositorios.ImplementacionRepositorio.RepositorioJuncalOrden.GetRemito(Int32 idOrden) in C:\Users\Damian\Desktop\api juncal review\JuncalApi\Repositorios\ImplementacionRepositorio\RepositorioJuncalOrden.cs:line 85
+2024-05-04 10:55:22.928 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-05-04 10:55:23.229 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.Threading.ThreadAbortException: System error.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 457
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.Threading.ThreadAbortException: System error.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 457
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-05-04 10:55:32.801 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-05-04 10:55:32.803 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-05-04 10:58:25.458 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-05-04 10:58:25.694 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.Threading.ThreadAbortException: System error.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 457
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.Threading.ThreadAbortException: System error.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 457
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine& stateMachine)
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken)
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-05-04 10:58:42.969 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-05-04 10:58:42.971 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+2024-05-04 10:58:46.602 -03:00 [ERR] An error occurred using the connection to database 'nicoales_nuevo' on server 'sd-1812852-l.dattaweb.com'.
+2024-05-04 10:58:46.604 -03:00 [ERR] An exception occurred while iterating over the results of a query for context type 'JuncalApi.DataBase.JuncalContext'.
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+System.InvalidOperationException: Cannot Open when State is Connecting.
+   at MySqlConnector.MySqlConnection.OpenAsync(Nullable`1 ioBehavior, CancellationToken cancellationToken) in /_/src/MySqlConnector/MySqlConnection.cs:line 391
+   at MySqlConnector.MySqlConnection.Open() in /_/src/MySqlConnector/MySqlConnection.cs:line 382
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenInternal(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlRelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Pomelo.EntityFrameworkCore.MySql.Storage.Internal.MySqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()

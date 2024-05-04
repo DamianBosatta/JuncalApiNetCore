@@ -76,7 +76,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                                  NombreProveedor = jproveedor.Nombre,
                                  IdDireccionProveedor = _orden.IdDireccionProveedor,
                                  DireccionProveedor = jdireccionProveedor.Direccion
-                             });
+                             }
+                             
+                             
+                             );
 
 
                 // Filtrar por Id de orden si se proporciona

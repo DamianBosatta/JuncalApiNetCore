@@ -13,7 +13,7 @@ using System.Runtime.Intrinsics.X86;
 
 namespace JuncalApi.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CamionController : Controller
