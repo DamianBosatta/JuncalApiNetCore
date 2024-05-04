@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JuncalApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a739671454f65ba6c1662c1abadba0f983b38e63")]
 [assembly: System.Reflection.AssemblyProductAttribute("JuncalApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JuncalApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

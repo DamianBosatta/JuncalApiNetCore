@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
-
 namespace JuncalApi.DataBase;
 
 public partial class JuncalContext : DbContext
 {
-    public JuncalContext()
-    {
-    }
+	public JuncalContext()
+	{
+	}
 
-    public JuncalContext(DbContextOptions<JuncalContext> options)
-        : base(options)
-    {
-    }
+	public JuncalContext(DbContextOptions<JuncalContext> options)
+		: base(options)
+	{
+	}
 
 
-    public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
+
+	public virtual DbSet<EfmigrationsHistory> EfmigrationsHistories { get; set; }
 
     public virtual DbSet<JuncalAceriaMaterial> JuncalAceriaMaterials { get; set; }
 
@@ -91,22 +91,22 @@ public partial class JuncalContext : DbContext
 
     public virtual DbSet<JuncalUsuario> JuncalUsuarios { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        if (!optionsBuilder.IsConfigured)
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		if (!optionsBuilder.IsConfigured)
+		{
+			IConfigurationRoot configuration = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json")
+				.Build();
 
-            string? connectionString = configuration.GetConnectionString("JuncalApiDB");
+			string? connectionString = configuration.GetConnectionString("JuncalApiDB");
 
-            optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
-        }
-    }
+			optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
+		}
+	}
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
             .UseCollation("latin1_swedish_ci")
@@ -235,8 +235,6 @@ public partial class JuncalContext : DbContext
                 .HasCharSet("utf8mb4")
                 .UseCollation("utf8mb4_general_ci");
 
-            entity.HasIndex(e => e.IdChofer, "fk_camion_chofer");
-
             entity.HasIndex(e => e.IdTransportista, "fk_camion_transportista");
 
             entity.HasIndex(e => e.IdTipoCamion, "fk_id_tipoCamion");
@@ -244,9 +242,6 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Id)
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
-            entity.Property(e => e.IdChofer)
-                .HasColumnType("int(11)")
-                .HasColumnName("id_chofer");
             entity.Property(e => e.IdInterno)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_interno");
@@ -268,10 +263,6 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.Tara)
                 .HasColumnType("int(11)")
                 .HasColumnName("tara");
-
-            entity.HasOne(d => d.IdChoferNavigation).WithMany(p => p.JuncalCamions)
-                .HasForeignKey(d => d.IdChofer)
-                .HasConstraintName("fk_camion_chofer");
 
             entity.HasOne(d => d.IdTipoCamionNavigation).WithMany(p => p.JuncalCamions)
                 .HasForeignKey(d => d.IdTipoCamion)
@@ -736,6 +727,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdCamion)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_camion");
+            entity.Property(e => e.IdChofer)
+                .HasColumnType("int(10)")
+                .HasColumnName("id_chofer");
             entity.Property(e => e.IdContrato)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_contrato");
@@ -836,6 +830,9 @@ public partial class JuncalContext : DbContext
             entity.Property(e => e.IdCamion)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_camion");
+            entity.Property(e => e.IdChofer)
+                .HasColumnType("int(10)")
+                .HasColumnName("id_chofer");
             entity.Property(e => e.IdContrato)
                 .HasColumnType("int(11)")
                 .HasColumnName("id_contrato");

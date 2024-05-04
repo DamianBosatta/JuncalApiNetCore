@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore7\\JuncalApi\\JuncalApi.csproj": {}
+    "C:\\Users\\Damian\\Desktop\\api juncal review\\JuncalApi\\JuncalApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore7\\JuncalApi\\JuncalApi.csproj": {
+    "C:\\Users\\Damian\\Desktop\\api juncal review\\JuncalApi\\JuncalApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore7\\JuncalApi\\JuncalApi.csproj",
+        "projectUniqueName": "C:\\Users\\Damian\\Desktop\\api juncal review\\JuncalApi\\JuncalApi.csproj",
         "projectName": "JuncalApi",
-        "projectPath": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore7\\JuncalApi\\JuncalApi.csproj",
-        "packagesPath": "C:\\Users\\Felix\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Felix\\source\\repos\\JuncalApiNetCore7\\JuncalApi\\obj\\",
+        "projectPath": "C:\\Users\\Damian\\Desktop\\api juncal review\\JuncalApi\\JuncalApi.csproj",
+        "packagesPath": "C:\\Users\\Damian\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Damian\\Desktop\\api juncal review\\JuncalApi\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Felix\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Damian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -132,7 +142,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
         }
       }
     }

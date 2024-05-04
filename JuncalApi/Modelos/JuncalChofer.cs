@@ -16,6 +16,4 @@ public partial class JuncalChofer
     public string? Telefono { get; set; }
 
     public bool? Isdeleted { get; set; }
-
-    public virtual ICollection<JuncalCamion> JuncalCamions { get; } = new List<JuncalCamion>();
 }

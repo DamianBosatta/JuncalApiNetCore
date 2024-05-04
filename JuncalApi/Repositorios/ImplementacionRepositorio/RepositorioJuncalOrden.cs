@@ -35,9 +35,9 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              from jcontrato in JoinContrato.DefaultIfEmpty()
                              join camion in _db.JuncalCamions on _orden.IdCamion equals camion.Id into JoinCamion
                              from jcamion in JoinCamion.DefaultIfEmpty()
-                             join chofer in _db.JuncalChofers on jcamion.IdChofer equals chofer.Id into JoinChofer
-                             from jchofer in JoinChofer.DefaultIfEmpty()
-                             join transportista in _db.JuncalTransportista on jcamion.IdTransportista equals transportista.Id into JoinTransportista
+							 join chofer in _db.JuncalChofers on _orden.IdChofer equals chofer.Id into JoinChofer
+							 from jchofer in JoinChofer.DefaultIfEmpty()
+							 join transportista in _db.JuncalTransportista on jcamion.IdTransportista equals transportista.Id into JoinTransportista
                              from jtransportista in JoinTransportista.DefaultIfEmpty()
                              join acoplado in _db.JuncalAcoplados on _orden.IdAcoplado equals acoplado.Id into JoinAcoplado
                              from jacoplado in JoinAcoplado.DefaultIfEmpty()
@@ -61,11 +61,11 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                                  IdContrato = jcontrato.Id,
                                  NumeroContrato = jcontrato.Numero,
                                  IdCamion = _orden.IdCamion,
-                                 PatenteCamion = jcamion.Patente,
-                                 IdChofer = jchofer.Id,
-                                 NombreChofer = jchofer.Nombre,
-                                 ApellidoChofer = jchofer.Apellido,
-                                 LicenciaChofer = jchofer.Dni,
+                                 PatenteCamion = jcamion.Patente,  
+                                 IdChofer=jchofer.Id,
+                                 NombreChofer=jchofer.Nombre,
+                                 ApellidoChofer=jchofer.Apellido,
+                                 LicenciaChofer=jchofer.Dni,
                                  IdTransportista = jtransportista.Id,
                                  NombreTransportista = jtransportista.Nombre,
                                  IdAcoplado = _orden.IdAcoplado,

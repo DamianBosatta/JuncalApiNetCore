@@ -26,7 +26,7 @@
         public ItemRemitoInterno() { }
 
 
-        public ItemRemitoInterno(JuncalOrdenInterno remito, JuncalAcerium aceria, JuncalContrato contrato, JuncalCamion camion, JuncalChofer chofer, JuncalTransportistum transportista, JuncalAcoplado acoplado, JuncalEstadosInterno estado, JuncalProveedor proveedor, JuncalDireccionProveedor direccionProveedores) : this()
+        public ItemRemitoInterno(JuncalOrdenInterno remito, JuncalAcerium aceria, JuncalContrato contrato, JuncalCamion camion, JuncalTransportistum transportista, JuncalAcoplado acoplado, JuncalEstadosInterno estado, JuncalProveedor proveedor, JuncalDireccionProveedor direccionProveedores,JuncalChofer chofer) : this()
         {
             RemitoOrden = remito;
             Aceria = aceria;
@@ -67,15 +67,15 @@
 
         public string? PatenteCamion { get { return Camion is null ? string.Empty : Camion.Patente is null ? string.Empty : Camion.Patente.ToString().Trim(); } }
 
-        public int IdChofer { get { return Chofer is null ? 0 : Chofer.Id; } }
+        public int IdChofer { get { return (int)(Chofer is null ? 0 : Chofer.Id); } }
 
-        public string? NombreChofer { get { return Chofer is null ? string.Empty : Chofer.Nombre is null ? string.Empty : Chofer.Nombre.ToString().Trim(); } }
+		public string NombreChofer { get { return Chofer is null ? string.Empty : Chofer.Nombre is null ? string.Empty : Chofer.Nombre.ToString().Trim(); } }
 
-        public string ApellidoChofer { get { return Chofer is null ? string.Empty : Chofer.Apellido is null ? string.Empty : Chofer.Apellido; } }
+		public string ApellidoChofer { get { return Chofer is null ? string.Empty : Chofer.Apellido is null ? string.Empty : Chofer.Apellido.ToString().Trim(); } }
 
-        public int LicenciaChofer { get { return Chofer is null ? 0 : Chofer.Dni; } }
+		public int LicenciaChofer { get { return Chofer is null ? 0 : Chofer.Dni; } }
 
-        public int IdTransportista { get { return Transportista is null ? 0 : Transportista.Id; } }
+		public int IdTransportista { get { return Transportista is null ? 0 : Transportista.Id; } }
 
         public string? NombreTransportista { get { return Transportista is null ? string.Empty : Transportista.Nombre is null ? string.Empty : Transportista.Nombre.ToString().Trim(); } }
 

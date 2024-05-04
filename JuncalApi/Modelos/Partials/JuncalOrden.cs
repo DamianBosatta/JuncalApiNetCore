@@ -16,8 +16,7 @@ public partial class JuncalOrden
     public string? NumeroContrato {get;set;}
     [NotMapped]
     public string? PatenteCamion { get; set; }
-    [NotMapped]
-    public int? IdChofer { get; set; }
+  
     [NotMapped]
     public string? NombreChofer { get;set;}
     [NotMapped]

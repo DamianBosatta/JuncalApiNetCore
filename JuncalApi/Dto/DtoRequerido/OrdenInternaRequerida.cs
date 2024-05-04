@@ -11,6 +11,8 @@
 
         public int? IdCamion { get; set; }
 
+        public int? IdChofer {  get; set; }
+
         public int? IdEstadoInterno { get; set; }
 
         public DateTime? Fecha { get; set; }

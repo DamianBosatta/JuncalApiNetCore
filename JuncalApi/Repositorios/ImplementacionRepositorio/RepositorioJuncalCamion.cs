@@ -21,10 +21,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
         public List<JuncalCamion> GetCamiones()
         {
             // Consulta para obtener los camiones
-            var query = (from camion in _db.JuncalCamions.Where(a => a.Isdeleted == false)
-                         join chofer in _db.JuncalChofers.Where(a => a.Isdeleted == false)
-                         on camion.IdChofer equals chofer.Id into JoinChofer
-                         from jchofer in JoinChofer.DefaultIfEmpty()
+            var query = (from camion in _db.JuncalCamions.Where(a => a.Isdeleted == false)                       
                          join transportista in _db.JuncalTransportista.Where(a => a.Isdeleted == false)
                          on camion.IdTransportista equals transportista.Id into JoinTransportista
                          from jtransportista in JoinTransportista.DefaultIfEmpty()
@@ -36,13 +33,10 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
                              Id = camion.Id,
                              Patente = camion.Patente,
                              Marca = camion.Marca,
-                             Tara = camion.Tara,
-                             IdChofer = camion.IdChofer,
+                             Tara = camion.Tara,                            
                              IdTransportista = camion.IdTransportista,
                              IdInterno = camion.IdInterno,
-                             IdTipoCamion = camion.IdTipoCamion,
-                             ApellidoChofer= jchofer.Apellido,
-                             NombreChofer = jchofer.Nombre,
+                             IdTipoCamion = camion.IdTipoCamion,                          
                              NombreTransportista = jtransportista.Nombre,
                              DescripcionTipoCamion = jtipoCamion.Nombre
                          });

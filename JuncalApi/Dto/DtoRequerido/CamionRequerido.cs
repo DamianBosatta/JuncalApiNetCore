@@ -9,8 +9,6 @@
 
         public int? Tara { get; set; }
 
-        public int? IdChofer { get; set; }
-
         public int? IdTransportista { get; set; }
 
         public int? IdInterno { get; set; }
