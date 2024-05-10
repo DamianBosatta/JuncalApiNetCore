@@ -198,7 +198,7 @@ namespace JuncalApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditOrden(int id, OrdenInternaRequerida ordenEdit)
+        public IActionResult EditOrdenInterna(int id, OrdenInternaRequerida ordenEdit)
         {
             try
             {
@@ -208,7 +208,7 @@ namespace JuncalApi.Controllers
                 {
                     _mapper.Map(ordenEdit, orden);
                     _uow.RepositorioJuncalOrdenInterno.Update(orden);
-                    OrdenRespuesta ordenRes = new();
+                    OrdenInternaRespuesta ordenRes = new();
                     _mapper.Map(orden, ordenRes);
                     return Ok(new { success = true, message = "La Orden Fue Actualizada", result = ordenRes });
                 }

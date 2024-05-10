@@ -10,6 +10,4 @@ public partial class JuncalEstadosInterno
     public string Nombre { get; set; } = null!;
 
     public bool Isdeleted { get; set; }
-
-    public virtual ICollection<JuncalOrdenInterno> JuncalOrdenInternos { get; } = new List<JuncalOrdenInterno>();
 }

@@ -130,8 +130,8 @@ namespace JuncalApi.Mapper
             #endregion
             
             #region ORDEN INTERNA
-            CreateMap<OrdenInternaRequerida, JuncalOrdenInterno>().ReverseMap();
-            CreateMap<JuncalOrdenInterno, OrdenInternaRespuesta>().ReverseMap();
+            CreateMap<OrdenInternaRequerida, JuncalOrdenInterno>();
+            CreateMap<JuncalOrdenInterno, OrdenInternaRespuesta>();
             #endregion
 
             #region REMITO RECLAMO

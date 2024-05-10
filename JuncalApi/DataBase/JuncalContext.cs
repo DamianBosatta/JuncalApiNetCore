@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using JuncalApi.Modelos;
 using Microsoft.EntityFrameworkCore;
+
 namespace JuncalApi.DataBase;
 
 public partial class JuncalContext : DbContext
@@ -105,7 +106,6 @@ public partial class JuncalContext : DbContext
 			optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("5.7.30-mysql"));
 		}
 	}
-
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
@@ -809,8 +809,6 @@ public partial class JuncalContext : DbContext
 
             entity.HasIndex(e => e.IdCamion, "fk_id_camion");
 
-            entity.HasIndex(e => e.IdContrato, "fk_id_contrato");
-
             entity.HasIndex(e => e.IdDireccionProveedor, "fk_id_direccion_proveedor");
 
             entity.HasIndex(e => e.IdEstadoInterno, "fk_id_estado_interno");
@@ -851,11 +849,6 @@ public partial class JuncalContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("remito");
 
-            entity.HasOne(d => d.IdAceriaNavigation).WithMany(p => p.JuncalOrdenInternos)
-                .HasForeignKey(d => d.IdAceria)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_id_aceria");
-
             entity.HasOne(d => d.IdAcopladoNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdAcoplado)
                 .HasConstraintName("fk_id_acoplado_interno");
@@ -864,18 +857,9 @@ public partial class JuncalContext : DbContext
                 .HasForeignKey(d => d.IdCamion)
                 .HasConstraintName("fk_id_camion");
 
-            entity.HasOne(d => d.IdContratoNavigation).WithMany(p => p.JuncalOrdenInternos)
-                .HasForeignKey(d => d.IdContrato)
-                .HasConstraintName("fk_id_contrato");
-
             entity.HasOne(d => d.IdDireccionProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdDireccionProveedor)
                 .HasConstraintName("fk_id_direccion_proveedor");
-
-            entity.HasOne(d => d.IdEstadoInternoNavigation).WithMany(p => p.JuncalOrdenInternos)
-                .HasForeignKey(d => d.IdEstadoInterno)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_id_estado_interno");
 
             entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.JuncalOrdenInternos)
                 .HasForeignKey(d => d.IdProveedor)

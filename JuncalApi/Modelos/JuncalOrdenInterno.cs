@@ -31,17 +31,11 @@ public partial class JuncalOrdenInterno
 
     public int? IdAcoplado { get; set; }
 
-    public virtual JuncalAcerium IdAceriaNavigation { get; set; } = null!;
-
     public virtual JuncalAcoplado? IdAcopladoNavigation { get; set; }
 
     public virtual JuncalCamion? IdCamionNavigation { get; set; }
 
-    public virtual JuncalContrato? IdContratoNavigation { get; set; }
-
     public virtual JuncalDireccionProveedor? IdDireccionProveedorNavigation { get; set; }
-
-    public virtual JuncalEstadosInterno IdEstadoInternoNavigation { get; set; } = null!;
 
     public virtual JuncalProveedor? IdProveedorNavigation { get; set; }
 

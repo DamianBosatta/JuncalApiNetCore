@@ -169,7 +169,7 @@ namespace JuncalApi.Repositorios.ImplementacionRepositorio
             catch (Exception ex)
             {
              _logger.LogError("ATENCION!! Capturamos Error En El Repositorio Generico" +
-             " A Continuacion Encontraras Mas Informacion -> ->");
+             " A Continuacion Encontraras Mas Informacion -> ->" + ex);
              throw new InvalidOperationException("Excepcion En DataBase Al Hacer Update(Repositorio Generico) ");
             }
         }
